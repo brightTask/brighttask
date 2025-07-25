@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Settings - SideHustle360</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap for modal & toast support -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+            padding: 32px;
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #22223b;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-size: 1em;
+            color: #4a4e69;
+        }
+
+        .btn-primary {
+
+            background: #00bfa6 !important;
+            border: #00bfa6 1px solid !important;
+        }
+
+        .bg-primary {
+            background: #00bfa6 !important;
+        }
+
+        .btn-outline-primary {
+            border: #00bfa6 1px solid !important;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid #00bfa6;
+            color: #22223b;
+            font-weight: bold;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="url"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 8px;
+        }
+
+        .btn {
+
+            background: #00bfa6;
+            border: #00bfa6 1px solid;
+            color: #fff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .btn-danger {
+            background: #e53935;
+        }
+
+        .btn:disabled {
+            background: #b0b0b0;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 24px;
+        }
+
+        .row>div {
+            flex: 1 1 45%;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .avatar-preview {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #dee2e6;
+        }
+
+        .avatar-upload-btn {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 50%;
+            padding: 4px 6px;
+            cursor: pointer;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 16px;
+            }
+
+            .row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
+        /* Modal styles */
+        .modal-overlay {
+            display: flex;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(216, 173, 193, 0.952));
+            z-index: 1500;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .spinner {
+            border: 6px solid white;
+            border-top: 6px solid transparent;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            background: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loader-text {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            color: white;
+            font-weight: 500;
+        }
+
+        .tabs {
+            position: sticky;
+            top: 10px;
+        }
+    </style>
+</head>
+
+<body class="page-wrapper d-flex flex-column min-vh-100 bg-white">
+    <!-- Modal -->
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="spinner"></div>
+        <div class="loader-text">...</div>
+    </div>
+
+
+    <div class="container-fluid">
+        <div class="position-relative mt-4 mb-4 text-center action-btn">
+            <a href="javascript:window.history.back()"
+                class="btn action-btn btn-outline-secondary position-absolute top-0 start-0">
+                <i class="fas fa-arrow-left me-1"></i> Back
+            </a>
+            <h2 class="mb-0">Settings</h2>
+            <button onclick="logout()" class="btn btn-outline-danger position-absolute top-0 end-0 action-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+        <div class="tabs">
+            <button class="tab active" data-tab="profile">Profile</button>
+            <button class="tab" data-tab="social">Social Links</button>
+            <button class="tab" data-tab="security">Security</button>
+            <button class="tab" data-tab="payment">Payment</button>
+            <button class="tab" data-tab="notification">Notification</button>
+            <button class="tab" data-tab="preference">Preference</button>
+        </div>
+
+        <!-- PROFILE -->
+        <div class="tab-content active" id="profile">
+            <form id="profileForm">
+                <div class="avatar-wrapper mb-3">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png"
+                        id="avatarPreview" class="avatar-preview" alt="Avatar">
+                    <label for="profile_pic" class="avatar-upload-btn">📷</label>
+                    <input type="file" name="media" id="profile_pic" accept="image/*">
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label">First Name</label>
+                        <input type="text" class="form-control" name="first_name" id="first_name"
+                            placeholder="First name">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Last Name</label>
+                        <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Username</label>
+                        <input type="text" class="form-control" name="username" id="username" placeholder="Username">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                    </div>
+                    <div class="col-md-12">
+                        <label class="form-label">Bio</label>
+                        <textarea class="form-control" name="bio" id="bio" rows="2"
+                            placeholder="A short bio about you..."></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn">Save Profile</button>
+            </form>
+        </div>
+
+        <!-- SOCIAL -->
+        <div class="tab-content" id="social">
+            <form id="socialForm">
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="form-label">Facebook</label><input type="url"
+                            class="form-control" name="facebook" id="facebook"
+                            placeholder="https://facebook.com/yourprofile"></div>
+                    <div class="col-md-6"><label class="form-label">Twitter</label><input type="url"
+                            class="form-control" name="twitter" id="twitter"
+                            placeholder="https://twitter.com/yourprofile"></div>
+                    <div class="col-md-6"><label class="form-label">Instagram</label><input type="url"
+                            class="form-control" name="instagram" id="instagram"
+                            placeholder="https://instagram.com/yourprofile"></div>
+                    <div class="col-md-6"><label class="form-label">LinkedIn</label><input type="url"
+                            class="form-control" name="linkedin" id="linkedin"
+                            placeholder="https://linkedin.com/in/yourprofile"></div>
+                    <div class="col-md-6"><label class="form-label">TikTok</label><input type="url" class="form-control"
+                            name="tiktok" id="tiktok" placeholder="https://tiktok.com/@yourprofile"></div>
+                    <div class="col-md-6"><label class="form-label">YouTube</label><input type="url"
+                            class="form-control" name="youtube" id="youtube"
+                            placeholder="https://youtube.com/yourchannel"></div>
+                </div>
+                <button type="submit" class="btn">Save Social Links</button>
+            </form>
+        </div>
+
+        <!-- SECURITY -->
+        <div class="tab-content" id="security">
+            <form id="passwordForm">
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="form-label">Current Password</label><input type="password"
+                            class="form-control" name="current_password" id="current_password"
+                            placeholder="Current password"></div>
+                    <div class="col-md-6"><label class="form-label">New Password</label><input type="password"
+                            class="form-control" name="password" id="password" placeholder="New password"></div>
+                    <div class="col-md-6"><label class="form-label">Confirm Password</label><input type="password"
+                            class="form-control" name="confirm_password" id="confirm_password"
+                            placeholder="Confirm password"></div>
+                </div>
+                <button type="submit" class="btn">Change Password</button>
+            </form>
+            <hr>
+            <button class="btn btn-danger mt-3" id="deleteAccountBtn">Delete Account</button>
+        </div>
+
+        <!-- PAYMENT -->
+        <div class="tab-content" id="payment">
+            <form id="payment-form">
+                <label>Bank Name</label><input type="text" id="bank-name">
+                <label>Account Number</label><input type="text" id="account-number">
+                <label>Account Name</label><input type="text" id="account-name">
+                <label>Preferred Payment Method</label>
+                <select id="payment-method">
+                    <option value="bank">Bank Transfer</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="crypto">Crypto</option>
+                </select>
+                <button type="submit" class="btn">Save Payment Settings</button>
+            </form>
+        </div>
+
+        <!-- NOTIFICATION -->
+        <div class="tab-content" id="notification">
+            <form id="notification-form">
+                <label><input type="checkbox" id="notify-email"> Email Notifications</label>
+                <label><input type="checkbox" id="notify-sms"> SMS Notifications</label>
+                <label><input type="checkbox" id="notify-push"> Push Notifications</label>
+                <button type="submit" class="btn">Save Notification Settings</button>
+            </form>
+        </div>
+
+        <!-- PREFERENCE -->
+        <div class="tab-content" id="preference">
+            <form id="preference-form">
+                <label>Language</label>
+                <select id="language">
+                    <option value="en">English</option>
+                    <option value="fr">French</option>
+                    <option value="es">Spanish</option>
+                    <option value="de">German</option>
+                </select>
+                <label>Theme</label>
+                <select id="theme">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
+                <button type="submit" class="btn">Save Preferences</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger">Confirm Delete</h5>
+                </div>
+                <div class="modal-body">Are you sure you want to delete your account?</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger" id="confirmDelete">Yes, Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
+        <div id="globalToast" class="toast text-white bg-primary border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body" id="globalToastMessage">Success</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const modal = document.getElementById("modalOverlay");
+        // Tab Switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+
+        const inIframe = window.self !== window.top;
+
+        if (inIframe) {
+        document.querySelectorAll('.action-btn').forEach(a => {
+            a.classList.add('d-none');
+        })
+        } else {
+        }
+        async function logout() {
+            if (!confirm("You are about to be logged out")) return;
+
+            modal.style.display = 'flex';
+            try {
+                const response = await fetch(`/auth/logout`, {
+                    method: 'POST',
+                    credentials: 'include'
+                });
+                if (response.ok) {
+                    showToast('Logged out successfully!', "success");
+                    window.location.href = "/";
+                } else {
+                    showToast("Logout failed");
+                }
+
+                modal.style.display = 'none';
+            } catch (err) {
+                showToast("Error during logout");
+                console.error(err);
+            }
+        }
+
+        // Avatar preview
+        document.getElementById('profile_pic').addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (file) document.getElementById('avatarPreview').src = URL.createObjectURL(file);
+        });
+
+        // Show toast
+        function showToast(msg, type = "primary") {
+            const toastEl = document.getElementById("globalToast");
+            const toastBody = document.getElementById("globalToastMessage");
+            toastBody.textContent = msg;
+            toastEl.className = `toast text-white bg-${type}`;
+            bootstrap.Toast.getOrCreateInstance(toastEl).show();
+        }
+
+        async function loadUserData() {
+            try {
+                const res = await fetch('/auth/user', { credentials: 'include' });
+                const data = await res.json();
+                document.getElementById('first_name').value = data.first_name || '';
+                document.getElementById('last_name').value = data.last_name || '';
+                document.getElementById('username').value = data.username || '';
+                document.getElementById('email').value = data.email || '';
+                document.getElementById('bio').value = data.bio || '';
+                document.getElementById('avatarPreview').src = data.profile_picture || 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png';
+                document.getElementById('facebook').value = data.facebook || '';
+                document.getElementById('twitter').value = data.twitter || '';
+                document.getElementById('instagram').value = data.instagram || '';
+                document.getElementById('linkedin').value = data.linkedin || '';
+                document.getElementById('tiktok').value = data.tiktok || '';
+                document.getElementById('youtube').value = data.youtube || '';
+            } catch (err) {
+                console.error('Error fetching user data:', err);
+            }
+
+
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 1000);
+        }
+
+        document.addEventListener("DOMContentLoaded", loadUserData);
+
+        // Delete modal
+        document.getElementById('deleteAccountBtn').addEventListener('click', () => {
+            new bootstrap.Modal(document.getElementById('deleteAccountModal')).show();
+        });
+
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!confirm("Update profile?")) return;
+            modal.style.display = 'flex';
+
+            const formData = new FormData(e.target);
+            try {
+                const res = await fetch("/auth/update", {
+                    method: "PUT",
+                    body: formData,
+                });
+                const result = await res.json();
+                if (res.ok) {
+                    showToast("Profile updated!", "success");
+                } else {
+                    showToast("Update failed: " + result.message);
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("Something went wrong.");
+            }
+
+            modal.style.display = 'none';
+        });
+
+        document.getElementById('socialForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!confirm("Update social links?")) return;
+
+            modal.style.display = 'flex';
+            const form = new FormData(e.target);
+            try {
+                const res = await fetch("/auth/update", {
+                    method: "PUT",
+                    body: form,
+                });
+                const result = await res.json();
+                if (res.ok) {
+                    showToast("Social links updated!", "success");
+                } else {
+                    showToast("Update failed: " + result.message);
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("Something went wrong.");
+            }
+
+            modal.style.display = 'none';
+        });
+
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const password = document.getElementById('password').value;
+            const confirmPwd = document.getElementById('confirm_password').value;
+            const current_password = document.getElementById('current_password').value;
+
+            const isStrongPassword = /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/.test(password);
+            if (!isStrongPassword) {
+                return showToast('Password must be at least 8 characters and contain letters and numbers', 'warning');
+            }
+
+            if (password !== confirmPwd) return showToast('Passwords do not match', "warning");
+            if (!confirm("Update password?")) return;
+
+            modal.style.display = 'flex';
+            try {
+                const res = await fetch("/auth/update/password", {
+                    method: "PUT",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password, current_password })
+                });
+
+                const result = await res.json();
+                if (res.ok) {
+                    showToast("Password updated!", "success");
+                } else {
+                    showToast("Failed: " + (result.message || "Unknown error"));
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("Something went wrong.");
+            }
+            modal.style.display = 'none';
+        });
+
+        document.getElementById('confirmDelete').addEventListener('click', async () => {
+            const password = prompt("Enter your password to confirm:");
+            modal.style.display = 'flex';
+            if (!password) return;
+            try {
+                const res = await fetch("/auth/delete", {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ password })
+                });
+                const result = await res.json();
+                if (res.ok) {
+                    showToast("Account deleted", "success");
+                    window.location.href = "/";
+                } else {
+                    showToast(result.message || "Delete failed", "danger");
+                }
+                modal.style.display = 'none';
+            } catch (err) {
+                showToast("Error deleting account", "danger");
+            }
+            bootstrap.Modal.getInstance(document.getElementById('deleteAccountModal')).hide();
+        });
+
+    </script>
+</body>
+
+</html>

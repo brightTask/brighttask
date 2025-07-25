@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SideHustle360 Client Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00bfa6;
+            --secondary: #1f2937;
+            --gradient: linear-gradient(135deg, #00bfa6 60%, #1f2937 100%);
+        }
+        body {
+            background: #f8fafc;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+        .sidebar {
+            background: var(--secondary);
+            min-height: 100vh;
+            color: #fff;
+            position: fixed;
+            width: 260px;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            transition: all 0.3s;
+        }
+        .sidebar .nav-link {
+            color: #cbd5e1;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .sidebar .nav-link.active, .sidebar .nav-link:hover {
+            color: var(--primary);
+            background: rgba(0,191,166,0.1);
+        }
+        .sidebar .sidebar-header {
+            padding: 2rem 1.5rem 1rem 1.5rem;
+            background: var(--gradient);
+            text-align: center;
+        }
+        .sidebar .sidebar-header h2 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0;
+            letter-spacing: 1px;
+        }
+        .sidebar .sidebar-header img {
+            width: 60px;
+            margin-bottom: 0.5rem;
+        }
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem 2rem 2rem 2rem;
+            min-height: 100vh;
+            background: #f8fafc;
+            transition: margin-left 0.3s;
+        }
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            margin-left: 260px;
+            z-index: 101;
+        }
+        .profile-dropdown {
+            min-width: 220px;
+        }
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 2px 12px rgba(31,41,55,0.07);
+        }
+        .card-header {
+            background: none;
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .dashboard-welcome {
+            background: var(--gradient);
+            color: #fff;
+            border-radius: 1rem;
+            padding: 2rem 2rem 1.5rem 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 12px rgba(31,41,55,0.07);
+        }
+        .dashboard-welcome h3 {
+            font-weight: 700;
+            font-size: 2rem;
+        }
+        .dashboard-welcome p {
+            font-size: 1.1rem;
+            margin-bottom: 0;
+        }
+        .stat-card {
+            background: #fff;
+            border-radius: 1rem;
+            padding: 1.5rem 1.5rem;
+            box-shadow: 0 2px 12px rgba(31,41,55,0.07);
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .stat-card .icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            background: rgba(0,191,166,0.08);
+            border-radius: 50%;
+            padding: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .stat-card .stat {
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+        .stat-card .desc {
+            font-size: 1rem;
+            color: #64748b;
+        }
+        .table thead th {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+        }
+        .table tbody tr {
+            background: #fff;
+            transition: background 0.2s;
+        }
+        .table tbody tr:hover {
+            background: #e0f7f4;
+        }
+        .progress-bar {
+            background: var(--primary);
+        }
+        .activity-feed {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+        .activity-feed .feed-item {
+            border-left: 3px solid var(--primary);
+            padding-left: 1rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+        .activity-feed .feed-item:before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 0.3rem;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+            border: 2px solid #fff;
+            z-index: 1;
+        }
+        .activity-feed .feed-item:last-child {
+            margin-bottom: 0;
+        }
+        .activity-feed .feed-date {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 0.2rem;
+        }
+        .activity-feed .feed-text {
+            font-size: 1rem;
+            color: var(--secondary);
+        }
+        .btn-primary {
+            background: var(--primary);
+            border: none;
+        }
+        .btn-primary:hover, .btn-primary:focus {
+            background: #009e8c;
+        }
+        .modal-header {
+            border-bottom: none;
+        }
+        .modal-footer {
+            border-top: none;
+        }
+        @media (max-width: 991.98px) {
+            .sidebar {
+                left: -260px;
+            }
+            .sidebar.active {
+                left: 0;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+            .navbar {
+                margin-left: 0;
+            }
+        }
+        .sidebar-toggler {
+            display: none;
+        }
+        @media (max-width: 991.98px) {
+            .sidebar-toggler {
+                display: inline-block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar d-flex flex-column">
+        <div class="sidebar-header">
+            <img src="https://i.ibb.co/6bQ7Z1d/sidehustle360-logo.png" alt="SideHustle360 Logo" class="mb-2">
+            <h2>SideHustle360</h2>
+            <span class="fs-6 text-light">Client Dashboard</span>
+        </div>
+        <ul class="nav flex-column mt-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="#"><i class="fas fa-home me-2"></i> Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-briefcase me-2"></i> My Projects</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-wallet me-2"></i> Wallet</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-users me-2"></i> Freelancers</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-comments me-2"></i> Messages</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-bell me-2"></i> Notifications</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#"><i class="fas fa-cog me-2"></i> Settings</a>
+            </li>
+            <li class="nav-item mt-auto">
+                <a class="nav-link text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i> Logout</a>
+            </li>
+        </ul>
+    </nav>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light shadow-sm py-2 px-4">
+        <button class="btn btn-link sidebar-toggler d-lg-none me-3" id="sidebarToggle">
+            <i class="fas fa-bars fa-lg"></i>
+        </button>
+        <div class="container-fluid">
+            <form class="d-none d-md-flex ms-2" role="search">
+                <input class="form-control me-2" type="search" placeholder="Search projects, freelancers..." aria-label="Search">
+            </form>
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item me-3">
+                    <a class="nav-link position-relative" href="#">
+                        <i class="fas fa-bell fa-lg"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                            <span class="visually-hidden">unread notifications</span>
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="profileDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="rounded-circle me-2" width="38" height="38">
+                        <span class="d-none d-lg-inline fw-semibold">John Doe</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end profile-dropdown" aria-labelledby="profileDropdown">
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i> Profile</a></li>
+                        <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i> Settings</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Welcome Banner -->
+        <section class="dashboard-welcome mb-4">
+            <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                <div>
+                    <h3>Welcome back, John!</h3>
+                    <p>Here's a quick overview of your SideHustle360 activity and projects.</p>
+                </div>
+                <div class="mt-3 mt-md-0">
+                    <a href="#" class="btn btn-light btn-lg text-primary fw-bold shadow-sm"><i class="fas fa-plus me-2"></i>Post New Project</a>
+                </div>
+            </div>
+        </section>
+        <!-- Stats Cards -->
+        <section class="row mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="icon bg-light"><i class="fas fa-briefcase"></i></div>
+                    <div>
+                        <div class="stat">8</div>
+                        <div class="desc">Active Projects</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="icon bg-light"><i class="fas fa-check-circle"></i></div>
+                    <div>
+                        <div class="stat">15</div>
+                        <div class="desc">Completed Projects</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="icon bg-light"><i class="fas fa-wallet"></i></div>
+                    <div>
+                        <div class="stat">$2,350</div>
+                        <div class="desc">Wallet Balance</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="stat-card">
+                    <div class="icon bg-light"><i class="fas fa-star"></i></div>
+                    <div>
+                        <div class="stat">4.8</div>
+                        <div class="desc">Avg. Freelancer Rating</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Projects Table & Activity Feed -->
+        <section class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>My Projects</span>
+                        <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-plus me-1"></i> New Project</a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Project</th>
+                                        <th>Status</th>
+                                        <th>Freelancer</th>
+                                        <th>Progress</th>
+                                        <th>Budget</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span class="fw-semibold">E-commerce Website</span>
+                                            <div class="text-muted small">Web Development</div>
+                                        </td>
+                                        <td><span class="badge bg-success">Ongoing</span></td>
+                                        <td>
+                                            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle me-1" width="32" height="32" alt="Freelancer">
+                                            <span class="fw-medium">Jane Smith</span>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar" style="width: 65%"></div>
+                                            </div>
+                                            <span class="small text-muted">65%</span>
+                                        </td>
+                                        <td>$800</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="fw-semibold">Logo Design</span>
+                                            <div class="text-muted small">Graphic Design</div>
+                                        </td>
+                                        <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                        <td>
+                                            <img src="https://randomuser.me/api/portraits/men/45.jpg" class="rounded-circle me-1" width="32" height="32" alt="Freelancer">
+                                            <span class="fw-medium">Alex Turner</span>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar" style="width: 0%"></div>
+                                            </div>
+                                            <span class="small text-muted">0%</span>
+                                        </td>
+                                        <td>$120</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="fw-semibold">SEO Optimization</span>
+                                            <div class="text-muted small">Digital Marketing</div>
+                                        </td>
+                                        <td><span class="badge bg-info text-dark">Review</span></td>
+                                        <td>
+                                            <img src="https://randomuser.me/api/portraits/men/46.jpg" class="rounded-circle me-1" width="32" height="32" alt="Freelancer">
+                                            <span class="fw-medium">Samuel Lee</span>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar" style="width: 95%"></div>
+                                            </div>
+                                            <span class="small text-muted">95%</span>
+                                        </td>
+                                        <td>$300</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="fw-semibold">Mobile App UI</span>
+                                            <div class="text-muted small">UI/UX Design</div>
+                                        </td>
+                                        <td><span class="badge bg-success">Ongoing</span></td>
+                                        <td>
+                                            <img src="https://randomuser.me/api/portraits/women/47.jpg" class="rounded-circle me-1" width="32" height="32" alt="Freelancer">
+                                            <span class="fw-medium">Lisa Wong</span>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar" style="width: 40%"></div>
+                                            </div>
+                                            <span class="small text-muted">40%</span>
+                                        </td>
+                                        <td>$500</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="fw-semibold">Blog Content</span>
+                                            <div class="text-muted small">Content Writing</div>
+                                        </td>
+                                        <td><span class="badge bg-secondary">Completed</span></td>
+                                        <td>
+                                            <img src="https://randomuser.me/api/portraits/men/48.jpg" class="rounded-circle me-1" width="32" height="32" alt="Freelancer">
+                                            <span class="fw-medium">Chris Evans</span>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="height: 8px;">
+                                                <div class="progress-bar" style="width: 100%"></div>
+                                            </div>
+                                            <span class="small text-muted">100%</span>
+                                        </td>
+                                        <td>$150</td>
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-outline-primary"><i class="fas fa-eye"></i></a>
+                                        </td>
+                                    </tr>
+                                    <!-- Add more rows as needed -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Activity Feed -->
+            <div class="col-lg-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        Recent Activity
+                    </div>
+                    <div class="card-body activity-feed">
+                        <div class="feed-item">
+                            <div class="feed-date">Today, 10:15 AM</div>
+                            <div class="feed-text"><b>Jane Smith</b> submitted a new milestone for <b>E-commerce Website</b>.</div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-date">Yesterday, 4:30 PM</div>
+                            <div class="feed-text"><b>Lisa Wong</b> sent you a message regarding <b>Mobile App UI</b>.</div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-date">2 days ago</div>
+                            <div class="feed-text"><b>Samuel Lee</b> marked <b>SEO Optimization</b> as ready for review.</div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-date">3 days ago</div>
+                            <div class="feed-text"><b>Chris Evans</b> completed <b>Blog Content</b> project.</div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-date">4 days ago</div>
+                            <div class="feed-text"><b>Alex Turner</b> accepted your offer for <b>Logo Design</b>.</div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-date">5 days ago</div>
+                            <div class="feed-text">You funded a milestone for <b>Mobile App UI</b>.</div>
+                        </div>
+                        <div class="feed-item">
+                            <div class="feed-date">6 days ago</div>
+                            <div class="feed-text">You posted a new project: <b>Logo Design</b>.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Wallet & Messages -->
+        <section class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Wallet</span>
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addFundsModal"><i class="fas fa-plus me-1"></i> Add Funds</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="icon bg-light me-3"><i class="fas fa-wallet fa-2x"></i></div>
+                            <div>
+                                <div class="fs-3 fw-bold text-success">$2,350.00</div>
+                                <div class="text-muted">Available Balance</div>
+                            </div>
+                        </div>
+                        <div class="mb-2 fw-semibold">Recent Transactions</div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-arrow-up text-danger me-2"></i> Payment to Jane Smith</span>
+                                <span class="text-danger">- $400</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-arrow-down text-success me-2"></i> Funds Added</span>
+                                <span class="text-success">+ $1,000</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-arrow-up text-danger me-2"></i> Payment to Chris Evans</span>
+                                <span class="text-danger">- $150</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fas fa-arrow-up text-danger me-2"></i> Payment to Samuel Lee</span>
+                                <span class="text-danger">- $300</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Messages -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Messages</span>
+                        <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-envelope me-1"></i> View All</a>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle me-3" width="38" height="38" alt="Jane Smith">
+                                <div>
+                                    <div class="fw-semibold">Jane Smith</div>
+                                    <div class="text-muted small">"I've submitted the milestone for review..."</div>
+                                </div>
+                                <span class="badge bg-primary ms-auto">2</span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/women/47.jpg" class="rounded-circle me-3" width="38" height="38" alt="Lisa Wong">
+                                <div>
+                                    <div class="fw-semibold">Lisa Wong</div>
+                                    <div class="text-muted small">"Can you check the latest UI screens?"</div>
+                                </div>
+                                <span class="badge bg-primary ms-auto">1</span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/men/46.jpg" class="rounded-circle me-3" width="38" height="38" alt="Samuel Lee">
+                                <div>
+                                    <div class="fw-semibold">Samuel Lee</div>
+                                    <div class="text-muted small">"SEO report is ready for your review."</div>
+                                </div>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/men/48.jpg" class="rounded-circle me-3" width="38" height="38" alt="Chris Evans">
+                                <div>
+                                    <div class="fw-semibold">Chris Evans</div>
+                                    <div class="text-muted small">"Thanks for the payment!"</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Freelancers & Ratings -->
+        <section class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Top Freelancers</span>
+                        <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-users me-1"></i> View All</a>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/women/44.jpg" class="rounded-circle me-3" width="38" height="38" alt="Jane Smith">
+                                <div>
+                                    <div class="fw-semibold">Jane Smith</div>
+                                    <div class="text-muted small">Web Developer</div>
+                                </div>
+                                <span class="ms-auto text-warning"><i class="fas fa-star"></i> 4.9</span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/men/46.jpg" class="rounded-circle me-3" width="38" height="38" alt="Samuel Lee">
+                                <div>
+                                    <div class="fw-semibold">Samuel Lee</div>
+                                    <div class="text-muted small">SEO Specialist</div>
+                                </div>
+                                <span class="ms-auto text-warning"><i class="fas fa-star"></i> 4.8</span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/women/47.jpg" class="rounded-circle me-3" width="38" height="38" alt="Lisa Wong">
+                                <div>
+                                    <div class="fw-semibold">Lisa Wong</div>
+                                    <div class="text-muted small">UI/UX Designer</div>
+                                </div>
+                                <span class="ms-auto text-warning"><i class="fas fa-star"></i> 4.7</span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="https://randomuser.me/api/portraits/men/48.jpg" class="rounded-circle me-3" width="38" height="38" alt="Chris Evans">
+                                <div>
+                                    <div class="fw-semibold">Chris Evans</div>
+                                    <div class="text-muted small">Content Writer</div>
+                                </div>
+                                <span class="ms-auto text-warning"><i class="fas fa-star"></i> 4.6</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Ratings -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span>Freelancer Ratings</span>
+                        <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-star me-1"></i> Rate Now</a>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex align-items-center">
+                                <div>
+                                    <div class="fw-semibold">Jane Smith</div>
+                                    <div class="text-muted small">E-commerce Website</div>
+                                </div>
+                                <span class="ms-auto">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                    <span class="ms-2 fw-bold">4.9</span>
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <div>
+                                    <div class="fw-semibold">Samuel Lee</div>
+                                    <div class="text-muted small">SEO Optimization</div>
+                                </div>
+                                <span class="ms-auto">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                    <span class="ms-2 fw-bold">4.8</span>
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <div>
+                                    <div class="fw-semibold">Lisa Wong</div>
+                                    <div class="text-muted small">Mobile App UI</div>
+                                </div>
+                                <span class="ms-auto">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="far fa-star text-warning"></i>
+                                    <span class="ms-2 fw-bold">4.7</span>
+                                </span>
+                            </li>
+                            <li class="list-group-item d-flex align-items-center">
+                                <div>
+                                    <div class="fw-semibold">Chris Evans</div>
+                                    <div class="text-muted small">Blog Content</div>
+                                </div>
+                                <span class="ms-auto">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="far fa-star text-warning"></i>
+                                    <span class="ms-2 fw-bold">4.6</span>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Settings & Support -->
+        <section class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        Account Settings
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="inputName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="inputName" value="John Doe">
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputEmail" class="form-label">Email address</label>
+                                <input type="email" class="form-control" id="inputEmail" value="john.doe@email.com">
+                            </div>
+                            <div class="mb-3">
+                                <label for="inputPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="inputPassword" value="********">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Update Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Support -->
+            <div class="col-md-6 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        Support & Help
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h6>Need assistance?</h6>
+                            <p class="text-muted mb-2">Our support team is here to help you 24/7.</p>
+                            <a href="#" class="btn btn-outline-primary"><i class="fas fa-headset me-2"></i>Contact Support</a>
+                        </div>
+                        <hr>
+                        <div>
+                            <h6>FAQs</h6>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-decoration-none text-primary">How do I post a new project?</a></li>
+                                <li><a href="#" class="text-decoration-none text-primary">How do I add funds to my wallet?</a></li>
+                                <li><a href="#" class="text-decoration-none text-primary">How do I rate a freelancer?</a></li>
+                                <li><a href="#" class="text-decoration-none text-primary">How do I contact support?</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Footer -->
+        <footer class="mt-4 pt-3 border-top text-center text-muted small">
+            &copy; 2024 SideHustle360. All rights reserved.
+        </footer>
+    </main>
+    <!-- Add Funds Modal -->
+    <div class="modal fade" id="addFundsModal" tabindex="-1" aria-labelledby="addFundsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addFundsModalLabel">Add Funds to Wallet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="fundAmount" class="form-label">Amount</label>
+                        <input type="number" class="form-control" id="fundAmount" placeholder="Enter amount" min="1">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Payment Method</label>
+                        <select class="form-select">
+                            <option selected>Credit Card</option>
+                            <option>PayPal</option>
+                            <option>Bank Transfer</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cardNumber" class="form-label">Card Number</label>
+                        <input type="text" class="form-control" id="cardNumber" placeholder="Card Number">
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="expiryDate" class="form-label">Expiry Date</label>
+                            <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY">
+                        </div>
+                        <div class="col">
+                            <label for="cvv" class="form-label">CVV</label>
+                            <input type="text" class="form-control" id="cvv" placeholder="CVV">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Funds</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Sidebar toggle for mobile
+        document.getElementById('sidebarToggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+        // Prevent form submission for demo
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+            });
+        });
+    </script>
+</body>
+</html>

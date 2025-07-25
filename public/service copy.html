@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Service Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* ... (same styles as your original code) ... */
+        body {
+            background: #f8f9fa;
+        }
+
+        .navbar-brand img {
+            height: 40px;
+        }
+
+        .bg_accent {
+            background: #1f2937;
+        }
+
+        .text_accent {
+            color: #1f2937;
+        }
+
+        .bg-primary {
+            background: #00bfa6 !important;
+        }
+
+        .btn-primary {
+            background: #00bfa6 !important;
+            border: 1px solid #00bfa6 !important;
+        }
+
+        .btn-outline-primary {
+            border: 1px solid #00bfa6 !important;
+        }
+
+        .text-primary {
+            color: #00bfa6 !important;
+        }
+
+        .service-header {
+            background: #fff;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            padding: 2rem 2rem 1rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .service-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .service-category {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-price {
+            font-size: 2rem;
+            color: #198754;
+            font-weight: 600;
+        }
+
+        .service-description {
+            font-size: 1.2rem;
+            color: #343a40;
+            margin-top: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #212529;
+            border-bottom: 2px solid #dee2e6;
+            padding-bottom: 0.5rem;
+        }
+
+        .no-reviews {
+            color: #adb5bd;
+            font-style: italic;
+        }
+
+        .order-btn {
+            font-size: 1.2rem;
+            padding: 0.75rem 2rem;
+        }
+
+        .loader {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60vh;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 1.2rem;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        /* Modal styles */
+        .modal-content {
+            border-radius: 0.5rem;
+        }
+
+        @media (max-width: 767px) {
+            .service-header {
+                padding: 1rem;
+            }
+
+            .service-title {
+                font-size: 2rem;
+            }
+
+            .service-price {
+                font-size: 1.5rem;
+            }
+        }
+
+        body {
+            background: #f8f9fa;
+        }
+
+        .category-header {
+            color: #1f2937;
+            padding: 10px;
+        }
+
+        .category-header .header-title {
+            width: 100%;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .spinner-container {
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .category-description {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .no-services {
+            color: #6c757d;
+            font-style: italic;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .services-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .service-card {
+            flex: 1 1 auto;
+            background: #f1f5f9;
+            border-radius: 0.75rem;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+            transition: box-shadow 0.2s;
+        }
+
+        .service-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 191, 166, 0.08);
+        }
+
+        .service-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .service-desc {
+            font-size: 0.95rem;
+            color: #475569;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-price {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .service-reqs {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-available {
+            font-size: 0.85rem;
+            color: #22c55e;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+
+            .service-card {
+                flex: 1 1 auto;
+            }
+
+            .service-icon {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .service-title {
+                font-size: 0.6rem;
+                font-weight: 600;
+                color: var(--secondary);
+            }
+
+            .service-price {
+                font-size: 0.7rem;
+                font-weight: 500;
+                color: var(--primary);
+                margin-bottom: 0.5rem;
+            }
+
+            .service-available {
+                font-size: 0.65rem;
+                color: #22c55e;
+                font-weight: 500;
+            }
+
+            .category-header .header-title {
+                font-size: 1.5rem;
+                font-weight: 700;
+            }
+
+            .category-description {
+                font-size: 0.75rem;
+            }
+
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container mb-5">
+        <div id="service-content">
+            <div class="loader" id="loader">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Terms Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="max-height:60vh;overflow:auto;">
+                    <ol>
+                        <li>All orders are subject to review and acceptance.</li>
+                        <li>Payment must be made in full before service delivery unless otherwise agreed.</li>
+                        <li>Delivery timelines are estimates and may vary based on requirements.</li>
+                        <li>Client must provide all required information and materials for the service.</li>
+                        <li>No refunds after service has commenced unless due to provider error.</li>
+                        <li>By placing an order, you agree to our privacy policy and service terms.</li>
+                    </ol>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-check me-auto">
+                        <input class="form-check-input" type="checkbox" value="" id="acceptTerms">
+                        <label class="form-check-label" for="acceptTerms">
+                            I have read and accept the terms and conditions
+                        </label>
+                    </div>
+                    <button type="button" class="btn btn-success" id="proceedOrderBtn" disabled>Proceed to
+                        Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Helper: get query param
+        function getQueryParam(name) {
+            const url = new URL(window.location.href);
+            return url.searchParams.get(name);
+        }
+
+        // Format currency
+        function formatCurrency(amount, unit) {
+            return `${unit} ${amount.toLocaleString()}`;
+        }
+
+        // Format date
+        function formatDate(dateStr) {
+            const date = new Date(dateStr);
+            return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        // Render service details
+        function renderService(service) {
+            return `
+
+                    <section class="category-header">
+          <div class="container">
+            <span class="header-title"><a href="javascript:history.back()" class="text_accent bi bi-chevron-left"></a>${service.name}</span>
+            <div class="category-description">${service.description || ''}</div>
+                                    <div>
+                            <div class="service-price">${formatCurrency(service.price, service.priceUnit)}</div>
+                        </div>
+          </div>
+
+          <button class="btn btn-primary order-btn" id="orderNowBtn">Post To Public</button>
+        </section>
+                <div class="row">
+                    <div class="col-lg-8">
+                        ${renderProviders(service.serviceProviders)}
+                    </div>
+                    <div class="col-lg-4">
+                        ${renderRequirements(service.requirements)}
+                    </div>
+                </div>
+                <form id="orderForm" action="/api/order/create" method="POST" style="display:none;">
+                    <input type="hidden" name="serviceId" value="${service.id}">
+                </form>
+            `;
+        }
+        // Render requirements
+        function renderRequirements(requirements) {
+            if (!requirements || !requirements.length) return '';
+            return `
+                <div class="mb-4">
+                    <div class="section-title"><i class="bi bi-person"></i>
+                        Become a Service Provider
+                    </div>
+                    <div>
+                        You can apply to be a service provider for this service. Please ensure you meet the requirements below before applying.
+                    </div>
+                    <div class="section-title"><i class="bi bi-clipboard-check"></i> Requirements</div>
+                    ${requirements.map(req => `
+                        <div class="requirement-card mb-2">
+                            The following are the requirements you should have inorder to apply for this service
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="fw-bold">${req}</div>
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div class="text-muted mt-2">
+                        <i class="bi bi-info-circle"></i> Ensure you have all the requirements before applying.
+                        <br>
+                        by applying, you agree to our <a href="/terms" class="text-primary">terms and conditions</a>.
+                        </div>
+                    <button class="btn btn-primary mt-3" id="orderNowBtn">Apply Now</button>
+                </div>
+            `;
+        }
+
+        // Render samples
+
+        // Render providers in responsive 2-mobile / 3-desktop grid
+function renderProviders(serviceProviders) {
+    if (!serviceProviders || !serviceProviders.length) return `
+        <div class="no-services">No service providers available at the moment.</div>
+    `;
+
+    serviceProviders = serviceProviders
+        .slice()
+        .sort((a, b) => (b.HustlerService.service_score ?? 0) - (a.HustlerService.service_score ?? 0));
+
+    return `
+        <div class="mb-4">
+            <div class="section-title">
+                <i class="bi bi-people"></i> Service Providers
+            </div>
+            <div class="row g-3">
+                ${serviceProviders.map(serviceProvider => `
+                    <div class="col-6 col-md-4">
+                        <div class="service-card h-100">
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <img src="${serviceProvider.user.profile_pic || '/images/default-profile.png'}"
+                                     alt="${serviceProvider.user.username}"
+                                     class="rounded-circle"
+                                     style="width: 40px; height: 40px;">
+                                <div>
+                                    <div class="fw-semibold">${serviceProvider.user.username}</div>
+                                    <div class="text-muted small">${formatDate(serviceProvider.createdAt)}</div>
+                                </div>
+                            </div>
+                            <div class="service-desc">${serviceProvider.bio || 'No description available'}</div>
+                            <div class="service-reqs">Requirements: ${(serviceProvider.HustlerService?.requirements?.tools || []).join(', ') || 'None'}</div>
+                            <div class="service-available">Available: ${serviceProvider.HustlerService.available ? 'Yes' : 'No'}</div>
+                            <div class="service-price">KES 1500 – 3000</div>
+                            <div class="service-score text-muted small">Score: ${serviceProvider.HustlerService.service_score || 'N/A'}</div>
+                            <div class="d-flex gap-2 mt-2">
+                                <button class="btn btn-primary btn-sm w-100" onclick="document.getElementById('orderForm').submit()">Post To Individual</button>
+                                <button class="btn btn-outline-primary btn-sm w-100" onclick="location.href='/hustler/${serviceProvider.user.id}'">View Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        </div>
+    `;
+}
+
+        // Main fetch and render
+        async function loadService() {
+            const serviceId = getQueryParam('id');
+            const contentDiv = document.getElementById('service-content');
+            const loader = document.getElementById('loader');
+            if (!serviceId) {
+                loader.style.display = 'none';
+                contentDiv.innerHTML = '<div class="error-message">Service ID not specified in URL.</div>';
+                return;
+            }
+            try {
+                const res = await fetch(`/api/services/${serviceId}`);
+                if (!res.ok) throw new Error('Service not found');
+                const data = await res.json();
+                loader.style.display = 'none';
+                contentDiv.innerHTML = renderService(data.service);
+
+                // Attach order button handler
+                const orderBtn = document.getElementById('orderNowBtn');
+                if (orderBtn) {
+                    orderBtn.addEventListener('click', function () {
+                        const termsModal = new bootstrap.Modal(document.getElementById('termsModal'));
+                        document.getElementById('acceptTerms').checked = false;
+                        document.getElementById('proceedOrderBtn').disabled = true;
+                        termsModal.show();
+                    });
+                }
+
+                // Terms checkbox and proceed button
+                const acceptTerms = document.getElementById('acceptTerms');
+                const proceedOrderBtn = document.getElementById('proceedOrderBtn');
+                if (acceptTerms && proceedOrderBtn) {
+                    acceptTerms.addEventListener('change', function () {
+                        proceedOrderBtn.disabled = !acceptTerms.checked;
+                    });
+                    proceedOrderBtn.addEventListener('click', function () {
+                        // Submit the hidden order form
+                        document.getElementById('orderForm').submit();
+                    });
+                }
+            } catch (err) {
+                loader.style.display = 'none';
+                contentDiv.innerHTML = `<div class="error-message">${err.message}</div>`;
+            }
+        }
+
+        // Bootstrap icons
+        (function loadBootstrapIcons() {
+            const link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.href = 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css';
+            document.head.appendChild(link);
+        })();
+
+        // Run on page load
+        window.addEventListener('DOMContentLoaded', loadService);
+    </script>
+</body>
+
+</html>

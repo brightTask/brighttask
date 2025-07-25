@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            height: 100%;
+            background: rgb(255, 235, 255);
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            padding: 20px;
+            font-size: 30px;
+            font-weight: bolder;
+        }
+
+        .count {
+            flex: 1 1 auto;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            background: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="count hr">00</div>:
+        <div class="count min">00</div>:
+        <div class="count sec">00</div>
+        <div class="count mic">00</div>
+    </div>
+    <script>
+
+        const hr = document.querySelector('.hr');
+        const min = document.querySelector('.min');
+        const sec = document.querySelector('.sec');
+        const mic = document.querySelector('.mic');
+
+        let count = 0;
+        const timer = setInterval(() => {
+
+            const date = new Date();
+            hr.textContent = date.getHours();
+            min.textContent = date.getMinutes();
+            sec.textContent = date.getSeconds();
+            mic.textContent = `${date.getMilliseconds() < 10 ? '00' : date.getMilliseconds() < 100 ? '0' :''}${date.getMilliseconds()}`;
+        }, 1);
+    </script>
+</body>
+
+</html>

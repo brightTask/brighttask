@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Email Verification - BrightTask</title>
+    <meta name="description" content="Verify your email to continue using BrightTask." />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="icon" href="/favicon.ico" />
+    <style>
+        :root {
+            --primary: #00bfa6;
+            --secondary: #1f2937;
+            --gradient: linear-gradient(135deg, #00bfa6 60%, #1f2937 100%);
+        }
+
+        body {
+            background: var(--gradient);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .verify-container {
+            background: #fff;
+            color: var(--secondary);
+            padding: 2.5rem 2rem;
+            border-radius: 1.5rem;
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .verify-container img {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1rem;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #009e8e;
+        }
+
+        .btn-outline-secondary:disabled {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #e5e7eb;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="verify-container">
+        <img src="/logo.png" alt="BrightTask Logo" />
+        <h2 class="fw-bold mb-3">Verify Your Email</h2>
+        <p id="text" class="mb-3">
+            Your Email address is not verified.<br />
+            Please verify your email address to continue.
+        </p>
+
+        <div id="continue" class="mb-3 d-none">
+            <button id="continueBtn" class="btn btn-primary w-100">Continue to Homepage</button>
+        </div>
+
+        <div>
+            <button id="resendBtn" class="btn btn-primary w-100">
+                <span class="text">Send Verification Email</span> <span id="countdown"></span>
+            </button>
+        </div>
+    </div>
+
+
+    <script>
+        const RESEND_INTERVAL = 120; // in seconds
+        const resendBtn = document.getElementById('resendBtn');
+        const countdownEl = document.getElementById('countdown');
+        const continueBtn = document.getElementById('continueBtn');
+        const textEl = document.getElementById('text');
+        const continueSection = document.getElementById('continue');
+
+        // ---- Timer Logic ----
+        function startCountdown(secondsLeft) {
+            resendBtn.classList.remove('btn-primary');
+            resendBtn.classList.add('btn-outline-secondary');
+
+            resendBtn.querySelector('.text').textContent = 'Resend in ';
+            resendBtn.disabled = true;
+            let countdown = secondsLeft;
+
+            const timer = setInterval(() => {
+                const minutes = Math.floor(countdown / 60);
+                const seconds = countdown % 60;
+                countdownEl.textContent = `(${minutes}:${seconds < 10 ? '0' : ''}${seconds})`;
+
+                if (--countdown < 0) {
+                    clearInterval(timer);
+                    resendBtn.disabled = false;
+                    countdownEl.textContent = '';
+                    resendBtn.querySelector('.text').textContent = 'Resend Verification Email';
+
+                    resendBtn.classList.remove('btn-outline-secondary');
+                    resendBtn.classList.add('btn-primary');
+                    localStorage.removeItem('resendTimestamp');
+                }
+            }, 1000);
+        }
+
+        // ---- Restore Countdown on Load ----
+        const lastResend = localStorage.getItem('resendTimestamp');
+        if (lastResend) {
+            const elapsed = Math.floor((Date.now() - parseInt(lastResend)) / 1000);
+            if (elapsed < RESEND_INTERVAL) {
+                startCountdown(RESEND_INTERVAL - elapsed);
+            }
+        }
+
+        // ---- Continue Button Logic ----
+        continueBtn.addEventListener('click', async function () {
+            try {
+                const res = await fetch('/auth/check-verification');
+                const data = await res.json();
+
+                if (res.ok && data.success) {
+                    window.location.href = '/';
+                } else {
+                    alert('Please verify your email before continuing.');
+                }
+            } catch (err) {
+                alert('Something went wrong. Please try again later.');
+            }
+        });
+
+        // ---- Resend Button Logic ----
+        resendBtn.addEventListener('click', async function () {
+            const last = localStorage.getItem('resendTimestamp');
+            if (last && Date.now() - parseInt(last) < RESEND_INTERVAL * 1000) {
+                alert('Please wait before requesting another email.');
+                return;
+            }
+
+            resendBtn.disabled = true;
+            resendBtn.querySelector('.text').textContent = 'Sending...';
+
+            try {
+                const res = await fetch('/auth/resend-verification');
+
+                if (res.ok) {
+                    alert('A new verification email has been sent.');
+                    textEl.innerHTML = `
+            We’ve sent a verification link to your email address.<br>
+            Please check your inbox and click the link to continue.
+          `;
+                    continueSection.classList.remove('d-none');
+
+                    localStorage.setItem('resendTimestamp', Date.now().toString());
+                    startCountdown(RESEND_INTERVAL);
+                } else {
+                    const err = await res.json();
+                    alert(err.message || 'Failed to resend email.');
+                    resendBtn.disabled = false;
+                    resendBtn.querySelector('.text').textContent = 'Resend Verification Email';
+                }
+            } catch (err) {
+                alert('Network error. Please try again.');
+                resendBtn.disabled = false;
+                resendBtn.querySelector('.text').textContent = 'Resend Verification Email';
+            }
+        });
+    </script>
+</body>
+
+</html>

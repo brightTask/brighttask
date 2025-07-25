@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Reviews</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00bfa6;
+            --secondary: #fff;
+            --accent: #fbbf24;
+            --text: #222;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: var(--secondary);
+            margin: 0;
+            padding: 0;
+            color: var(--text);
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        .review-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+        .review-card {
+            flex: 1 0 300px;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            background: var(--secondary);
+            border-radius: 10px;
+            padding: 1.2rem;
+            border: 1px solid var(--border);
+            gap: 1.2rem;
+            transition: box-shadow 0.2s;
+        }
+        .review-card:hover {
+            box-shadow: 0 4px 16px rgba(44, 62, 80, 0.10);
+        }
+        .profile-pic {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+        .review-content {
+            flex: 1;
+        }
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 0.3rem;
+        }
+        .client-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .review-date {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        .task-name {
+            font-size: 1rem;
+            color: var(--primary);
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+        .review-score {
+            display: flex;
+            align-items: center;
+            gap: 0.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .star {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+        .review-text {
+            font-size: 1rem;
+            color: var(--text);
+            line-height: 1.5;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 1rem 0.3rem;
+            }
+            .review-card {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.7rem;
+            }
+            .profile-pic {
+                width: 48px;
+                height: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>My Reviews</h1>
+        <div class="review-list" id="reviewList">
+            <!-- Reviews will be injected here -->
+        </div>
+    </div>
+    <script>
+        // Example data (replace with your dynamic data source)
+        const reviews = [
+            {
+                task: "Logo Design",
+                client: {
+                    full_name: "Jane Doe",
+                    profile_pic: "https://randomuser.me/api/portraits/women/44.jpg"
+                },
+                date: "2024-06-01",
+                score: 4.8,
+                review: "Excellent work! Delivered ahead of schedule and exceeded expectations."
+            },
+            {
+                task: "Website Development",
+                client: {
+                    full_name: "John Smith",
+                    profile_pic: "https://randomuser.me/api/portraits/men/32.jpg"
+                },
+                date: "2024-05-20",
+                score: 5.0,
+                review: "Professional and responsive. Highly recommended for web projects."
+            },
+            {
+                task: "Social Media Campaign",
+                client: {
+                    full_name: "Emily Clark",
+                    profile_pic: "https://randomuser.me/api/portraits/women/65.jpg"
+                },
+                date: "2024-05-10",
+                score: 4.5,
+                review: "Great communication and creative ideas. Will hire again."
+            }
+        ];
+
+        function formatDate(dateStr) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateStr).toLocaleDateString(undefined, options);
+        }
+
+        function renderStars(score) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (score >= i) {
+                    stars += '<span class="star">&#9733;</span>';
+                } else if (score >= i - 0.5) {
+                    stars += '<span class="star">&#9733;</span>'; // full star for half
+                } else {
+                    stars += '<span class="star" style="color:#e5e7eb">&#9733;</span>';
+                }
+            }
+            return stars;
+        }
+
+        function renderReviews() {
+            const list = document.getElementById('reviewList');
+            list.innerHTML = '';
+            reviews.forEach(r => {
+                const card = document.createElement('div');
+                card.className = 'review-card';
+                card.innerHTML = `
+                    <img class="profile-pic" src="${r.client.profile_pic}" alt="${r.client.full_name}">
+                    <div class="review-content">
+                        <div class="review-header">
+                            <span class="client-name">${r.client.full_name}</span>
+                            <span class="review-date">${formatDate(r.date)}</span>
+                        </div>
+                        <div class="task-name">${r.task}</div>
+                        <div class="review-score">
+                            ${renderStars(r.score)}
+                            <span style="color:var(--muted);font-size:0.95rem;">${r.score.toFixed(1)}/5</span>
+                        </div>
+                        <div class="review-text">${r.review}</div>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        renderReviews();
+    </script>
+</body>
+</html>

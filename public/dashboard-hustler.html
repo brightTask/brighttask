@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00bfa6;
+            --secondary: #1f2937;
+            --gradient: linear-gradient(135deg, #00bfa6);
+        }
+
+        body {
+            background: #f8fafc;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(31, 41, 55, 0.07);
+        }
+
+        .card-header {
+            background: none;
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .row1 {
+            padding: 0 !important;
+            margin: 0 !important;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-card {
+            flex: 1 1 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--gradient);
+            color: #fff;
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(31, 41, 55, 0.07);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .stat-card .icon {
+            font-size: 2.5rem;
+            position: absolute;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-bottom-right-radius: 1rem;
+            border-top-left-radius: 1rem;
+            top: 0;
+            left: 0;
+        }
+
+        .stat-card .icon i {
+            color: #00bfa6;
+            font-size: 20px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .stat-card .stat-label {
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .table thead th {
+            background: #f1f5f9;
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .table tbody tr {
+            vertical-align: middle;
+        }
+
+        .progress {
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        .badge-status {
+            font-size: 0.9rem;
+            padding: 0.4em 0.8em;
+            border-radius: 0.5em;
+        }
+
+        .badge-pending {
+            background: #fbbf24;
+            color: #fff;
+        }
+
+        .badge-completed {
+            background: #22c55e;
+            color: #fff;
+        }
+
+        .badge-cancelled {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            border: 4px solid var(--primary);
+        }
+
+        .card .top {
+            display: flex !important;
+            align-items: center;
+            gap: 10px !important;
+        }
+
+        .card .top .right {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: start;
+            justify-content: space-evenly !important;
+        }
+
+        .card small {
+            color: #64748b;
+        }
+
+        .activity-timeline {
+            list-style: none;
+            padding-left: 0;
+            margin-left: 0;
+            position: relative;
+        }
+
+        .activity-timeline::before {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+
+        .activity-timeline li {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2.5rem;
+        }
+
+        .activity-timeline li:last-child {
+            margin-bottom: 0;
+        }
+
+        .activity-timeline .timeline-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            z-index: 1;
+        }
+
+        .activity-timeline .timeline-content {
+            background: #f1f5f9;
+            border-radius: 0.5rem;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            color: #1f2937;
+            box-shadow: 0 1px 4px rgba(31, 41, 55, 0.04);
+        }
+
+        .activity-timeline .timeline-time {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 0.2rem;
+        }
+
+        .profile {
+            display: flex !important;
+            gap: 20px !important;
+        }
+
+        .primary {
+            color: #00bfa6;
+            font-weight: bold;
+        }
+
+        .primary-bg {
+            background: #00bfa6;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-content {
+            scrollbar-width: none;
+            /* Firefox */
+            -ms-overflow-style: none;
+            /* IE and Edge */
+        }
+        #dashboard {
+            padding: 20px;
+        }
+        .profile-verified {
+            color: var(--primary);
+        }
+              .referral-link {
+            background: #f1f3f7;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.7rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 0.3rem;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #009e8e;
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+    <div class="tab-pane fade show active" id="dashboard">
+
+        <div id="profileInformation" class="row g-4">
+        </div>
+        <div id="row1" class="row1 g-4 mb-4"></div>
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <!-- Recent Tasks Card -->
+                <div id="recentTasks" class="card mb-4 shadow-sm">
+                </div>
+                <!-- Earnings Overview Card -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white border-bottom-0 d-flex align-items-center">
+                        <i class="bi bi-graph-up-arrow me-2 primary"></i>
+                        <span class="fw-semibold">Earnings Overview</span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="earningsChart" height="120"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script>
+function copyReferral() {
+  const linkText = document.getElementById('ref-link').textContent;
+  navigator.clipboard.writeText(linkText).then(() => {
+    alert('Referral link copied to clipboard!');
+  }).catch(err => {
+    console.error('Failed to copy text: ', err);
+  });
+}
+        async function getData() {
+            const res = await fetch('/hustler/dashboard/get');
+            const json = await res.json();
+            const user = json.user;
+
+
+            
+            document.getElementById('recentTasks').innerHTML = json.tasks && json.tasks.length?`
+            
+                    <div class="card-header bg-white border-bottom-0 d-flex align-items-center">
+                        <i class="bi bi-list-task me-2 primary"></i>
+                        <span class="fw-semibold">Recent Tasks</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item px-3 py-3 d-flex align-items-center justify-content-between">
+
+
+                                ${
+                                json.tasks.map(task => {
+                                    return `<div class="d-flex align-items-center">
+                                    <span class="badge ${task.status == 'pending'?'bg-warning':task.status == 'completed'?'bg-success':task.status == 'in_progress'?'bg-info':'bg-danger'} rounded-circle me-3"
+                                        style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                                        <i class="bi ${task.status == 'pending'?'bi-hourglass-split':task.status == 'completed'?'bi-check-lg':task.status == 'in_progress'?'bi-star':'bi-x-lg'} fs-5"></i>
+                                    </span>
+                                    <div>
+                                        <div class="fw-semibold">${task.gig.title}</div>
+                                        <small class="text-muted">${task.gig.Client.username}</small>
+                                    </div>
+                                </div>`;
+                                }).join('')
+                                }
+                        </div>
+                    </div>
+                    ${json.totalTasks > json.tasks.length?`
+                    <div class="card-footer bg-white border-top-0 text-end">
+                        <a href="#orders" data-bs-toggle="tab" class="btn btn-link primary fw-semibold">
+                            View All Tasks <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                    `:``}
+            `:``;
+
+            document.getElementById('profileInformation').innerHTML = `
+            
+            <div class="card mb-4">
+                <span class="top">
+                    <img src="${user.profile_pic}" alt="Profile">
+
+                    <span class="right">
+                        <span class="name">
+                            <strong>${user.username}</strong>
+                            <i class="bi ${user.verified?'bi-patch-check-fill':''} profile-verified"></i>
+                        </span>
+                        <small>UI/UX Designer</small>
+                    </span>
+
+                </span>
+                                <div class="referral-link">
+                <span id="ref-link">https://brighttask.onrender.com?ref=${user.referralCode}</span>
+                <button class="copy-btn" onclick="copyReferral()">Copy</button>
+                </div>
+                <div class="my-2">
+                    <button class="btn btn-outline-secondary btn-sm" type="button" id="toggleProfileInfo">
+                        Profile Info <i class="bi bi-chevron-down"></i>
+                    </button>
+                </div>
+                <div class="card-body profile-info d-none" id="profileInfoSection">
+                    <strong class="mb-3 d-block border-bottom py-2">
+                        PROFILE INFORMATION
+                    </strong>
+                    <dl class="row mb-0">
+                        <dt class="col-sm-4">Full Name</dt>
+                        <dd class="col-sm-8">${user.first_name} ${user.last_name}</dd>
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8">${user.email}</dd>
+                        <dt class="col-sm-4">Phone</dt>
+                        <dd class="col-sm-8">${user.phone}</dd>
+                        <dt class="col-sm-4">Location</dt>
+                        <dd class="col-sm-8">${json.location}</dd>
+                        <dt class="col-sm-4">Bio</dt>
+                        <dd class="col-sm-8">${user.bio}</dd>
+                        <dt class="col-sm-4">Skills</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge primary-bg">UI/UX</span>
+                            <span class="badge bg-secondary">Figma</span>
+                            <span class="badge bg-success">Photoshop</span>
+                            <span class="badge bg-info">Branding</span>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            `;
+            document.getElementById('toggleProfileInfo').addEventListener('click', function(){
+                this.querySelector('i').classList.toggle('bi-chevron-down');
+                this.querySelector('i').classList.toggle('bi-chevron-up');
+                document.getElementById('profileInfoSection').classList.toggle('d-none');
+            })
+
+            document.querySelector('.row1').innerHTML = `
+            
+            <div class="stat-card">
+                <div class="icon"><i class="bi bi-clipboard-check"></i></div>
+                <div class="stat-value">${json.totalTasks}</div>
+                <div class="stat-label">Total Orders</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon"><i class="bi bi-currency-dollar"></i></div>
+                <div class="stat-value">$${json.totalEarnings}</div>
+                <div class="stat-label">Earnings</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon"><i class="bi bi-star"></i></div>
+                <div class="stat-value">${json.rating}</div>
+                <div class="stat-label">Av. Rating</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon"><i class="bi bi-people"></i></div>
+                <div class="stat-value">${json.totalClients}</div>
+                <div class="stat-label">Clients</div>
+            </div>
+        
+            `;
+
+
+        // Earnings Chart (Dashboard)
+        const earningsChart = new Chart(document.getElementById('earningsChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: json.earnings.labels.reverse(),
+                datasets: [{
+                    label: 'Earnings',
+                    data: json.earnings.data.reverse(),
+                    borderColor: '#00bfa6',
+                    backgroundColor: 'rgba(0,191,166,0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#00bfa6'
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { color: '#e5e7eb' }, beginAtZero: true }
+                }
+            }
+        });
+        }
+
+        getData();
+    </script>
+</body>
+
+</html>

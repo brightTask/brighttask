@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>My Requests | SideHustle360</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon"
+        href="https://res.cloudinary.com/drltycycg/image/upload/v1751668062/my_uploads/1751668058973-Icon2.png">
+    <style>
+        :root {
+            --primary: #00bfa6;
+            --secondary: #1f2937;
+            --gradient: linear-gradient(135deg, #00bfa6 60%, #1f2937 100%);
+        }
+
+        .text_accent {
+            color: #1f2937;
+        }
+
+        .bg-primary {
+            background: #00bfa6 !important;
+        }
+
+        .btn-primary {
+            background: #00bfa6 !important;
+            border: 1px solid #00bfa6 !important;
+        }
+
+        .btn-outline-primary {
+            border: 1px solid #00bfa6 !important;
+        }
+
+        .text-primary {
+            color: #00bfa6 !important;
+        }
+
+        body {
+            background: #f8fafc;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .navbar {
+            background: var(--gradient);
+        }
+
+        .navbar-brand {
+            color: #fff !important;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .filter-btn.active,
+        .filter-btn:focus {
+            background: var(--primary) !important;
+            color: #fff !important;
+        }
+
+        .filter-btn {
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            background: #fff;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .card-status {
+            font-size: 0.95rem;
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            display: inline-block;
+        }
+
+        .status-under-review {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
+        .status-accepted {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-cancelled {
+            background: #e2e3e5;
+            color: #383d41;
+            border: 1px solid #d6d8db;
+        }
+
+        .gig-icon {
+            font-size: 2.5rem;
+            margin-right: 1rem;
+        }
+
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            margin-right: 0.5rem;
+        }
+
+        .card {
+            box-shadow: 0 2px 8px rgba(31, 41, 55, 0.07);
+            border: none;
+            margin-bottom: 2rem;
+            transition: box-shadow 0.2s;
+        }
+
+        .card:hover {
+            box-shadow: 0 6px 24px rgba(31, 41, 55, 0.13);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .card-text {
+            color: #374151;
+        }
+
+        .location {
+            font-size: 0.95rem;
+            color: #6c757d;
+        }
+
+        .note {
+            background: #f1f5f9;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            margin-top: 0.5rem;
+            font-size: 0.98rem;
+            color: #374151;
+        }
+
+        .created-at {
+            font-size: 0.9rem;
+            color: #adb5bd;
+        }
+
+        .no-requests {
+            text-align: center;
+            color: #adb5bd;
+            margin-top: 4rem;
+            font-size: 1.2rem;
+        }
+
+        .loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .loader .spinner-border {
+            width: 3rem;
+            height: 3rem;
+            color: var(--primary);
+        }
+
+        .service-name {
+            color: #00bfa6 !important;
+            font-weight: bolder;
+        }
+
+        @media (max-width: 767px) {
+            .gig-icon {
+                font-size: 2rem;
+            }
+
+            .card-title {
+                font-size: 1.1rem;
+            }
+
+            .profile-pic {
+                width: 32px;
+                height: 32px;
+            }
+
+            .card-status {
+                font-size: 12px;
+            }
+
+            .card-title {
+                font-size: 15px;
+            }
+
+            .profile-top {
+                display: flex;
+                float: row;
+                justify-content: space-between;
+            }
+
+            .filter-btn {
+                font-size: 12px;
+            }
+
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+
+    <!-- Header -->
+    <header class="py-2" style="background: var(--gradient); color: #fff;">
+        <div class="container-fluid">
+            <a id="back" href="javascript:history.back()" class="me-0 text-decoration-none text-dark">
+                <i class="bi bi-chevron-left fs-4 fw-bolder text-light"></i>
+            </a>
+            <strong class="display-5 fw-bold mb-2">My Requests</strong>
+            <p class="lead mb-0">Track and manage your requests.</p>
+        </div>
+    </header>
+
+    <!-- Filters -->
+    <section class="container-fluid mt-4">
+        <div class="d-flex flex-wrap align-items-center mb-3">
+            <button class="btn filter-btn p-1 flex-grow-1 active" data-status="all" id="filter-all">All</button>
+            <button class="btn filter-btn p-1 flex-grow-1" data-status="under-review" id="filter-under-review">Under Review</button>
+            <button class="btn filter-btn p-1 flex-grow-1" data-status="accepted" id="filter-accepted">Accepted</button>
+            <button class="btn filter-btn p-1 flex-grow-1" data-status="rejected" id="filter-rejected">Rejected</button>
+            <button class="btn filter-btn p-1 flex-grow-1" data-status="cancelled" id="filter-cancelled">Cancelled</button>
+        </div>
+    </section>
+
+    <!-- Requests List -->
+    <main class="container-fluid" id="requests-container">
+        <div class="loader" id="loader">
+            <div class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div id="requests-list" class="row"></div>
+        <div id="no-requests" class="no-requests d-none">
+            <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" width="80" class="mb-3"
+                alt="No Requests">
+            <div>No requests found for the selected filter.</div>
+        </div>
+    </main>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Moment.js for date formatting -->
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script>
+        // Utility: Map status to display text and class
+        const statusMap = {
+            'under-review': { text: 'Under Review', class: 'status-under-review' },
+            'accepted': { text: 'Accepted', class: 'status-accepted' },
+            'rejected': { text: 'Rejected', class: 'status-rejected' },
+            'cancelled': { text: 'Cancelled', class: 'status-cancelled' }
+        };
+
+        const inIframe = window.self !== window.top;
+
+        if (inIframe) {
+            document.getElementById('back').classList.add('d-none');
+            document.querySelector('header').style.background = 'white';
+            document.querySelector('header').style.color = 'black';
+        } else {
+            console.log("This page is not inside an iframe.");
+        }
+        // Fetch requests from API
+        async function fetchRequests() {
+            try {
+                const res = await fetch('/tasks/requests');
+                if (!res.ok) throw new Error('Failed to fetch');
+                return await res.json();
+            } catch (e) {
+                return [];
+            }
+        }
+
+        // Render a single request card
+        function renderRequestCard(request) {
+            if (request.status === 'accepeted') request.status = 'accepted'
+            const status = statusMap[request.status] || { text: request.status, class: '' };
+            const gig = request.gig || {};
+            const service = gig.service || {};
+            const client = gig.Client || {};
+            const createdAt = moment(request.createdAt).format('MMM D, YYYY [at] h:mm A');
+            const gigCreatedAt = moment(gig.createdAt).format('MMM D, YYYY');
+            return `
+                <div class="col-lg-6 col-xl-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            
+                            <div class="mb-2 profile-top">
+                                <span>
+                                    <img src="${client.profile_pic || 'https://cdn-icons-png.flaticon.com/512/149/149071.png'}" class="profile-pic" alt="Client">
+                                    ${client.first_name || ''} ${client.last_name || ''}
+                                </span>                                
+                                <span class="ms-auto card-status ${status.class}">${status.text}</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <div>
+                                    <div class="card-title mb-0">${gig.title || 'Untitled Gig'}</div>
+                                    <div class="location"><i class="bi bi-geo-alt"></i> ${gig.location || 'N/A'}</div>
+                                </div>
+                            </div>
+                            <div class="mb-2">
+                                <span class"fw-bold text-primary">${service.name || 'N/A'}</span>
+                            </div>
+                                <span class="created-at">Requested: ${createdAt}</span>
+
+                                <div class="mt-2 d-flex gap-2 ${request.status === 'under-review' ? '' : 'd-none'}">
+  <button type="button" class="btn btn-danger" onclick="handleRequestStatus(${request.id}, 'cancelled')">
+    <i class="bi bi-x-circle"></i> Cancel
+  </button>
+</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        function handleRequestStatus(id, status) {
+
+            const confirmed = confirm(`You are about to cancel this request. Are you sure?`);
+            if (!confirmed) return;
+            // Example: You could call your API here
+            fetch(`/api/gig/request/update?requestId=${id}&status=${status}`, {
+                method: 'PATCH'
+            })
+                .then(res => res.json())
+                .then(async (data) => {
+                    alert(data.message || `Request ${status}`);
+                    // Optionally, disable buttons or update UI
+
+                    const loader = document.getElementById('loader');
+                    loader.style.display = 'flex';
+                    const requests = await fetchRequests();
+                    loader.style.display = 'none';
+                    renderRequests(requests, 'all');
+                    setupFilters(requests);
+                })
+                .catch(err => {
+                    alert('Failed to cancel request');
+                    console.error(err);
+                });
+        }
+
+
+        // Render all requests
+        function renderRequests(requests, filterStatus) {
+            const list = document.getElementById('requests-list');
+            const noRequests = document.getElementById('no-requests');
+            let filtered = requests;
+            if (filterStatus && filterStatus !== 'all') {
+                filtered = requests.filter(r => (r.status || '').toLowerCase() === filterStatus);
+            }
+            list.innerHTML = '';
+            if (filtered.length === 0) {
+                noRequests.classList.remove('d-none');
+                return;
+            }
+            noRequests.classList.add('d-none');
+            list.innerHTML = filtered.map(renderRequestCard).join('');
+        }
+
+        // Handle filter button clicks
+        function setupFilters(requests) {
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    const status = this.getAttribute('data-status');
+                    renderRequests(requests, status);
+                });
+            });
+        }
+
+        // Bootstrap icons CDN (for location icon)
+        function injectBootstrapIcons() {
+            if (!document.getElementById('bootstrap-icons')) {
+                const link = document.createElement('link');
+                link.id = 'bootstrap-icons';
+                link.rel = 'stylesheet';
+                link.href = 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css';
+                document.head.appendChild(link);
+            }
+        }
+
+        // Main
+        document.addEventListener('DOMContentLoaded', async function () {
+            injectBootstrapIcons();
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+            const requests = await fetchRequests();
+            loader.style.display = 'none';
+            renderRequests(requests, 'all');
+            setupFilters(requests);
+        });
+    </script>
+</body>
+
+</html>

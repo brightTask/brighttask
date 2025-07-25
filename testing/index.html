@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CV Generator</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    input, select, textarea, button {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    .section {
+      margin-bottom: 30px;
+    }
+
+    .entry-group {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .remove-btn {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background-color: crimson;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+
+    .add-btn {
+      background-color: green;
+      color: white;
+      padding: 8px;
+      border: none;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+
+    h1, h3 {
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Create Your CV</h1>
+  <form action="/generate-cv" method="POST" enctype="multipart/form-data">
+
+    <div class="section">
+      <h3>Personal Info</h3>
+      <input type="text" name="fullName" placeholder="Full Name" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <input type="text" name="phone" placeholder="Phone Number" required />
+    </div>
+
+    <div class="section">
+      <h3>Summary</h3>
+      <textarea name="summary" rows="4" placeholder="Professional Summary"></textarea>
+    </div>
+
+    <div class="section">
+      <h3>Education</h3>
+      <div id="education-section"></div>
+      <button type="button" class="add-btn" onclick="addEducation()">+ Add Education</button>
+    </div>
+
+    <div class="section">
+      <h3>Experience</h3>
+      <div id="experience-section"></div>
+      <button type="button" class="add-btn" onclick="addExperience()">+ Add Experience</button>
+    </div>
+
+    <div class="section">
+      <h3>Skills</h3>
+      <div id="skills-section"></div>
+      <button type="button" class="add-btn" onclick="addSkill()">+ Add Skill</button>
+    </div>
+
+    <div class="section">
+      <h3>Job Advert</h3>
+      <label>Upload Job Advert PDF (optional):</label>
+      <input type="file" name="jobAdvert" accept=".pdf" />
+      <label>Or paste job advert text:</label>
+      <textarea name="jobAdvertText" rows="5" placeholder="Paste job advert text here..."></textarea>
+    </div>
+
+    <button type="submit">Generate CV</button>
+  </form>
+
+  <script>
+    const eduLevels = {
+      "kcpe": "Marks",
+      "kcse": "Grade",
+      "certificate": "Grade",
+      "diploma": "Grade",
+      "bachelors": "GPA",
+      "masters": "GPA",
+      "doctorate": "GPA"
+    };
+
+    function addEducation() {
+      const container = document.createElement('div');
+      container.className = 'entry-group';
+
+      container.innerHTML = `
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove()">X</button>
+        <label>Level:</label>
+        <select name="education[level][]" onchange="updateGradeLabel(this)">
+          <option value="">--Select Level--</option>
+          <option value="kcpe">KCPE</option>
+          <option value="kcse">KCSE</option>
+          <option value="certificate">Certificate</option>
+          <option value="diploma">Diploma</option>
+          <option value="bachelors">Bachelors Degree</option>
+          <option value="masters">Masters Degree</option>
+          <option value="doctorate">Doctorate</option>
+        </select>
+
+        <label>Institution:</label>
+        <input type="text" name="education[institution][]" placeholder="Institution" />
+
+        <label>Course (if applicable):</label>
+        <input type="text" name="education[course][]" placeholder="Course" />
+
+        <label class="grade-label">Grade:</label>
+        <input type="text" name="education[grade][]" placeholder="Grade / Marks / GPA" />
+      `;
+      document.getElementById("education-section").appendChild(container);
+    }
+
+    function updateGradeLabel(select) {
+      const level = select.value;
+      const label = select.parentElement.querySelector('.grade-label');
+      const placeholder = eduLevels[level] || 'Grade';
+      label.innerText = `Grade (${placeholder}):`;
+
+      const courseInput = select.parentElement.querySelector('input[name="education[course][]"]');
+      if (level === "kcse" || level === "kcpe") {
+        courseInput.value = "";
+        courseInput.disabled = true;
+      } else {
+        courseInput.disabled = false;
+      }
+    }
+
+    function addExperience() {
+      const container = document.createElement('div');
+      container.className = 'entry-group';
+
+      container.innerHTML = `
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove()">X</button>
+        <label>Company:</label>
+        <input type="text" name="experience[company][]" placeholder="Company Name" />
+        <label>Title:</label>
+        <input type="text" name="experience[title][]" placeholder="Job Title" />
+        <label>Duration:</label>
+        <input type="text" name="experience[duration][]" placeholder="e.g. Jan 2020 - Dec 2021" />
+        <label>Description:</label>
+        <textarea name="experience[description][]" placeholder="Brief description of responsibilities"></textarea>
+      `;
+      document.getElementById("experience-section").appendChild(container);
+    }
+
+    function addSkill() {
+      const container = document.createElement('div');
+      container.className = 'entry-group';
+
+      container.innerHTML = `
+        <button type="button" class="remove-btn" onclick="this.parentElement.remove()">X</button>
+        <input type="text" name="skills[]" placeholder="Skill name" />
+      `;
+      document.getElementById("skills-section").appendChild(container);
+    }
+
+    // Initialize one entry each
+    window.onload = function () {
+    };
+    
+  </script>
+</body>
+</html>

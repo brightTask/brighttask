@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gig Details</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container py-4">
+  <div class="card mb-4">
+    <div class="card-header">
+      <h2 id="gigTitle">Loading...</h2>
+    </div>
+    <div class="card-body">
+      <p id="gigDescription"></p>
+      <dl class="row">
+        <dt class="col-sm-3">Service</dt><dd class="col-sm-9" id="gigService"></dd>
+        <dt class="col-sm-3">Posted By</dt><dd class="col-sm-9" id="gigClient"></dd>
+        <dt class="col-sm-3">Phone</dt><dd class="col-sm-9" id="gigPhone"></dd>
+        <dt class="col-sm-3">Budget</dt><dd class="col-sm-9" id="gigBudget"></dd>
+        <dt class="col-sm-3">Deadline</dt><dd class="col-sm-9" id="gigDeadline"></dd>
+        <dt class="col-sm-3">Location</dt><dd class="col-sm-9" id="gigLocation"></dd>
+        <dt class="col-sm-3">Remote?</dt><dd class="col-sm-9" id="gigRemote"></dd>
+        <dt class="col-sm-3">Additional Requirements</dt>
+        <dd class="col-sm-9" id="requirementsList"></dd>
+      </dl>
+
+      <button id="requestBtn" class="btn btn-primary w-100">Request to be Assigned</button>
+    </div>
+  </div>
+</div>
+
+<script>
+
+            function getGigIdFromUrl() {
+            // fallback: try ?id=7
+            const params = new URLSearchParams(window.location.search);
+            return params.get('id');
+        }
+
+(async () => {
+  const gigId = getGigIdFromUrl()
+  try {
+    const res = await fetch(`/api/gig/${gigId}`);
+    if (!res.ok) throw new Error('Gig not found');
+    const gig = await res.json();
+
+    document.getElementById('gigTitle').textContent = gig.title;
+    document.getElementById('gigDescription').textContent = gig.description;
+    document.getElementById('gigService').textContent = gig.service;
+    document.getElementById('gigClient').textContent = gig.user;
+    document.getElementById('gigPhone').textContent = gig.phone;
+    document.getElementById('gigLocation').textContent = gig.location;
+    document.getElementById('gigRemote').textContent = gig.isRemote ? 'Yes' : 'No';
+
+    const min = parseFloat(gig.budgetMin).toFixed(2),
+          max = parseFloat(gig.budgetMax).toFixed(2);
+    document.getElementById('gigBudget').textContent = `$${min} – $${max}`;
+
+    // Format ISO date
+    document.getElementById('gigDeadline').textContent =
+      new Date(gig.deadline).toLocaleDateString(undefined, { year:'numeric', month:'short', day:'numeric' });
+
+    // Requirements
+    let reqList = [];
+    try {
+      reqList = JSON.parse(gig.requirements);
+    } catch {}
+    const container = document.getElementById('requirementsList');
+    if (reqList.length === 0) {
+      container.innerHTML = '<em>None</em>';
+    } else {
+      const ul = document.createElement('ul');
+      ul.className = 'list-group';
+      reqList.forEach(r => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item';
+        li.textContent = `${r.name}${r.description ? ': ' + r.description : ''}`;
+        ul.appendChild(li);
+      });
+      container.appendChild(ul);
+    }
+
+    // Request button
+    const btn = document.getElementById('requestBtn');
+    if (gig.assigned) {
+      btn.textContent = 'Already Assigned';
+      btn.disabled = true;
+    } else {
+      btn.addEventListener('click', async () => {
+        btn.disabled = true;
+        const resp = await fetch(`/api/gig/${gig.id}/request`, { method: 'POST' });
+        if (resp.ok) {
+          btn.textContent = 'Requested';
+        } else {
+          btn.textContent = 'Failed – Try again';
+          btn.disabled = false;
+        }
+      });
+    }
+  } catch (e) {
+    document.body.innerHTML = '<div class="alert alert-danger m-4">Error loading gig.</div>';
+  }
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
