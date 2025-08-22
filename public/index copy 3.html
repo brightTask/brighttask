@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SideHustle360 - Home</title>
+    <!-- In your <head> tag -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Rfw7e78E8vbqYo3G1PxXK3gH/9ka1r8i6FbW4UjL7SYmuH2ArFLcpl5K4H5lqG6PqMyM1jhKL+Y5ReZT24ctEw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Add this in the <head> of your HTML -->
+
+    <style>
+        :root {
+            --primary: #00bfa6;
+            --secondary: #1f2937;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f4f6fa;
+            color: #222;
+        }
+
+        .navbars {
+            position: sticky;
+            background: #fff;
+            top: 0px;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(10, 10, 10, 0.103);
+            display: flex !important;
+            align-items: center !important;
+        }
+
+        .navbar-brand {
+            color: var(--primary) !important;
+            font-size: 1.5rem !important;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .nav-link,
+        .navbar-toggler {
+            color: #7b9793 !important;
+            font-weight: 500;
+            margin-bottom: 0 !important;
+        }
+
+        .search-bar {
+            max-width: 350px;
+            min-width: 150px;
+        }
+
+        .profile-card {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            padding: 2rem 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .profile-verified {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-left: 0.3rem;
+        }
+
+        .profile-skills {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-bio {
+            font-size: 0.97rem;
+            color: #444;
+            margin-bottom: 0.7rem;
+        }
+
+        .profile-socials a {
+            color: var(--secondary);
+            margin: 0 0.3rem;
+            font-size: 1.2rem;
+            transition: color 0.2s;
+        }
+
+        .profile-socials a:hover {
+            color: var(--primary);
+        }
+
+        .referral-link {
+            background: #f1f3f7;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.7rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 0.3rem;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #009e8e;
+        }
+
+        .main-feed {
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        .article-card {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            margin-bottom: 2rem;
+            padding: 1.5rem 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-author {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 0.8rem;
+            border: 2px solid var(--primary);
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.05rem;
+        }
+
+        .author-role {
+            font-size: 0.92rem;
+            color: #888;
+        }
+
+        .article-content {
+            font-size: 1.07rem;
+            color: #222;
+            margin-bottom: 1rem;
+        }
+
+        .article-img {
+            width: 100%;
+            border-radius: 0.7rem;
+            margin-bottom: 1rem;
+            object-fit: cover;
+            max-height: 350px;
+        }
+
+        .article-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .article-actions .bi {
+            margin-right: 0.3rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .article-actions .bi:hover {
+            color: var(--primary);
+        }
+
+        .promoted-ad {
+            background: linear-gradient(90deg, #00bfa6 0%, #1f2937 100%);
+            color: #fff;
+            border-radius: 0.8rem;
+            padding: 1.2rem 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .promoted-ad .bi {
+            font-size: 2rem;
+            opacity: 0.8;
+        }
+
+        .right-aside {
+            position: sticky;
+            top: 80px;
+        }
+
+        .right-actions {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            padding: 1.2rem 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .right-actions .btn {
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .self-services {
+            background: #f1f3f7;
+            border-radius: 1rem;
+            padding: 1rem 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .self-services h6 {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.7rem;
+        }
+
+        .self-services ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .self-services li {
+            margin-bottom: 0.5rem;
+            font-size: 0.97rem;
+        }
+
+        .recommended {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            padding: 1.2rem 1rem;
+        }
+
+        .recommended h6 {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.7rem;
+        }
+
+        .recommended-user {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.7rem;
+            gap: 0.7rem;
+        }
+
+        .recommended-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .recommended-details {
+            flex: 1;
+        }
+
+        .recommended-name {
+            font-weight: 500;
+            font-size: 0.98rem;
+            color: var(--secondary);
+        }
+
+        .recommended-role {
+            font-size: 0.89rem;
+            color: #888;
+        }
+
+        .follow-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 0.3rem;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .follow-btn:hover {
+            background: #009e8e;
+        }
+
+        .tabs {
+            display: flex !important;
+            align-items: center !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        .tabs li {
+            flex: 1 1 auto !important;
+            display: flex !important;
+            justify-content: center !important;
+            list-style: none;
+        }
+
+        .tabs li.active *,
+        .tabs li:hover * {
+            color: var(--primary) !important;
+        }
+
+
+
+        @media (max-width: 991.98px) {
+            .row {
+                display: flex !important;
+                flex-direction: column-reverse !important;
+            }
+        .tabs li.active,
+        .tabs li:hover::after {
+            border-bottom: 2px solid var(--primary);
+        }
+            .navbars {
+                box-shadow: 0 2px 8px rgba(10, 10, 10, 0.103);
+                display: flex !important;
+                align-items: center !important;
+                flex-direction: column !important;
+                gap: 0.6rem !important;
+            }
+
+            .left-aside {
+            }
+            .right-aside {
+                position: relative;
+            }
+
+            .main-feed {
+                padding: 0 0.5rem;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .tabs .nav-link span {
+                display: none;
+            }
+
+            .tabs .nav-link .bi {
+                font-size: 1.4rem;
+            }
+
+            .search-bar {
+                min-width: 100px;
+                max-width: 120px;
+            }
+
+            .article-card,
+            .promoted-ad {
+                padding: 1rem 0.7rem;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+
+            .article-card,
+            .promoted-ad {
+                padding: 0.7rem 0.3rem;
+            }
+
+            .navbar-brand {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbars  navbar-dark">
+        <div class="container-fluid d-flex justify-content-between align-items-center mt-1">
+            <a class="navbar-brand" href="#">SideHustle360</a>
+            <span class="align-items-center gap-2 text-light">
+
+                <button type="button" class="btn btn-link">
+                    <i class="bi bi-person-circle text-secondary"></i>
+                </button>
+            </span>
+        </div>
+        <div class="container-fluid">
+            <div class="w-100" id="navbarNav">
+                <ul class="tabs d-flex mb-0 align-items-center w-100">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#"><i class="bi bi-house-door"></i> <span>Home</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-briefcase"></i> <span>Gigs</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-chat-dots"></i> <span>Chats</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-bell"></i> <span>Notifications</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-people"></i> <span>Profile</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- Main Layout -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Left Aside: Profile -->
+            <aside class="col-lg-3 d-lg-block left-aside">
+                <div class="profile-card">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User Avatar"
+                        class="profile-avatar mb-2">
+                    <h5 class="mb-1">John Doe <i class="bi bi-patch-check-fill profile-verified" title="Verified"></i>
+                    </h5>
+                    <div class="profile-skills mb-2">
+                        <span class="badge bg-primary">Web Dev</span>
+                        <span class="badge bg-success">UI/UX</span>
+                        <span class="badge bg-info text-dark">SEO</span>
+                    </div>
+                    <div class="profile-bio mb-2">
+                        Passionate freelancer helping startups build amazing products. <br>
+                        <span class="text-muted">Client</span>
+                    </div>
+                    <div class="profile-socials mb-2">
+                        <a href="#" title="Twitter"><i class="bi bi-twitter"></i></a>
+                        <a href="#" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                        <a href="#" title="GitHub"><i class="bi bi-github"></i></a>
+                        <a href="#" title="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" title="Instagram"><i class="bi bi-instagram"></i></a>
+                    </div>
+                    <div class="referral-link">
+                        <span id="ref-link">sidehustle360.com/ref/johndoe</span>
+                        <button class="copy-btn" onclick="copyReferral()">Copy</button>
+                    </div>
+                </div>
+            </aside>
+            <!-- Main Feed -->
+            <main class="col-lg-6 main-feed">
+                <!-- Promoted Advertisement -->
+                <div class="promoted-ad mb-3">
+                    <i class="bi bi-megaphone"></i>
+                    <div>
+                        <strong>Promoted:</strong> <span>Get 20% off on your first gig! <a href="#"
+                                class="text-white text-decoration-underline">Learn more</a></span>
+                    </div>
+                </div>
+                <!-- Articles Feed (Infinite Scroll) -->
+                <div id="articles-feed">
+                    <!-- Article 1 -->
+                    <div class="article-card">
+                        <div class="article-author">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="author-avatar"
+                                alt="Author">
+                            <div>
+                                <div class="author-name">Jane Smith <i
+                                        class="bi bi-patch-check-fill profile-verified"></i></div>
+                                <div class="author-role">UI/UX Designer • 2h ago</div>
+                            </div>
+                        </div>
+                        <div class="article-content">
+                            Just finished a landing page for a fintech startup! 🚀<br>
+                            Looking for feedback and potential collaborations.
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80"
+                            class="article-img" alt="Article Image">
+                        <div class="article-actions mt-2">
+                            <span><i class="bi bi-heart"></i> 24</span>
+                            <span><i class="bi bi-chat"></i> 8</span>
+                            <span><i class="bi bi-share"></i> 3</span>
+                        </div>
+                    </div>
+                    <!-- Article 2 -->
+                    <div class="article-card">
+                        <div class="article-author">
+                            <img src="https://randomuser.me/api/portraits/men/65.jpg" class="author-avatar"
+                                alt="Author">
+                            <div>
+                                <div class="author-name">Samuel Lee</div>
+                                <div class="author-role">SEO Expert • 4h ago</div>
+                            </div>
+                        </div>
+                        <div class="article-content">
+                            Promoting your gig? Here are 5 SEO tips to boost your visibility on SideHustle360!
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=600&q=80"
+                            class="article-img" alt="Article Image">
+                        <div class="article-actions mt-2">
+                            <span><i class="bi bi-heart"></i> 12</span>
+                            <span><i class="bi bi-chat"></i> 2</span>
+                            <span><i class="bi bi-share"></i> 1</span>
+                        </div>
+                    </div>
+                    <!-- Article 3 -->
+                    <div class="article-card">
+                        <div class="article-author">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" class="author-avatar"
+                                alt="Author">
+                            <div>
+                                <div class="author-name">Linda Okafor</div>
+                                <div class="author-role">Content Writer • 6h ago</div>
+                            </div>
+                        </div>
+                        <div class="article-content">
+                            Need a blog post or website copy? DM me for affordable, high-quality writing services!
+                        </div>
+                        <img src="https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=600&q=80"
+                            class="article-img" alt="Article Image">
+                        <div class="article-actions mt-2">
+                            <span><i class="bi bi-heart"></i> 30</span>
+                            <span><i class="bi bi-chat"></i> 10</span>
+                            <span><i class="bi bi-share"></i> 5</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Loader for Infinite Scroll -->
+                <div id="loader" class="text-center my-4" style="display:none;">
+                    <div class="spinner-border text-primary" role="status"></div>
+                </div>
+            </main>
+            <!-- Right Aside: Actions & Recommendations -->
+            <aside class="col-lg-3 d-lg-block right-aside">
+                <div class="right-actions mb-3">
+                    <button class="btn btn-primary w-100 mb-2"><i class="bi bi-plus-circle"></i> Post Gig</button>
+                    <button class="btn btn-success w-100 mb-2"><i class="bi bi-briefcase"></i> Post Service</button>
+                    <button class="btn btn-outline-secondary w-100"><i class="bi bi-three-dots"></i> More
+                        Actions</button>
+                </div>
+                <div class="self-services mb-3">
+                    <h6>Free Self Services</h6>
+                    <ul>
+                        <li><i class="bi bi-check-circle text-success"></i> Resume Builder</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Portfolio Templates</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Skill Assessment</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Interview Prep</li>
+                    </ul>
+                </div>
+                <div class="recommended">
+                    <h6>Recommended to Follow</h6>
+                    <div class="recommended-user">
+                        <img src="https://randomuser.me/api/portraits/men/77.jpg" class="recommended-avatar" alt="User">
+                        <div class="recommended-details">
+                            <div class="recommended-name">Michael Chen</div>
+                            <div class="recommended-role">Freelancer</div>
+                        </div>
+                        <button class="follow-btn">Follow</button>
+                    </div>
+                    <div class="recommended-user">
+                        <img src="https://randomuser.me/api/portraits/women/55.jpg" class="recommended-avatar"
+                            alt="User">
+                        <div class="recommended-details">
+                            <div class="recommended-name">Aisha Bello</div>
+                            <div class="recommended-role">Client</div>
+                        </div>
+                        <button class="follow-btn">Follow</button>
+                    </div>
+                    <div class="recommended-user">
+                        <img src="https://randomuser.me/api/portraits/men/23.jpg" class="recommended-avatar" alt="User">
+                        <div class="recommended-details">
+                            <div class="recommended-name">David Smith</div>
+                            <div class="recommended-role">Freelancer</div>
+                        </div>
+                        <button class="follow-btn">Follow</button>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+    <!-- Bootstrap JS and Infinite Scroll Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Copy referral link
+        function copyReferral() {
+            const refLink = document.getElementById('ref-link').innerText;
+            navigator.clipboard.writeText(refLink).then(() => {
+                alert('Referral link copied!');
+            });
+        }
+
+        // Infinite scroll for articles
+        let loading = false;
+        let articleCount = 3;
+        function createArticle(idx) {
+            const authors = [
+                { name: "Chinedu Uzo", avatar: "https://randomuser.me/api/portraits/men/41.jpg", role: "Web Developer", time: "1h ago" },
+                { name: "Fatima Musa", avatar: "https://randomuser.me/api/portraits/women/21.jpg", role: "Digital Marketer", time: "3h ago" },
+                { name: "Alex Johnson", avatar: "https://randomuser.me/api/portraits/men/12.jpg", role: "App Developer", time: "5h ago" },
+            ];
+            const contents = [
+                "Just landed a new client through SideHustle360! Excited for this journey.",
+                "Sharing my latest marketing campaign results. DM for tips!",
+                "Building a cross-platform app for a local business. Loving the challenge!",
+            ];
+            const images = [
+                "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80",
+                "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80",
+            ];
+            const author = authors[idx % authors.length];
+            const content = contents[idx % contents.length];
+            const image = images[idx % images.length];
+            return `
+                <div class="article-card">
+                    <div class="article-author">
+                        <img src="${author.avatar}" class="author-avatar" alt="Author">
+                        <div>
+                            <div class="author-name">${author.name}</div>
+                            <div class="author-role">${author.role} • ${author.time}</div>
+                        </div>
+                    </div>
+                    <div class="article-content">
+                        ${content}
+                    </div>
+                    <img src="${image}" class="article-img" alt="Article Image">
+                    <div class="article-actions mt-2">
+                        <span><i class="bi bi-heart"></i> ${Math.floor(Math.random() * 40 + 10)}</span>
+                        <span><i class="bi bi-chat"></i> ${Math.floor(Math.random() * 10 + 2)}</span>
+                        <span><i class="bi bi-share"></i> ${Math.floor(Math.random() * 5 + 1)}</span>
+                    </div>
+                </div>
+            `;
+        }
+        function loadMoreArticles() {
+            if (loading) return;
+            loading = true;
+            document.getElementById('loader').style.display = 'block';
+            setTimeout(() => {
+                let feed = document.getElementById('articles-feed');
+                for (let i = 0; i < 3; i++) {
+                    feed.insertAdjacentHTML('beforeend', createArticle(articleCount++));
+                }
+                document.getElementById('loader').style.display = 'none';
+                loading = false;
+            }, 1200);
+        }
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth < 992) return; // Only on desktop
+            const feed = document.getElementById('articles-feed');
+            if (window.scrollY + window.innerHeight > feed.offsetTop + feed.offsetHeight - 200) {
+                loadMoreArticles();
+            }
+        });
+    </script>
+</body>
+
+</html>

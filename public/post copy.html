@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Quicksand:wght@400;500&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* Global Styles */
+    body {
+      background-color: white;
+      color: #333;
+      font-family: 'Segoe UI', sans-serif;
+      padding-bottom: 50px;
+      user-select: none;
+    }
+
+    body.noscroll {
+      overflow: hidden;
+    }
+
+    .pink-theme {
+      color: #3ed6c2;
+    }
+
+    .btn-pink {
+      background-color: #2dd8c1;
+      color: white;
+      border-radius: 6px;
+      padding: 6px 14px;
+      border: none;
+    }
+
+    .btn-pink:hover {
+      background-color: #0fbea7;
+    }
+
+    /* Carousel Styles */
+    .carousel-inner img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+    }
+
+    /* Like and Comment Buttons */
+    .like-btn,
+    .comment-btn,
+    .reply-btn {
+      color: #46e0cc;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .like-btn:hover,
+    .comment-btn:hover,
+    .reply-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .liked {
+      color: #1bd1b9;
+      font-weight: bold;
+    }
+
+    /* Comment and Reply Sections */
+    .comment-section,
+    .reply-section {
+      display: none;
+      background-color: #fff;
+      flex-direction: column;
+      margin-top: 10px;
+    }
+
+
+
+    .comment,
+    .reply {
+      margin-bottom: 15px;
+    }
+
+    .reply-section {
+      margin-left: 20px;
+      border-left: 2px solid #93ece0;
+    }
+
+    /* Post Meta */
+    .post-meta {
+      font-size: 0.9rem;
+      color: #888;
+    }
+
+    /* Comment Input */
+    .comment-input {
+      border: 1px solid #2ad4be;
+      border-radius: 8px;
+      padding: 8px 12px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 767px) {
+
+      .comment-section,
+      .reply-section {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column-reverse;
+        flex: 1;
+      }
+
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Adjust darkness */
+        z-index: 5;
+        display: none;
+      }
+
+      .total-comments {
+        display: none;
+      }
+
+
+      .comment-header h6 {
+        font-weight: 600;
+      }
+
+      .comment-list {
+        flex: 1;
+        overflow-y: auto;
+      }
+
+      .comment-list::-webkit-scrollbar {
+        display: none;
+      }
+
+      .reply-target {
+        border-top: 1px solid #eee;
+        font-size: 14px;
+      }
+      .input-section{
+        position: fixed;
+        bottom: 0;
+        width: 95%;
+
+      }
+
+      .input-group .form-control {
+        border-radius: 20px 0 0 20px;
+      }
+
+      .input-group .btn {
+        border-radius: 0 20px 20px 0;
+      }
+
+      .font-14 {
+        font-size: 14px;
+      }
+    }
+
+    /* Responsive Layout */
+    @media (min-width: 768px) {
+      .contained {
+        display: flex;
+        gap: 30px;
+      }
+
+      .left-items {
+        flex: 1;
+      }
+
+      .right-items {
+        flex: 1;
+      }
+
+      .comment-list {
+        height: 100%;
+        overflow-y: scroll;
+        max-height: 700px;
+      }
+
+      .comment-list::-webkit-scrollbar {
+        display: none;
+      }
+
+      .comment-section {
+        display: flex;
+        flex-direction: column;
+        border-radius: 10px;
+        padding: 15px;
+        margin-top: 10px;
+        box-shadow: 0 0 5px rgba(214, 51, 132, 0.2);
+      }
+
+      .header {
+        display: none;
+      }
+
+      .input-group {
+        margin-bottom: 20px;
+      }
+
+      .comment-btn {
+        display: none;
+      }
+
+    }
+
+    .insta-gradient {
+      background: linear-gradient(45deg, #45eed7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+
+    .card {
+      background-color: #ffeaf1;
+      border: none;
+    }
+
+    .list-group {
+
+      max-height: 430px;
+      overflow-y: scroll;
+    }
+
+    .list-group,
+    .input-group {
+
+      background-color: #ffeaf1;
+      border: none;
+    }
+
+    .card-body {
+      background-color: #ffeaf1;
+    }
+
+    .custom-gap {
+      --bs-gutter-x: 10px;
+      --bs-gutter-y: 10px;
+    }
+
+    @media (min-width: 768px) {
+      .custom-gap {
+        --bs-gutter-x: 20px;
+        --bs-gutter-y: 20px;
+      }
+    }
+
+    .card-img-top {
+      width: 100%;
+      height: auto;
+      object-fit: cover;
+    }
+
+    /* Modal styles */
+    .modal-overlay {
+      display: flex;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: linear-gradient(135deg, #fffffffd(254, 217, 117, 0.966), #ffffffd8);
+      z-index: 1500;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .spinner {
+      border: 6px solid #00bfa6;
+      border-top: 6px solid transparent;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      background: none;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    .loader-text {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      color: white;
+      font-weight: 500;
+    }
+
+    
+        .article-card {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            margin-bottom: 2rem;
+            padding: 1.5rem 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-author {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 0.8rem;
+            border: 2px solid var(--primary);
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.05rem;
+        }
+
+        .author-role {
+            font-size: 0.92rem;
+            color: #888;
+        }
+
+        .article-content {
+            font-size: 1.07rem;
+            color: #222;
+            margin-bottom: 1rem;
+        }
+
+        .article-img {
+            width: 100%;
+            border-radius: 0.7rem;
+            margin-bottom: 1rem;
+            object-fit: cover;
+            max-height: 350px;
+        }
+
+        .article-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .article-actions .bi {
+            margin-right: 0.3rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .article-actions .bi:hover {
+            color: var(--primary);
+        }
+
+  </style>
+</head>
+
+<body class="page-wrapper d-flex flex-column min-vh-100">
+  <!-- Modal -->
+  <div id="modalOverlay" class="modal-overlay">
+    <div class="spinner"></div>
+    <div class="loader-text">...</div>
+  </div>
+
+  <div class="container my-4">
+
+    <div id="postedDase"></div>
+    <!-- Title and Meta -->
+    <p class="post-meta">
+      <a href="javascript:history.back()" class="text-decoration-none mb-1">
+        <i class="fas fa-chevron-left me-2 text-dark fw-bold"></i>
+      </a>
+      <a class="text-decoration-none" href="#">
+        <img id="profile-img" alt="profile Avatar" class="rounded-circle me-2" width="40" height="40">
+      </a>
+      <strong class="text-dark fw-bold" id="user"></strong> | <span id="time"></span>
+    </p>
+
+
+    <h2 id="title" class="pink-theme"></h2>
+    <div class="overlay"></div>
+    <!-- Main Content -->
+    <div class="contained">
+      <!-- Left Section: Carousel and Description -->
+      <div class="left-items">
+        
+        <!-- Description -->
+        <p id="description" class="description"></p>
+        <!-- Carousel -->
+        <div id="postCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+          <div id="carouselInner" class="carousel-inner">
+
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#postCarousel" data-bs-slide="prev">
+            <span id="control-btn" class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#postCarousel" data-bs-slide="next">
+            <span id="control-btn2" class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Section: Likes and Comments -->
+      <div class="right-items">
+        <!-- Like and Comment Buttons -->
+        <div id="actions" class="d-flex gap-4 mb-3">
+
+        </div>
+
+        <!-- Comment Section -->
+        <div class="comment-section" id="commentSection">
+
+
+          <!-- Input Group -->
+
+          <div class="input-section">
+                      <!-- Reply Target (hidden by default) -->
+          <div id="replyTarget" class="reply-target px-3 py-2 text-muted small"
+            style="display: none; background: #f8f9fa;">
+            Replying to <strong id="replyUser"></strong>
+          </div>
+                      <div class="input-group d-flex-column border-top px-2 py-2 bg-white">
+          
+            <input id="message-input" type="text" class="form-control" placeholder="Message..." />
+            <!-- Hidden field to store the parent comment ID -->
+            <input type="hidden" id="replyToCommentId" />
+
+            <div class="input-group-append ms-1">
+              <button id="send-btn" class="btn btn-pink"><i class="fas fa-paper-plane"></i></button>
+            </div>
+          </div>
+          </div>
+          <!-- Comment List -->
+          <div id="commentList" class="comment-list">
+            <!-- Comments will be appended here -->
+          </div>
+          <!-- Header -->
+          <div class="header justify-content-between align-items-center mb-3">
+            <div class="flex-grow-1 text-center">
+              <h6 class="m-0" id="totalComments">Comments (0)</h6>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JS -->
+  <script>
+    const modal = document.getElementById("modalOverlay");
+    const post_id = parseInt(new URLSearchParams(window.location.search).get('id'));
+    const post_comment_id = parseInt(new URLSearchParams(window.location.search).get('comment')) || null;
+    const post_comment_reply_id = parseInt(new URLSearchParams(window.location.search).get('reply')) || null;
+    async function toggleLike(element, comment_id = null) {
+
+      const span = element.querySelector('.like-count');
+      const icon = element.querySelector('.fas');
+
+      const result = await likePost({ post_id, comment_id, reaction_type: 'like' });
+
+
+      if (result.liked) {
+        icon.classList.remove('text-secondary');
+        icon.classList.remove('fa-heart');
+
+
+        icon.classList.add('text-danger');
+        icon.classList.add('fa-heart');
+
+      } else {
+
+        icon.classList.remove('text-danger');
+        icon.classList.remove('fa-heart');
+
+        icon.classList.add('text-secondary');
+        icon.classList.add('fa-heart');
+
+
+
+      }
+
+      span.innerText = result.likeCount;
+
+    }
+    async function likePost(data) {
+      try {
+        const response = await fetch('/api/comments/like', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to post comment');
+        }
+
+        const result = await response.json();
+        return result;
+      } catch (error) {
+        console.error('Error posting comment:', error);
+        return null;
+      }
+    }
+
+
+    function toggleReply(button) {
+      const replies = button.nextElementSibling;
+      if (replies) {
+        replies.style.display = replies.style.display === 'block' ? 'none' : 'block';
+      }
+    }
+        function createPost(post) {
+            return `
+            <div class="article-card">
+                <div class="article-author">
+                    <img src="${post.author?.profile_pic || 'https://via.placeholder.com/50'}" class="author-avatar" alt="Author">
+                    <div>
+                        <div class="author-name">${post.author?.username || 'Unknown'} <i class="bi bi-patch-check-fill profile-verified"></i></div>
+                        <div class="author-role">Posted • ${new Date(post.createdAt).toLocaleDateString()}</div>
+                    </div>
+                </div>
+                    <div class="article-content">
+                        ${post.content}
+                    </div>
+                    ${Array.isArray(post.images) && post.images.filter(img => img).length > 0 ? `
+                    <div class="carousel-container">
+                        <div class="carousel-track">
+                        ${post.images
+                        .filter(img => img) // remove null/undefined/empty
+                        .map(img => `<img src="${img}" class="carousel-image" alt="Post Image">`)
+                        .join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                    ${Array.isArray(post.sharedPost) && post.sharedPost.length > 0 ? `
+                    ${createSharedPost(post.sharedPost[0])}
+                    `: ``
+                }
+                          <!-- Course Card -->
+      ${post.course ? `
+        <div class="course-card my-3 border rounded-3 overflow-hidden shadow-sm">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="${post.course.cover || 'https://tse4.mm.bing.net/th/id/OIP.mLPURBF2wCqjivfOgY3H8AHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3'}" alt="${post.course.title}" class="img-fluid w-100 h-100 object-fit-cover">
+            </div>
+            <div class="col-md-8 p-3">
+      <small class="badge bg-secondary mb-2">Course</small>
+              <h5 class="mb-1">${post.course.title}</h5>
+              <p class="mb-2 text-muted small">${post.course.description}</p>
+
+              <span class="d-flex justify-content-between">
+              <span class=" text-secondary fw-bolder">${post.course.courseCode}</span>
+                <a href="/courses/${post.course.id}" class="btn btn-primary btn-sm">Get Enrolled</a>
+              </span>
+
+            </div>
+          </div>
+        </div>
+      ` : ''}
+                
+      ${post.service ? `
+        <div class="course-card my-3 border rounded-3 overflow-hidden shadow-sm">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="${post.service?.cover || 'https://tse3.mm.bing.net/th/id/OIP.XEVySEbxw-4iDmSXLsd8NgHaDt?r=0&rs=1&pid=ImgDetMain&o=7&rm=3'}" alt="${post.service.name}" class="img-fluid w-100 h-100 object-fit-cover">
+            </div>
+            <div class="col-md-8 p-3">
+      <small class="badge bg-secondary mb-2">Service</small>
+              <h5 class="mb-1">${post.service.name}</h5>
+              <p class="mb-2 text-muted small">${post.service.description}</p>
+
+              <span class="d-flex justify-content-between">
+              <span class=" text-secondary fw-bolder"></span>
+                <a href="/courses/${post.service.id}" class="btn btn-primary btn-sm">Book Us</a>
+              </span>
+
+            </div>
+          </div>
+        </div>
+      ` : ''}
+
+            ${post.gig ? `
+  <div class="course-card my-3 border rounded-3 overflow-hidden shadow-sm">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="${post.gig.cover || 'https://tse3.mm.bing.net/th/id/OIP.XEVySEbxw-4iDmSXLsd8NgHaDt?r=0&rs=1&pid=ImgDetMain&o=7&rm=3'}" 
+             alt="${post.gig.title}" 
+             class="img-fluid w-100 h-100 object-fit-cover">
+      </div>
+      <div class="col-md-8 p-3">
+        <small class="badge bg-secondary mb-2">Task</small>
+        
+        <h5 class="mb-1 text-dark fw-bold">${post.gig.title}</h5>
+        <h6 class="mb-2 text-muted">${post.gig.service?.icon || ''} ${post.gig.service?.name || ''}</h6>
+        
+        ${post.gig.isRemote ? `
+                      <small class="badge bg-secondary d-block mt-2">
+  <i class="bi bi-wifi me-1"></i>Remote</small>
+        ` : ``}
+
+        <p class="mb-2 text-muted small">${post.gig.description}</p>
+
+            <small class="text-muted d-block mb-2">
+              <i class="bi bi-geo-alt me-1"></i>
+              ${post.gig.location || (post.gig.isRemote ? 'Remote' : 'Unspecified')}
+            </small>
+            <small class="text-muted d-block mb-2">
+              <i class="bi bi-clock me-1"></i>
+              Posted: ${formatFullDate(post.gig.createdAt)}
+            </small>
+                <span class="d-flex justify-content-between">
+              <span class=" text-muted fw-bold">
+                            <small class="text-muted d-block mb-1">
+              <i class="bi bi-calendar-event me-1"></i>
+              Deadline: ${formatFullDate(post.gig.deadline)}
+            </small>
+              </span>
+                <a href="/gigs/${post.gig.id}" class="btn btn-primary btn-sm">Apply</a>
+              </span>
+      </div>
+    </div>
+  </div>
+` : ''}
+
+<div class="people-tags d-flex flex-wrap gap-2 mb-2">
+    <img src="https://i.pravatar.cc/30?u=1" alt="User" class="rounded-circle tag-pic" width="24" height="24">
+    <img src="https://i.pravatar.cc/30?u=2" alt="User" class="rounded-circle tag-pic" width="24" height="24">
+    <img src="https://i.pravatar.cc/30?u=3" alt="User" class="rounded-circle tag-pic" width="24" height="24">
+    <img src="https://i.pravatar.cc/30?u=4" alt="User" class="rounded-circle tag-pic" width="24" height="24">
+    <img src="https://i.pravatar.cc/30?u=5" alt="User" class="rounded-circle tag-pic" width="24" height="24">
+    <span class="remaining"> + 34</span>
+</div>
+
+
+<!-- Actions (unique style with hover effects) -->
+<div class="article-actions d-flex flex-wrap align-items-center gap-3 border-top pt-2">
+  
+  <span class="action-item d-flex align-items-center gap-1" onclick="toggleLike(this, ${post.id})" title="Like">
+    <i class="bi bi-heart${post.isLiked ? '-fill text-danger' : ''} fs-5"></i>
+    <small class="fw-semibold">${post.likesCount}</small>
+  </span>
+
+  <span class="action-item d-flex align-items-center gap-1" onclick="window.top.location.href='/post?id=${post.id}'" title="Comments">
+    <i class="bi bi-chat fs-5"></i>
+    <small class="fw-semibold">${post.commentsCount}</small>
+  </span>
+
+  <span class="action-item d-flex align-items-center gap-1" title="Share">
+    <i class="bi bi-share fs-5"></i>
+    <small class="fw-semibold">0</small>
+  </span>
+
+  <span 
+    class="action-item d-flex align-items-center gap-1 repost-btn" 
+    data-post='${JSON.stringify(post).replace(/'/g, "&apos;")}' 
+    title="Repost this"
+    style="cursor: pointer;">
+    <i class="bi bi-repeat fs-5 text-success"></i>
+    <small class="fw-semibold">${post.repostCount || 0}</small>
+  </span>
+
+</div>
+
+            </div>
+        `;
+        }
+
+        function formatFullDate(dateString) {
+            if (!dateString) return 'N/A';
+
+            const date = new Date(dateString);
+            const day = date.getDate();
+            const monthYear = new Intl.DateTimeFormat('en-GB', {
+                month: 'long',
+                year: 'numeric'
+            }).format(date);
+
+            const getOrdinal = (n) => {
+                const s = ["th", "st", "nd", "rd"];
+                const v = n % 100;
+                return s[(v - 20) % 10] || s[v] || s[0];
+            };
+
+            return `${day}${getOrdinal(day)} ${monthYear}`;
+        }
+
+    async function fetchPost() {
+      fetch(`/api/posts/${post_id}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Failed to post comment');
+          }
+          return response.json();
+        })
+        .then(data => {
+          authorized = data.authorized;
+          document.getElementById('title').textContent = data.title;
+          document.getElementById('postedDase').innerHTML = `${createPost(data)}`;
+          document.getElementById('user').textContent = data.author.username;
+          document.getElementById('description').textContent = data.content;
+          document.getElementById('profile-img').src = data.author.profile_pic || 'https://i.pravatar.cc/50?img=2';
+          document.getElementById('profile-img').addEventListener('click', function () {
+            window.location.href = `/web/profile?user=${data.author.id}`;
+          })
+          document.getElementById('user').addEventListener('click', function () {
+            window.location.href = `/web/profile?user=${data.author.id}`;
+          })
+          document.getElementById('time').textContent = `${data.createdAt}`;
+
+
+          if (data.media?.length <= 1) {
+            document.getElementById('control-btn').style.display = 'none';
+            document.getElementById('control-btn2').style.display = 'none';
+          }
+
+          data.images = data.media?.filter(m => m.type === 'image');
+          data.images?.forEach((image, index) => {
+
+            const item = document.createElement('div');
+            item.className = `carousel-item ${index === 0 ? 'active' : ''}`;
+            item.innerHTML = `
+          <img src="${image.url}" onclick="window.location.href = '${image.url}'" class="d-block w-100" alt="Style 1">
+          `;
+
+
+            document.getElementById('carouselInner').appendChild(item);
+
+          });
+
+          const actions = document.getElementById('actions')
+          actions.innerHTML = `
+                <span class="like-btn" onclick="toggleLike(this, ${null})"><i class="fas ${data.isLiked ? 'fa-heart text-danger' : 'fa-heart text-secondary'} "></i> ${data.likesCount === 1 ? 'like' : 'likes'} <span class="like-count">${data.likesCount}</span></span>
+          <span class="comment-btn">💬 Comments (${data.commentsCount})</span>
+                  <h6 class="m-0 total-comments">Comments ${data.commentsCount}</h6>
+      `;
+
+          document.getElementById('totalComments').textContent = `Comments (${data.commentsCount})`;
+
+          data.comments.forEach(comment => {
+
+            document.getElementById('commentList').append(appendComment(comment));
+          });
+        })
+        .catch(error => {
+          console.error('Error posting comment:', error);
+          alert('Failed to post comment. Please try again.');
+        });
+
+    }
+
+    async function openReply(comment) {
+      const replyTarget = document.getElementById('replyTarget');
+      replyTarget.innerHTML = `
+        Replying to <strong id="replyUser">@${comment.user.username}</strong>
+  <button id="cancelReply" style="float: right; background: none; border: none; color: red;">×</button>
+      `;
+
+      document.getElementById('cancelReply').addEventListener('click', () => {
+        document.getElementById('replyTarget').style.display = 'none';
+        document.getElementById('replyToCommentId').value = '';
+      });
+      replyTarget.style.display = 'block';
+
+      // Store the ID of the comment being replied to
+      document.getElementById('replyToCommentId').value = comment.id;
+
+      // Focus the input field
+      document.getElementById('message-input').focus();
+    }
+
+    document.getElementById('send-btn').addEventListener('click', async function () {
+      const message = document.getElementById('message-input').value.trim();
+      const replyToId = document.getElementById('replyToCommentId').value;
+
+      if (!message) return;
+
+      if (replyToId) {
+        // Send as a reply
+
+        const data = await postComment({
+          post_id: parseInt(post_id),
+          parent_comment_id: parseInt(replyToId), // linking to parent comment
+          content: message,
+        });
+
+        if (data) {
+
+          document.getElementById(`comment-${replyToId}-reply-body`).append(replyItem(data, { id: replyToId }));
+
+          const span = document.getElementById(`view-reply-${replyToId}-span`);
+          span.style.display = 'flex';
+          if (span) {
+            let repliesLength = parseInt(span.getAttribute('data-replies-length') || '0', 10);
+            repliesLength += 1;
+
+            span.setAttribute('data-replies-length', repliesLength);
+            span.textContent = `View Replies (${repliesLength})`;
+
+            toggleReply(span);
+
+            scrollToReplyById(data.id);
+          }
+
+        }
+
+      } else {
+
+        const data = await postComment({
+          post_id: parseInt(post_id),
+          parent_comment_id: null, // linking to parent comment
+          content: message,
+        });
+        if (data) {
+          document.getElementById('commentList').prepend(appendComment(data));
+          scrollToCommentById(data.id)
+        }
+      }
+
+      // Clear input and reply state
+      document.getElementById('message-input').value = '';
+      document.getElementById('replyTarget').style.display = 'none';
+      document.getElementById('replyToCommentId').value = '';
+    });
+
+    async function postComment(data) {
+      try {
+        const response = await fetch('/api/comments/addComment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to post comment');
+        }
+
+        const comment = await response.json();
+        return comment;
+      } catch (error) {
+        console.error('Error posting comment:', error);
+        return null;
+      }
+    }
+
+    function formatReadableDate(timestamp) {
+      const date = new Date(timestamp);
+      const now = new Date();
+      const diff = Math.floor((now - date) / 60000); // in minutes
+
+      if (diff < 1) return "Just now";
+      if (diff < 60) return `${diff} min ago`;
+      const hours = Math.floor(diff / 60);
+      if (hours < 24) return `${hours} hr ago`;
+      return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    function sendJson(data) {
+      window.location.href = `/web/item?id=${data.id}`;
+    }
+
+    function goTo() {
+      if (post_id) {
+        fetchPost(); // Fetch post content
+
+        if (post_comment_id) {
+          // Open comment section and prevent background scroll
+          const section = document.getElementById('commentSection');
+          const overlay = document.querySelector('.overlay');
+          section.style.display = 'flex';
+          overlay.style.display = 'block';
+          document.body.classList.add('noscroll');
+          setTimeout(() => {
+            scrollToCommentById(parseInt(post_comment_id));
+          }, 300);
+
+          // If it's a reply, show replies and scroll to reply
+
+          const spanId = `view-reply-${post_comment_id}-span`;
+          setTimeout(() => {
+            waitForSpanAndScroll(spanId, post_comment_reply_id);
+          }, 300);
+
+        }
+        setTimeout(() => {
+          modal.style.display = 'none';
+        }, 1000);
+      }
+    }
+    function waitForSpanAndScroll(spanId, replyId, attempts = 10) {
+      const span = document.getElementById(spanId);
+      if (span) {
+        toggleReply(span); // Now it exists
+        setTimeout(() => {
+          if (replyId) {
+            scrollToReplyById(replyId);
+          }
+        }, 300);
+
+      } else if (attempts > 0) {
+        setTimeout(() => waitForSpanAndScroll(spanId, replyId, attempts - 1), 200);
+      } else {
+        console.warn(`Span ${spanId} not found after multiple attempts`);
+      }
+    }
+
+    let authorized = false;
+    window.onload = function () {
+
+      goTo();
+    };
+
+
+    function scrollToCommentById(commentId) {
+      const target = document.querySelector(`[data-comment-id="${commentId}"]`);
+      if (target) {
+        target.scrollIntoView({ block: 'center' });
+        highlight(target);
+      }
+    }
+
+    function scrollToReplyById(replyId) {
+      const target = document.querySelector(`[data-reply-id="${replyId}"]`);
+      if (target) {
+        // Auto-expand parent reply section
+        const repliesContainer = target.closest('.replies');
+        if (repliesContainer) {
+          repliesContainer.style.display = 'block';
+        }
+
+        target.scrollIntoView({ block: 'center' });
+        highlight(target);
+      }
+    }
+
+    function highlight(element) {
+      element.style.backgroundColor = '#ffeef0';
+      setTimeout(() => {
+        element.style.backgroundColor = '';
+      }, 2000);
+    }
+
+
+    function appendComment(comment) {
+
+      const commentCard = document.createElement('div');
+      commentCard.className = 'comment d-flex align-items-start mb-4 p-0';
+      commentCard.setAttribute('data-comment-id', comment.id); // Add this
+      commentCard.setAttribute('data-username', comment.user.username);
+      commentCard.id = `comment-${comment.id}`; // Optional ID for direct access
+
+      // Comment Left (User Avatar)
+      const commentLeft = document.createElement('div');
+      commentLeft.className = 'comment-left me-3';
+
+      const avatarLink = document.createElement('a');
+      avatarLink.href = '#';
+
+      const avatarImg = document.createElement('img');
+      avatarImg.src = comment.user.profile_pic;  // Placeholder, replace with dynamic if needed
+      avatarImg.alt = 'User Avatar';
+      avatarImg.className = 'rounded-circle';
+      avatarImg.width = 50;
+      avatarImg.height = 50;
+
+      avatarLink.append(avatarImg);
+      commentLeft.append(avatarLink);
+
+      // Comment Centre (Text Content)
+      const commentCentre = document.createElement('div');
+      commentCentre.className = 'comment-centre flex-grow-1';
+
+      const userHeading = document.createElement('h6');
+      userHeading.className = 'mb-1';
+      const userLink = document.createElement('a');
+      userLink.href = '#';
+      userLink.style.textDecoration = 'none';
+      userLink.style.color = 'black';
+      userLink.classList.add('font-14')
+      userLink.textContent = comment.user.username;
+      const timeSmall = document.createElement('small');
+      timeSmall.className = 'text-muted font-14';
+      timeSmall.textContent = ` · ${formatReadableDate(comment.createdAt)}`; // Time format
+      userHeading.append(userLink, timeSmall);
+
+      const commentText = document.createElement('p');
+      commentText.className = 'mb-2 font-14';
+      commentText.textContent = comment.content;
+
+      const actionsDiv = document.createElement('div');
+      actionsDiv.className = 'd-flex align-items-start';
+
+      const likeBtn = document.createElement('span');
+      likeBtn.className = 'like-btn me-2';
+      likeBtn.onclick = () => toggleLike(likeBtn, comment.id);
+      likeBtn.innerHTML = `<i class="fas ${comment.isLiked ? 'fa-heart text-danger' : 'fa-heart text-secondary'} "></i> <span class="like-count">${comment.likesCount}</span>`;
+
+
+      const replyBtn = document.createElement('button');
+      replyBtn.className = 'btn btn-sm';
+      replyBtn.onclick = () => openReply(comment);
+      replyBtn.textContent = 'Reply';
+
+      actionsDiv.append(likeBtn, replyBtn);
+
+      const viewRepliesSpan = document.createElement('span');
+      viewRepliesSpan.className = 'reply-btn font-14';
+      viewRepliesSpan.textContent = `View Replies (${comment.repliesCount})`;
+      viewRepliesSpan.setAttribute('data-replies-length', comment.repliesCount); // Add this
+      viewRepliesSpan.id = `view-reply-${comment.id}-span`;
+      comment.replies = [];
+      viewRepliesSpan.onclick = async () => {
+        const res = await fetch(`/api/comments/replies`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ commentId: comment.id, post_id, page: 1 })
+        });
+
+        comment.replies = await res.json();
+        toggleReply(viewRepliesSpan);      
+        comment.replies.forEach(reply => {
+      repliesDiv.append(replyItem(reply, { id: comment.id }));
+       });
+
+      }
+
+      if (comment.repliesCount === 0) {
+        viewRepliesSpan.style.display = 'none';
+      }
+
+      // Replies Container (Hidden by Default)
+      const repliesDiv = document.createElement('div');
+      repliesDiv.className = 'replies mt-3 ps-3 border-start';
+      repliesDiv.id = `comment-${comment.id}-reply-body`; // Optional
+      repliesDiv.style.display = 'none';
+
+      comment.replies.forEach(reply => {
+      repliesDiv.append(replyItem(reply, { id: comment.id }));
+       });
+
+      commentCentre.append(userHeading, commentText, actionsDiv, viewRepliesSpan, repliesDiv);
+      commentCard.append(commentLeft, commentCentre);
+
+      return commentCard;
+
+    }
+
+    function replyItem(reply, comment) {
+      const replyItem = document.createElement('div');
+      replyItem.className = 'd-flex align-items-start mb-3';
+      replyItem.setAttribute('data-source-id', comment.id); // Add this
+      replyItem.setAttribute('data-reply-id', reply.id); // Add this
+      replyItem.setAttribute('data-username', reply.user.username);
+      replyItem.id = `reply-${reply.id}`; // Optional
+
+
+      const replyAvatarLink = document.createElement('a');
+      replyAvatarLink.href = '#';
+
+      const replyAvatarImg = document.createElement('img');
+      replyAvatarImg.src = reply.user.profile_pic;  // Placeholder, replace with dynamic if needed
+      replyAvatarImg.alt = 'Reply Avatar';
+      replyAvatarImg.className = 'rounded-circle me-2';
+      replyAvatarImg.width = 40;
+      replyAvatarImg.height = 40;
+
+      replyAvatarLink.append(replyAvatarImg);
+
+      const replyContent = document.createElement('div');
+
+      const replyUserHeading = document.createElement('h6');
+      replyUserHeading.className = 'mb-1';
+      const replyUserLink = document.createElement('a');
+      replyUserLink.href = '#';
+      replyUserLink.style.textDecoration = 'none';
+      replyUserLink.style.color = 'black';
+      replyUserLink.classList.add('font-14')
+      replyUserLink.textContent = reply.user.username;
+      const replyTimeSmall = document.createElement('small');
+      replyTimeSmall.className = 'text-muted font-14';
+      replyTimeSmall.textContent = ` · ${formatReadableDate(reply.createdAt)}`;
+      replyUserHeading.append(replyUserLink, replyTimeSmall);
+
+      const replyText = document.createElement('p');
+      replyText.className = 'mb-1 font-14';
+      replyText.textContent = `#${reply.user.username} ${reply.content}`;
+
+
+      const replyLikeBtn = document.createElement('span');
+      replyLikeBtn.className = 'like-btn me-2';
+      replyLikeBtn.onclick = () => toggleLike(replyLikeBtn, reply.id);
+      replyLikeBtn.innerHTML = `<i class="fas ${reply.isLiked ? 'fa-heart text-danger' : 'fa-heart text-secondary'} "></i> <span class="like-count">${reply.likesCount}</span>`;
+
+
+      replyContent.append(replyUserHeading, replyText, replyLikeBtn);
+      replyItem.append(replyAvatarLink, replyContent);
+      return replyItem;
+    }
+  </script>
+
+</body>
+
+</html>

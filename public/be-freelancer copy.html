@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Service Provider Registration — ProConnect</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Inline styles for clarity and customization -->
+  <style>
+    /* ============================
+       Global & layout styles
+       ============================ */
+    :root{
+      --primary: #0d6efd;
+      --accent: #ff6b6b;
+      --muted: #6c757d;
+      --card-radius: 12px;
+      --shadow: 0 6px 18px rgba(13,110,253,0.08);
+    }
+
+    body{
+      background: linear-gradient(180deg,#f8fafc 0%, #f1f5f9 100%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color: #212529;
+      padding-bottom: 64px; /* space for bottom toast */
+    }
+
+    /* Card container */
+    .registration-card{
+      border-radius: var(--card-radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    /* Step panels - hidden except active */
+    .step{
+      display: none;
+    }
+    .step.active{
+      display: block;
+    }
+
+    /* Progress bar label */
+    .progress .progress-bar{
+      font-weight: 600;
+    }
+
+    /* Skill badge */
+    .skill-badge{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding:.35rem .6rem;
+      border-radius:999px;
+      background: linear-gradient(90deg,#198754,#2ecc71);
+      color: #fff;
+      margin: .25rem;
+      font-weight:600;
+      user-select:none;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      font-size: .9rem;
+    }
+    .skill-badge button{
+      border: none;
+      background: transparent;
+      color: rgba(255,255,255,0.95);
+      cursor: pointer;
+      font-weight:700;
+      padding:0;
+      margin:0;
+    }
+
+    /* Requirement card */
+    .requirement-item{
+      margin-bottom: .75rem;
+      border-left: 4px solid #0d6efd;
+    }
+
+    /* Image preview */
+    #coverPreview{
+      max-height: 140px;
+      display:block;
+      margin-top: .75rem;
+      border-radius:8px;
+      object-fit:cover;
+    }
+
+    /* Small notes */
+    .muted {
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    /* Floating loader center of input */
+    .loader-inline{
+      display:inline-block;
+      width:1rem;
+      height:1rem;
+      border: .12rem solid rgba(0,0,0,0.08);
+      border-top-color: rgba(0,0,0,0.25);
+      border-radius:50%;
+      animation: spin 900ms linear infinite;
+    }
+    @keyframes spin{ to{ transform: rotate(360deg); } }
+
+    /* Responsive tweaks */
+    @media (max-width: 768px){
+      .card-body{ padding: 1rem; }
+      .skill-badge{ font-size:.85rem }
+    }
+
+    /* Extra long doc styles for labels to make the file larger and clearer */
+    /* --- end styles --- */
+  </style>
+</head>
+
+<body>
+  <!-- ============================
+       Top navbar (labelled)
+       ============================ -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#" aria-label="ProConnect Home">ProConnect</a>
+      <div class="ms-auto text-white small">Provider Registration — Step-by-step</div>
+    </div>
+  </nav>
+
+  <!-- ============================
+       Main container
+       ============================ -->
+  <main class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-xl-10 col-lg-11 col-md-12">
+
+        <!-- Card: Registration form -->
+        <div class="card registration-card">
+          <!-- Header -->
+          <div class="card-header bg-white border-0 d-flex align-items-center justify-content-between">
+            <div>
+              <h4 class="mb-0">Register as a Service Provider</h4>
+              <div class="muted">Complete your profile in 4 steps — add skills</div>
+            </div>
+            <div class="text-end">
+              <small class="text-muted">Form version <strong>1.0.0</strong></small>
+            </div>
+          </div>
+
+          <!-- Body -->
+          <div class="card-body">
+            <!-- Progress -->
+            <div class="mb-4">
+              <div class="progress" style="height:28px;">
+                <div id="progressBar" class="progress-bar bg-primary" role="progressbar" style="width:25%">Step 1 of 4</div>
+              </div>
+            </div>
+
+            <!-- Multi-step form (single-file, client-side) -->
+            <form id="providerForm" novalidate>
+
+              <!-- Hidden field: serviceId (from querystring) -->
+              <input type="hidden" id="serviceId" name="serviceId" value="">
+
+              <!-- ============================
+                   STEP 1 — Basic Info
+                   ============================ -->
+              <section class="step active" id="step1" aria-labelledby="step1Heading">
+                <h5 id="step1Heading" class="mb-3">Step 1 — Basic information</h5>
+
+                <!-- Service reference & sample approximate price label -->
+                <div class="mb-3">
+                  <label for="servicePrice" class="form-label">Approximate service price</label>
+                  <div id="servicePrice" class="form-control" aria-live="polite">Fetching service data...</div>
+                  <div class="muted mt-1">This is informational — set your own price below.</div>
+                </div>
+
+                <!-- Price -->
+                <div class="mb-3">
+                  <label for="price" class="form-label">Your Price <small class="text-muted">(required)</small></label>
+                  <div class="input-group">
+                    <span class="input-group-text">KES</span>
+                    <input type="number" id="price" class="form-control" placeholder="Enter your price" required min="0" step="1" aria-describedby="priceHelp">
+                  </div>
+                  <div id="priceHelp" class="form-text">Enter price in integer amount (e.g. 1500).</div>
+                </div>
+
+                <!-- Short Bio -->
+                <div class="mb-3">
+                  <label for="bio" class="form-label">Short bio <small class="text-muted">(required)</small></label>
+                  <textarea id="bio" class="form-control" rows="4" placeholder="Introduce yourself and your services" required></textarea>
+                </div>
+
+                <!-- Cover image + preview -->
+                <div class="mb-3">
+                  <label for="coverImage" class="form-label">Cover image <small class="text-muted">(recommended)</small></label>
+                  <input id="coverImage" class="form-control" type="file" accept="image/*">
+                  <img id="coverPreview" alt="Cover preview (will show selected image)" />
+                  <div class="muted">Image preview will appear after you pick a file. Max recommended size: 2MB.</div>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex justify-content-between">
+                  <div></div>
+                  <div>
+                    <button type="button" class="btn btn-primary nextBtn">Next</button>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ============================
+                   STEP 2 — Skills
+                   ============================ -->
+              <section class="step" id="step2" aria-labelledby="step2Heading">
+                <h5 id="step2Heading" class="mb-3">Step 2 — Skills (add & manage)</h5>
+
+                <!-- Display current list of skills -->
+                <div class="mb-3">
+                  <label class="form-label">Current skills</label>
+                  <div id="skillsList" class="d-flex flex-wrap align-items-center" aria-live="polite" role="list">
+                    <!-- skill badges are inserted here dynamically -->
+                  </div>
+                  <div class="muted mt-1">Use the form below to add a skill. You can attach a file and a supportive URL per skill.</div>
+                </div>
+
+                <!-- Add / Edit skill card -->
+                <div class="card mb-3 p-3">
+                  <h6 class="mb-2">Add new skill</h6>
+                  <div class="row g-2">
+                    <div class="col-md-5">
+                      <label for="skillTitle" class="form-label">Skill Title</label>
+                      <input id="skillTitle" class="form-control" type="text" placeholder="e.g. Hair styling, Plumbing" aria-label="Skill title">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="supportiveUrl" class="form-label">Supportive URL</label>
+                      <input id="supportiveUrl" class="form-control" type="url" placeholder="https://example.com/portfolio">
+                    </div>
+                    <div class="col-md-3">
+                      <label for="supportiveDoc" class="form-label">Document</label>
+                      <input id="supportiveDoc" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*" aria-label="Supportive document">
+                    </div>
+                  </div>
+
+                  <div class="mt-3 d-flex gap-2">
+                    <button id="addSkillBtn" type="button" class="btn btn-outline-success">Add skill</button>
+                    <button id="clearSkillFormBtn" type="button" class="btn btn-outline-secondary">Clear</button>
+                    <div class="ms-auto muted align-self-center" id="skillFormNote"></div>
+                  </div>
+                </div>
+
+                <!-- Controls -->
+                <div class="d-flex justify-content-between">
+                  <button type="button" class="btn btn-secondary prevBtn">Previous</button>
+                  <div>
+                    <button type="button" class="btn btn-primary nextBtn">Next</button>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ============================
+                   STEP 3 — Requirements
+                   ============================ -->
+              <section class="step" id="step3" aria-labelledby="step3Heading">
+                <h5 id="step3Heading" class="mb-3">Step 3 — Requirements (what you need from the client)</h5>
+
+                <div class="mb-3">
+                  <label class="form-label">Current requirements</label>
+                  <div id="requirementsList" aria-live="polite">
+                    <!-- requirements added dynamically -->
+                  </div>
+                  <div class="muted">You can ask for documents, prior images, time slots, or any special notes you need from the client.</div>
+                </div>
+
+                <div class="card mb-3 p-3">
+                  <h6 class="mb-2">Add new requirement</h6>
+                  <div class="mb-2">
+                    <label for="requirementTitle" class="form-label">Requirement title</label>
+                    <input id="requirementTitle" class="form-control" placeholder="e.g. Bring ID, Provide measurements">
+                  </div>
+                  <div class="mb-2">
+                    <label for="requirementDesc" class="form-label">Description / details</label>
+                    <textarea id="requirementDesc" class="form-control" rows="3" placeholder="Add further instructions..."></textarea>
+                  </div>
+
+                  <div class="d-flex gap-2">
+                    <button id="addRequirementBtn" type="button" class="btn btn-outline-success">Add Requirement</button>
+                    <button id="clearRequirementFormBtn" type="button" class="btn btn-outline-secondary">Clear</button>
+                    <div class="ms-auto muted align-self-center" id="requirementFormNote"></div>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                  <button type="button" class="btn btn-secondary prevBtn">Previous</button>
+                  <div>
+                    <button type="button" class="btn btn-primary nextBtn">Next</button>
+                  </div>
+                </div>
+              </section>
+
+              <!-- ============================
+                   STEP 4 — Portfolio & Location + Submit
+                   ============================ -->
+              <section class="step" id="step4" aria-labelledby="step4Heading">
+                <h5 id="step4Heading" class="mb-3">Step 4 — Portfolio, location & submit</h5>
+
+                <div class="mb-3">
+                  <label for="portfolio" class="form-label">Portfolio / Work URL</label>
+                  <input id="portfolio" class="form-control" type="url" placeholder="https://your-portfolio.example" required>
+                </div>
+
+                <div class="mb-3">
+                  <label for="location" class="form-label">Detected Location</label>
+                  <div class="input-group">
+                    <input id="location" class="form-control" type="text" placeholder="Detecting location..." readonly required>
+                    <button id="reDetectLocation" type="button" class="btn btn-outline-secondary" title="Re-detect location">Detect</button>
+                  </div>
+                  <div class="muted mt-1">Location is obtained via the browser's geolocation API and reverse geocoding.</div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Public profile preview</label>
+                  <div class="card p-3">
+                    <div class="d-flex gap-3 align-items-center">
+                      <div style="width:84px; height:84px; border-radius:8px; background:#e9ecef; overflow:hidden;">
+                        <img id="previewCoverSmall" src="" alt="preview small" style="width:100%;height:100%;object-fit:cover;display:none;">
+                        <div id="previewNoCover" class="muted p-3 text-center">No cover</div>
+                      </div>
+                      <div>
+                        <h6 id="previewTitle" class="mb-0">Your name — Service</h6>
+                        <div id="previewPrice" class="muted small">Price: —</div>
+                        <div id="previewSkills" class="muted small mt-1">Skills: —</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Submit / back -->
+                <div class="d-flex justify-content-between">
+                  <button type="button" class="btn btn-secondary prevBtn">Previous</button>
+                  <div>
+                    <button id="simulateSaveBtn" type="button" class="btn btn-outline-primary me-2">Save draft (local)</button>
+                    <button type="submit" class="btn btn-success">Submit for verification</button>
+                  </div>
+                </div>
+              </section>
+            </form>
+          </div>
+
+          <!-- Footer -->
+          <div class="card-footer bg-white border-0 text-muted small">
+            All fields marked required must be filled before final submission. Your data remains on this device unless you submit.
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast notifications (Bootstrap) -->
+  <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1080;">
+    <div id="growl" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="polite" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="growlMsg">Saved.</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Optional: modal for editing requirement / skill -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalTitle">Edit item</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Will be filled dynamically -->
+          <form id="editForm">
+            <div id="editBody"></div>
+            <div class="text-end mt-3">
+              <button type="button" class="btn btn-secondary me-2" data-bs-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap bundle JS (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Inline script: application logic and helpers -->
+  <script>
+    /* =====================================================
+       Application state (in-memory) — skills & requirements
+       ===================================================== */
+    let currentStep = 1;
+    const TOTAL_STEPS = 4;
+
+    // Data structures for skills and requirements
+    // Each skill: { id, title, supportiveUrl, supportiveFileName, supportiveFileDataUrl }
+    // Each requirement: { id, title, description }
+    let skills = [];          // will hold skill objects
+    let requirements = [];    // will hold requirement objects
+
+    // DOM helpers
+    const $ = (sel) => document.querySelector(sel);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+    // Bootstrap toast
+    const toastEl = document.getElementById('growl');
+    const bsToast = new bootstrap.Toast(toastEl, { delay: 4000 });
+
+    // Utility for generating unique IDs for items (not crypto secure; fine locally)
+    function uid(prefix='id'){
+      return prefix + '_' + Math.random().toString(36).slice(2,9);
+    }
+
+    /* ============================
+       Initialise: fetch service data from /api/services/:id
+       If the endpoint is not reachable, fallback to mock data.
+       ============================ */
+    async function fetchService(){
+      const serviceId = getQueryParam('id') || 'demo-service';
+      document.getElementById('serviceId').value = serviceId;
+
+      // Try to fetch remote info; otherwise fallback to demo data.
+      try {
+        const res = await fetch(`/api/services/${serviceId}`);
+        if(!res.ok) throw new Error('Service fetch failed');
+        const payload = await res.json();
+        // Expecting structure: { service: { name, price, priceUnit, description } }
+        const svc = payload.service || {};
+        document.getElementById('servicePrice').textContent = `Approximate Price (${svc.price ?? '—'} ${svc.priceUnit ?? ''})`;
+      } catch(err){
+        // Fallback demo data
+        const demo = {
+          name: "Carpentry (demo)",
+          price: 1500,
+          priceUnit: "KES",
+          description: "Demo service: carpentry and woodwork"
+        };
+        document.getElementById('servicePrice').textContent = `Approximate Price (${demo.price} ${demo.priceUnit}) — demo data`;
+      }
+    }
+
+    // Helper: read query param
+    function getQueryParam(name){
+      try {
+        const u = new URL(window.location.href);
+        return u.searchParams.get(name);
+      } catch (e) {
+        return null;
+      }
+    }
+
+    /* ============================
+       Navigation: show step, update progress
+       ============================ */
+    function showStep(step){
+      currentStep = Math.max(1, Math.min(TOTAL_STEPS, step));
+      $$('.step').forEach((el, idx) => {
+        el.classList.toggle('active', idx === (currentStep-1));
+      });
+      const progress = Math.round((currentStep / TOTAL_STEPS) * 100);
+      const pb = document.getElementById('progressBar');
+      pb.style.width = progress + '%';
+      pb.innerText = `Step ${currentStep} of ${TOTAL_STEPS}`;
+      // For accessibility: focus the first input of the step
+      const stepEl = document.querySelector('.step.active');
+      if(stepEl){
+        const firstInput = stepEl.querySelector('input,textarea,select,button');
+        if(firstInput) firstInput.focus();
+      }
+      // Update preview anytime we show step 4
+      if(currentStep === 4) updatePreview();
+    }
+
+    // Hook up nav buttons
+    document.addEventListener('click', (ev) => {
+      const t = ev.target;
+      if(t.closest('.nextBtn')){
+        ev.preventDefault();
+        // Validate quick checks before moving forward
+        if(currentStep === 1){
+          // check required fields on step 1
+          const price = document.getElementById('price').value.trim();
+          const bio = document.getElementById('bio').value.trim();
+          if(!price || !bio){
+            showGrowl('Please fill price and bio before proceeding', 'warning');
+            return;
+          }
+        }
+        if(currentStep < TOTAL_STEPS) showStep(currentStep + 1);
+      } else if(t.closest('.prevBtn')){
+        ev.preventDefault();
+        if(currentStep > 1) showStep(currentStep - 1);
+      }
+    });
+
+    /* ============================
+       Cover image preview logic
+       ============================ */
+    const coverInput = document.getElementById('coverImage');
+    const coverPreview = document.getElementById('coverPreview');
+    const previewSmall = document.getElementById('previewCoverSmall');
+    const previewNoCover = document.getElementById('previewNoCover');
+
+    coverInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if(!file){ coverPreview.src = ''; coverPreview.style.display = 'none'; previewSmall.style.display='none'; previewNoCover.style.display='block'; return; }
+
+      // Limit size client-side (optional)
+      if(file.size > 5 * 1024 * 1024){
+        showGrowl('Selected image is larger than 5MB. Please choose a smaller file', 'danger');
+        return;
+      }
+
+      const url = URL.createObjectURL(file);
+      coverPreview.src = url;
+      coverPreview.style.display = 'block';
+      previewSmall.src = url;
+      previewSmall.style.display = 'block';
+      previewNoCover.style.display = 'none';
+    });
+
+    /* ============================
+       Skills: add / remove / edit
+       - supports supportive URL and supportive file preview
+       ============================ */
+
+    const skillsListEl = document.getElementById('skillsList');
+    const skillTitleInput = document.getElementById('skillTitle');
+    const supportiveUrlInput = document.getElementById('supportiveUrl');
+    const supportiveDocInput = document.getElementById('supportiveDoc');
+    const addSkillBtn = document.getElementById('addSkillBtn');
+    const clearSkillFormBtn = document.getElementById('clearSkillFormBtn');
+
+    // Add skill
+    addSkillBtn.addEventListener('click', async () => {
+      const title = skillTitleInput.value.trim();
+      const url = supportiveUrlInput.value.trim();
+      const file = supportiveDocInput.files[0] || null;
+
+      if(!title){
+        showGrowl('Skill title cannot be empty', 'danger');
+        return;
+      }
+
+      // Convert file to DataURL for preview if present (keeps client-side only)
+      let fileDataUrl = null;
+      let fileName = null;
+      if(file){
+        fileName = file.name;
+        try{
+          fileDataUrl = await readFileAsDataURL(file);
+        } catch(e){
+          console.error('file read error',e);
+        }
+      }
+
+      const item = {
+        id: uid('skill'),
+        title,
+        supportiveUrl: url || null,
+        supportiveFileName: fileName,
+        supportiveFileDataUrl: fileDataUrl
+      };
+      skills.push(item);
+      renderSkills();
+      // reset form
+      skillTitleInput.value = '';
+      supportiveUrlInput.value = '';
+      supportiveDocInput.value = '';
+      showGrowl('Skill added', 'success');
+    });
+
+    // Clear skill form
+    clearSkillFormBtn.addEventListener('click', () => {
+      skillTitleInput.value = '';
+      supportiveUrlInput.value = '';
+      supportiveDocInput.value = '';
+    });
+
+    // Render skills list
+    function renderSkills(){
+      skillsListEl.innerHTML = '';
+      if(skills.length === 0){
+        const placeholder = document.createElement('div');
+        placeholder.className = 'muted';
+        placeholder.innerText = 'No skills added yet';
+        skillsListEl.appendChild(placeholder);
+        return;
+      }
+
+      skills.forEach((s) => {
+        const el = document.createElement('div');
+        el.className = 'skill-badge';
+        el.setAttribute('role','listitem');
+
+        // Title label
+        const titleSpan = document.createElement('span');
+        titleSpan.innerText = s.title;
+        titleSpan.style.marginRight = '8px';
+
+        // Supportive icons
+        const iconsWrap = document.createElement('span');
+        iconsWrap.style.display='inline-flex';
+        iconsWrap.style.gap='6px';
+        iconsWrap.style.alignItems='center';
+
+        if(s.supportiveUrl){
+          const a = document.createElement('a');
+          a.href = s.supportiveUrl;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          a.title = 'Supportive URL';
+          a.innerText = '🔗';
+          iconsWrap.appendChild(a);
+        }
+        if(s.supportiveFileDataUrl){
+          const fbtn = document.createElement('button');
+          fbtn.type='button';
+          fbtn.title = s.supportiveFileName || 'Attachment';
+          fbtn.innerText = '📎';
+          fbtn.className = 'btn btn-sm';
+          fbtn.style.padding = '0 .25rem';
+          fbtn.style.fontSize='.85rem';
+          fbtn.style.background = 'transparent';
+          fbtn.addEventListener('click', () => {
+            // create a download link
+            const a = document.createElement('a');
+            a.href = s.supportiveFileDataUrl;
+            a.download = s.supportiveFileName || 'attachment';
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+          });
+          iconsWrap.appendChild(fbtn);
+        }
+
+        // Edit button
+        const editBtn = document.createElement('button');
+        editBtn.className = 'btn';
+        editBtn.type = 'button';
+        editBtn.title = 'Edit skill';
+        editBtn.style.marginLeft = '8px';
+        editBtn.innerText = '✏️';
+        editBtn.addEventListener('click', () => openEditSkillModal(s.id));
+
+        // Remove button
+        const removeBtn = document.createElement('button');
+        removeBtn.className = 'btn';
+        removeBtn.type = 'button';
+        removeBtn.title = 'Remove skill';
+        removeBtn.style.marginLeft = '4px';
+        removeBtn.innerText = '✖';
+        removeBtn.addEventListener('click', () => {
+          if(confirm(`Remove skill "${s.title}"?`)){
+            skills = skills.filter(x => x.id !== s.id);
+            renderSkills();
+            showGrowl('Skill removed', 'info');
+          }
+        });
+
+        el.appendChild(titleSpan);
+        el.appendChild(iconsWrap);
+        el.appendChild(editBtn);
+        el.appendChild(removeBtn);
+
+        skillsListEl.appendChild(el);
+      });
+    }
+
+    // Open modal to edit a skill
+    function openEditSkillModal(skillId){
+      const skill = skills.find(s => s.id === skillId);
+      if(!skill) return;
+      const modal = new bootstrap.Modal(document.getElementById('editModal'));
+      document.getElementById('editModalTitle').innerText = 'Edit skill';
+      const body = document.getElementById('editBody');
+      body.innerHTML = `
+        <div class="mb-2">
+          <label class="form-label">Skill title</label>
+          <input id="editSkillTitle" class="form-control" value="${escapeHtml(skill.title)}">
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Supportive URL</label>
+          <input id="editSkillUrl" class="form-control" value="${escapeHtml(skill.supportiveUrl || '')}">
+        </div>
+        <div class="mb-2">
+          <label class="form-label">Replace supportive file</label>
+          <input id="editSkillFile" class="form-control" type="file" accept=".pdf,.doc,.docx,image/*">
+          <div class="muted mt-1">Current: ${escapeHtml(skill.supportiveFileName || 'none')}</div>
+        </div>
+      `;
+      // handle submit
+      const form = document.getElementById('editForm');
+      const onSubmit = async (ev) => {
+        ev.preventDefault();
+        const t = document.getElementById('editSkillTitle').value.trim();
+        const u = document.getElementById('editSkillUrl').value.trim();
+        const f = document.getElementById('editSkillFile').files[0] || null;
+        if(!t){ alert('Skill title cannot be empty'); return; }
+
+        let fileDataUrl = skill.supportiveFileDataUrl;
+        let fileName = skill.supportiveFileName;
+        if(f){
+          fileName = f.name;
+          fileDataUrl = await readFileAsDataURL(f);
+        }
+
+        // mutate
+        skill.title = t;
+        skill.supportiveUrl = u || null;
+        skill.supportiveFileName = fileName;
+        skill.supportiveFileDataUrl = fileDataUrl;
+
+        renderSkills();
+        modal.hide();
+        form.removeEventListener('submit', onSubmit);
+        showGrowl('Skill updated', 'success');
+      };
+      form.addEventListener('submit', onSubmit);
+      modal.show();
+    }
+
+    /* ============================
+       Requirements: add / remove / edit
+       ============================ */
+    const requirementsListEl = document.getElementById('requirementsList');
+    const addRequirementBtnEl = document.getElementById('addRequirementBtn');
+    const requirementTitleInput = document.getElementById('requirementTitle');
+    const requirementDescInput = document.getElementById('requirementDesc');
+    const clearRequirementFormBtnEl = document.getElementById('clearRequirementFormBtn');
+
+    addRequirementBtnEl.addEventListener('click', () => {
+      const title = requirementTitleInput.value.trim();
+      const desc = requirementDescInput.value.trim();
+      if(!title || !desc){ showGrowl('Both title and description required', 'danger'); return; }
+      const item = { id: uid('req'), title, desc };
+      requirements.push(item);
+      renderRequirements();
+      requirementTitleInput.value = '';
+      requirementDescInput.value = '';
+      showGrowl('Requirement added', 'success');
+    });
+
+    clearRequirementFormBtnEl.addEventListener('click', () => {
+      requirementTitleInput.value = '';
+      requirementDescInput.value = '';
+    });
+
+    function renderRequirements(){
+      requirementsListEl.innerHTML = '';
+      if(requirements.length === 0){
+        const p = document.createElement('div');
+        p.className = 'muted';
+        p.innerText = 'No requirements added yet';
+        requirementsListEl.appendChild(p);
+        return;
+      }
+      requirements.forEach(r => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'card p-3 mb-2 requirement-item';
+        wrapper.innerHTML = `
+          <div class="d-flex justify-content-between">
+            <div>
+              <strong>${escapeHtml(r.title)}</strong>
+              <div class="muted small mt-1">${escapeHtml(r.desc)}</div>
+            </div>
+            <div class="d-flex gap-2 align-items-start">
+              <button type="button" class="btn btn-sm btn-outline-secondary edit-req" data-id="${r.id}">✏️</button>
+              <button type="button" class="btn btn-sm btn-outline-danger del-req" data-id="${r.id}">✖</button>
+            </div>
+          </div>
+        `;
+        requirementsListEl.appendChild(wrapper);
+      });
+
+      // attach handlers for edit/delete (delegation)
+      requirementsListEl.querySelectorAll('.del-req').forEach(btn => {
+        btn.addEventListener('click', (ev) => {
+          const id = btn.getAttribute('data-id');
+          if(confirm('Remove this requirement?')){
+            requirements = requirements.filter(x => x.id !== id);
+            renderRequirements();
+            showGrowl('Requirement removed', 'info');
+          }
+        });
+      });
+
+      requirementsListEl.querySelectorAll('.edit-req').forEach(btn => {
+        btn.addEventListener('click', (ev) => {
+          const id = btn.getAttribute('data-id');
+          openEditRequirementModal(id);
+        });
+      });
+    }
+
+    function openEditRequirementModal(reqId){
+      const r = requirements.find(x => x.id === reqId);
+      if(!r) return;
+      const modal = new bootstrap.Modal(document.getElementById('editModal'));
+      document.getElementById('editModalTitle').innerText = 'Edit requirement';
+      const body = document.getElementById('editBody');
+      body.innerHTML = `
+        <div class="mb-2"><label class="form-label">Title</label><input id="editReqTitle" class="form-control" value="${escapeHtml(r.title)}"></div>
+        <div class="mb-2"><label class="form-label">Description</label><textarea id="editReqDesc" class="form-control" rows="4">${escapeHtml(r.desc)}</textarea></div>
+      `;
+      const form = document.getElementById('editForm');
+      const onSubmit = (ev) => {
+        ev.preventDefault();
+        const t = document.getElementById('editReqTitle').value.trim();
+        const d = document.getElementById('editReqDesc').value.trim();
+        if(!t || !d){ alert('Both fields required'); return; }
+        r.title = t;
+        r.desc = d;
+        renderRequirements();
+        modal.hide();
+        form.removeEventListener('submit', onSubmit);
+        showGrowl('Requirement updated', 'success');
+      };
+      form.addEventListener('submit', onSubmit);
+      modal.show();
+    }
+
+    /* ============================
+       Read file helper (returns DataURL)
+       ============================ */
+    function readFileAsDataURL(file){
+      return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = reject;
+        fr.readAsDataURL(file);
+      });
+    }
+
+    /* ============================
+       Preview: update the small profile preview
+       ============================ */
+    function updatePreview(){
+      const title = "Your Name — " + (document.getElementById('servicePrice').innerText || '');
+      document.getElementById('previewTitle').innerText = title;
+      const price = document.getElementById('price').value || '—';
+      document.getElementById('previewPrice').innerText = `Price: ${price}`;
+      const skillsText = skills.length ? skills.map(s => s.title).slice(0,5).join(', ') : '—';
+      document.getElementById('previewSkills').innerText = `Skills: ${skillsText}`;
+    }
+
+    /* ============================
+       Location detection (uses geolocation and Nominatim reverse geocoding)
+       ============================ */
+    const locationInput = document.getElementById('location');
+    const reDetectBtn = document.getElementById('reDetectLocation');
+
+    async function detectLocation(){
+      locationInput.value = 'Detecting...';
+      try {
+        if(!navigator.geolocation){
+          locationInput.value = '';
+          showGrowl('Geolocation not supported by this browser', 'warning');
+          return;
+        }
+        await new Promise((resolve, reject) => navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 15000 }));
+        // the success callback sets the position via callback below
+      } catch(err){
+        locationInput.value = '';
+        showGrowl('Could not determine location (permission denied or timeout)', 'warning');
+      }
+    }
+
+    // We'll create a wrapper to get position and do reverse geocode
+    function detectLocationAndReverse(){
+      locationInput.value = 'Detecting...';
+      if(!navigator.geolocation){
+        locationInput.value = '';
+        showGrowl('Geolocation not available', 'danger');
+        return;
+      }
+      navigator.geolocation.getCurrentPosition(async (pos) => {
+        const { latitude, longitude } = pos.coords;
+        // call Nominatim reverse geocoding (public) — keep minimal
+        try {
+          const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`;
+          const res = await fetch(url, { headers: { 'Accept': 'application/json' }});
+          const data = await res.json();
+          locationInput.value = data.display_name || `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+        } catch(err){
+          locationInput.value = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+        }
+      }, (err) => {
+        if(err && err.code === 1){
+          showGrowl('Location permission denied', 'warning');
+        } else {
+          showGrowl('Unable to fetch location', 'warning');
+        }
+        locationInput.value = '';
+      }, { timeout: 20000, maximumAge: 600000 });
+    }
+
+    reDetectBtn.addEventListener('click', () => detectLocationAndReverse());
+
+    /* ============================
+       Save draft (to localStorage)
+       This allows user to save locally before final submission
+       ============================ */
+    const simulateSaveBtn = document.getElementById('simulateSaveBtn');
+
+    simulateSaveBtn.addEventListener('click', () => {
+      const draft = {
+        createdAt: new Date().toISOString(),
+        price: document.getElementById('price').value,
+        bio: document.getElementById('bio').value,
+        portfolio: document.getElementById('portfolio').value,
+        location: document.getElementById('location').value,
+        skills,
+        requirements,
+      };
+      localStorage.setItem('providerDraft', JSON.stringify(draft));
+      showGrowl('Draft saved locally', 'success');
+    });
+
+    // optional: auto-load draft if present
+    function loadDraftIfAny(){
+      const raw = localStorage.getItem('providerDraft');
+      if(!raw) return;
+      try {
+        const d = JSON.parse(raw);
+        if(confirm('A saved draft was found. Load it?')){
+          document.getElementById('price').value = d.price || '';
+          document.getElementById('bio').value = d.bio || '';
+          document.getElementById('portfolio').value = d.portfolio || '';
+          document.getElementById('location').value = d.location || '';
+          skills = d.skills || [];
+          requirements = d.requirements || [];
+          renderSkills();
+          renderRequirements();
+          showGrowl('Draft loaded', 'success');
+        }
+      } catch(e){ console.warn('invalid draft', e); }
+    }
+
+    /* ============================
+       Form submission
+       - validates required fields
+       - constructs a FormData (or JSON) payload
+       - sends to /provider/join (mock if not available)
+       ============================ */
+    const formEl = document.getElementById('providerForm');
+    formEl.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+
+      // Basic validation
+      const price = document.getElementById('price').value.trim();
+      const bio = document.getElementById('bio').value.trim();
+      const portfolio = document.getElementById('portfolio').value.trim();
+      const location = document.getElementById('location').value.trim();
+
+      if(!price || !bio || !portfolio || !location){
+        showGrowl('Please complete all required fields before submitting', 'danger');
+        // jump to the first incomplete step
+        if(!price || !bio) showStep(1);
+        else if(skills.length === 0) showStep(2);
+        else if(requirements.length === 0) showStep(3);
+        else showStep(4);
+        return;
+      }
+
+      // Build payload — we'll include base64 of supportive files and cover image for demo purposes
+      const payload = {
+        serviceId: document.getElementById('serviceId').value,
+        price,
+        bio,
+        portfolio,
+        location,
+        skills: skills.map(s => ({
+          title: s.title,
+          supportiveUrl: s.supportiveUrl,
+          supportiveFileName: s.supportiveFileName,
+          supportiveFileDataUrl: s.supportiveFileDataUrl
+        })),
+        requirements: requirements.map(r => ({ title: r.title, description: r.desc })),
+        createdAt: new Date().toISOString()
+      };
+
+      // Attach cover image if present (base64)
+      const coverFile = coverInput.files[0];
+      if(coverFile){
+        try {
+          payload.cover = {
+            name: coverFile.name,
+            dataUrl: await readFileAsDataURL(coverFile)
+          };
+        } catch(e){
+          console.warn('cover read failed', e);
+        }
+      }
+
+      // Post to server endpoint (attempt); if it fails, emulate success and show result
+      try {
+        const res = await fetch('/provider/join', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if(res.ok){
+          showGrowl('Submitted successfully — verification pending', 'success');
+          // Optionally clear draft
+          localStorage.removeItem('providerDraft');
+          // Move to first step and reset interface (keeps user experience)
+          showStep(1);
+          // Optionally, show server response (not necessary)
+        } else {
+          // fallback: server responded with error
+          const txt = await res.text();
+          showGrowl('Server error: ' + (txt || res.statusText), 'danger');
+        }
+      } catch(err){
+        // Network or server unavailable — show simulated success but clearly label it as demo
+        console.warn('submit failed', err);
+        console.log('Simulated payload (local):', payload);
+        showGrowl('No server available — submission simulated locally (check console)', 'info');
+      }
+    });
+
+    /* ============================
+       Small utilities & helpers
+       ============================ */
+
+    // show bootstrap toast with message and type (success, info, warning, danger)
+    function showGrowl(message='Saved', type='success'){
+      const el = document.getElementById('growl');
+      const body = document.getElementById('growlMsg');
+      body.innerText = message;
+      // set color classes
+      el.classList.remove('text-bg-success','text-bg-info','text-bg-warning','text-bg-danger');
+      if(type === 'success') el.classList.add('text-bg-success');
+      else if(type === 'info') el.classList.add('text-bg-info');
+      else if(type === 'warning') el.classList.add('text-bg-warning');
+      else if(type === 'danger') el.classList.add('text-bg-danger');
+      bsToast.show();
+    }
+
+    // escape HTML to prevent injection when rendering innerHTML
+    function escapeHtml(str){
+      if(!str && str !== 0) return '';
+      return String(str)
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;')
+        .replace(/"/g,'&quot;')
+        .replace(/'/g,'&#039;');
+    }
+
+    /* ============================
+       On page load: initial tasks
+       1. fetch service info
+       2. detect location (ask permission)
+       3. bind other events, load any draft
+       ============================ */
+    (function init(){
+      fetchService();
+      // detect && reverse geocode
+      detectLocationAndReverse();
+      // load draft
+      loadDraftIfAny();
+      // initial render for lists (empty)
+      renderSkills();
+      renderRequirements();
+
+      // Accessibility: allow Enter to add skill (when focus in skillTitle)
+      skillTitleInput.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter') {
+          e.preventDefault();
+          addSkillBtn.click();
+        }
+      });
+
+      // Update preview whenever price, bio, or skills change
+      document.getElementById('price').addEventListener('input', updatePreview);
+      document.getElementById('bio').addEventListener('input', updatePreview);
+
+    })();
+
+    /* ====================================================
+       End of script
+       ==================================================== */
+  </script>
+</body>
+</html>

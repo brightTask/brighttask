@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>SideHustle360 - Home</title>
+    <!-- In your <head> tag -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Rfw7e78E8vbqYo3G1PxXK3gH/9ka1r8i6FbW4UjL7SYmuH2ArFLcpl5K4H5lqG6PqMyM1jhKL+Y5ReZT24ctEw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Add this in the <head> of your HTML -->
+
+    <style>
+        :root {
+            --primary: #00bfa6;
+            --secondary: #1f2937;
+        }
+
+        .btn-outline-primary {
+            border: 1px solid var(--primary);
+        }
+
+        .btn-primary {
+            background: var(--primary) !important;
+            border: 1px solid var(--primary) !important;
+        }
+
+        .text-primary {
+            color: var(--primary) !important;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background: #f4f6fa;
+            color: #222;
+            margin: 0 !important;
+            user-select: none;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        .left-card {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            padding: 2rem 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .profile-verified {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-left: 0.3rem;
+        }
+
+        .profile-skills {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-bio {
+            font-size: 0.97rem;
+            color: #444;
+            margin-bottom: 0.7rem;
+        }
+
+        .profile-socials a {
+            color: var(--secondary);
+            margin: 0 0.3rem;
+            font-size: 1.2rem;
+            transition: color 0.2s;
+        }
+
+        .profile-socials a:hover {
+            color: var(--primary);
+        }
+
+        .referral-link {
+            background: #f1f3f7;
+            border-radius: 0.5rem;
+            padding: 0.5rem 0.7rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 0.3rem;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #009e8e;
+        }
+
+        .main-feed {
+            min-height: 100vh;
+            padding: 0 !important;
+        }
+
+        .article-card {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            margin-bottom: 2rem;
+            padding: 1.5rem 1.2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-author {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .author-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 0.8rem;
+            border: 2px solid var(--primary);
+        }
+
+        .author-name {
+            font-weight: 600;
+            color: var(--secondary);
+            font-size: 1.05rem;
+        }
+
+        .author-role {
+            font-size: 0.92rem;
+            color: #888;
+        }
+
+        .article-content {
+            font-size: 1.07rem;
+            color: #222;
+            margin-bottom: 1rem;
+        }
+
+        .article-img {
+            width: 100%;
+            border-radius: 0.7rem;
+            margin-bottom: 1rem;
+            object-fit: cover;
+            max-height: 350px;
+        }
+
+        .article-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .article-actions .bi {
+            margin-right: 0.3rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .article-actions .bi:hover {
+            color: var(--primary);
+        }
+
+        .promoted-ad {
+            background: linear-gradient(90deg, #00bfa6 0%, #1f2937 100%);
+            color: #fff;
+            border-radius: 0.8rem;
+            padding: 1.2rem 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .promoted-ad .bi {
+            font-size: 2rem;
+            opacity: 0.8;
+        }
+
+        .right-aside {
+            position: sticky;
+            top: 80px;
+        }
+
+        .right-actions {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            padding: 1.2rem 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .right-banner {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            padding: 0.5rem;
+            display: none;
+            gap: 0.8rem;
+        }
+
+        .right-actions .btn {
+            font-weight: 600;
+            font-size: 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .self-services {
+            background: #f1f3f7;
+            border-radius: 1rem;
+            padding: 1rem 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .self-services h6 {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.7rem;
+        }
+
+        .self-services ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .self-services li {
+            margin-bottom: 0.5rem;
+            font-size: 0.97rem;
+        }
+
+        .recommended {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            padding: 1.2rem 1rem;
+        }
+
+        .recommended h6 {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.7rem;
+        }
+
+        .recommended-user {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.7rem;
+            gap: 0.7rem;
+        }
+
+        .recommended-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+
+        .recommended-details {
+            flex: 1;
+        }
+
+        .recommended-name {
+            font-weight: 500;
+            font-size: 0.98rem;
+            color: var(--secondary);
+        }
+
+        .recommended-role {
+            font-size: 0.89rem;
+            color: #888;
+        }
+
+        .follow-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 0.3rem;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .follow-btn:hover {
+            background: #009e8e;
+        }
+
+        .self-services {
+            background: white;
+        }
+
+        .self-services ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px !important;
+        }
+
+        .self-services ul li {
+            flex: 1 1 auto !important;
+            border: #def0ee 1px solid !important;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+
+        .profile {
+            list-style: none;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .rows {
+            display: flex;
+            position: relative;
+            margin: 10px;
+            gap: 10px;
+        }
+
+        @media (max-width: 991.98px) {
+            .profile span {
+                display: none;
+            }
+
+
+            .profile i {
+                font-size: 25px;
+            }
+
+            .article-actions,
+            .article-author,
+            .article-content {
+                padding-left: 10px;
+            }
+
+            .rows {
+                display: flex !important;
+                flex-direction: column-reverse !important;
+                margin: 0 !important;
+            }
+
+            .promoted-ad {
+                margin: 5px;
+                margin-bottom: 0;
+                margin-top: 10px;
+            }
+
+            #profileCard2 {
+                margin: 5px;
+                margin-bottom: 0;
+                margin-top: 0;
+            }
+
+            .left-aside {
+                display: none;
+            }
+
+            .right-aside {
+                position: relative;
+                top: 0;
+            }
+
+            .self-services ul {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: scroll;
+                gap: 7px !important;
+            }
+
+            .self-services ul::-webkit-scrollbar {
+                display: none;
+            }
+
+            .self-services ul li {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 5px !important;
+            }
+
+            .right-actions {
+                display: flex !important;
+                flex-direction: row !important;
+
+            }
+
+            .right-actions * {
+                flex: 1 1 auto !important;
+
+            }
+
+            .main-feed {
+                padding: 0 0.5rem;
+            }
+
+            .right-banner {
+                display: flex;
+            }
+
+            .banner-pic {
+                height: 40px !important;
+                width: 40px !important;
+                border-radius: 20px;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+
+            .search-bar {
+                min-width: 100px;
+                max-width: 120px;
+            }
+
+            .article-card,
+            .promoted-ad {
+                padding: 1rem 0.7rem;
+            }
+        }
+
+        @media (max-width: 575.98px) {
+
+            .article-card,
+            .promoted-ad {
+                padding: 0.7rem 0.3rem;
+            }
+
+        }
+
+        .post {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            font-weight: 600;
+            color: #e4c204;
+        }
+
+
+        /* Make the left-aside sticky on large screens */
+        @media (min-width: 992px) {
+
+            .rows {
+                display: flex;
+                flex-wrap: nowrap;
+                margin: 10px;
+                margin-right: 30px;
+                gap: 10px;
+            }
+
+            .left-aside,
+            .right-aside {
+                position: sticky;
+                top: 0;
+                align-self: flex-start;
+                z-index: 10;
+            }
+
+        }
+
+        .carousel-container {
+            position: relative;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            display: flex;
+            padding: 10px 0;
+        }
+
+        .carousel-track {
+            display: flex;
+            flex-wrap: nowrap;
+            scroll-snap-type: x mandatory;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .carousel-image {
+            flex-shrink: 0;
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            object-fit: cover;
+            scroll-snap-align: start;
+        }
+
+
+        .article-content {
+            font-size: 15px;
+            transition: max-height 0.3s ease;
+        }
+
+
+        .shared-post {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            background-color: #fff;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .shared-post .article-author {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .shared-post .author-avatar-small {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .shared-post .author-name {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .shared-post .author-role {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .shared-post .article-content-container {
+            margin-top: 8px;
+        }
+
+        .shared-post .article-content {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .shared-post .carousel-container {
+            margin-top: 10px;
+        }
+
+        .shared-post .carousel-track {
+            display: flex;
+            overflow-x: auto;
+            gap: 6px;
+        }
+
+        .shared-post .carousel-image {
+            width: 100%;
+            border-radius: 6px;
+            object-fit: cover;
+        }
+
+        .bg-gray-100 {
+            background: #eceeee;
+        }
+
+        .pt-4 {
+            padding-top: 2rem !important;
+        }
+
+        .see-more {
+            white-space: nowrap;
+            /* Prevents the text from breaking across lines */
+            display: inline;
+            /* Keep it inline */
+        }
+
+        .tag-pic {
+            margin-right: -15px !important;
+            border: 1px solid var(--primary);
+        }
+
+        .remaining {
+            margin-left: 15px !important;
+            font-weight: bold;
+            color: #5d5e5e;
+        }
+
+        .text-blue {
+            color: rgb(40, 147, 235);
+        }
+        .overflow-auto::-webkit-scrollbar {
+            display: none !important;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Main Layout -->
+    <section class="rows">
+        <!-- Left Aside: Profile -->
+        <aside id="leftCard" class="col-lg-3 d-lg-block left-aside">
+        </aside>
+        <!-- Main Feed -->
+        <main class="col-lg-6 main-feed">
+            <!-- Articles Feed (Infinite Scroll) -->
+            <div id="articles-feed"></div>
+            <!-- Loader for Infinite Scroll -->
+            <div id="loader" class="text-center my-4" style="display:none;">
+                <div class="spinner-border text-primary" role="status"></div>
+            </div>
+        </main>
+        <!-- Right Aside: Actions & Recommendations -->
+        <aside class="col-lg-3 d-lg-block right-aside">
+            <div class="overflow-auto py-3" style="max-height: 100vh;">
+                <!-- Promoted Advertisement -->
+                <div class="promoted-ad mb-3">
+                    <i class="bi bi-megaphone"></i>
+                    <div>
+                        <strong></strong> <span>Get 20% off on your first gig! <a href="#"
+                                class="text-white text-decoration-underline">Learn more</a></span>
+                    </div>
+                </div>
+                <div id="profileCard2" class="mb-2">
+                </div>
+                <div class="self-services mb-3">
+                    <h6>Free Self Services</h6>
+                    <ul>
+                        <li><i class="bi bi-check-circle text-success"></i> Resume Builder</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Portfolio Templates</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Skill Assessment</li>
+                        <li><i class="bi bi-check-circle text-success"></i> Interview Prep</li>
+                    </ul>
+                </div>
+            </div>
+        </aside>
+
+    </section>
+
+    <!-- Bootstrap JS and Infinite Scroll Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function openParentModal(post = null) {
+            window.parent.postMessage(
+                {
+                    action: "openPostModal",
+                    post: post
+                },
+                "*"
+            );
+        }
+
+        let page = 1;
+        let loading = false;
+        let hasMore = true;
+        const posts = [];
+        let user = null;
+
+        async function getPosts() {
+            if (loading || !hasMore) return;
+
+
+            loading = true;
+            document.getElementById('loader').style.display = 'block';
+
+            try {
+                const res = await fetch(`/api/posts?page=${page}`);
+                const data = await res.json();
+
+                if (!user) {
+                    user = data.user;
+                    document.getElementById('profileCard2').innerHTML = `
+  <div class="card border-0 shadow-sm rounded-3 overflow-hidden m-0">
+    <div class="position-relative">
+      <img src="https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTAxL3Jhd3BpeGVsb2ZmaWNlOF9taW5pbWFsX2lsbHVzdHJhdGlvbl9vZl9zaW1wbGVfYWJzdHJhY3RfY3VydmVfbF9hYmZiNmQzZS1jMjk3LTQ0NTktYTU3ZC02YjU0ZTRjZTg2MjNfMS5qcGc.jpg" alt="User Banner" class="w-100" style="height: 50px; object-fit: cover;">
+      <div class="position-absolute" style="bottom: -30px; left: 20px;">
+        <img src="${user.profile_pic}" alt="User Avatar" class="rounded-circle border border-white shadow-sm" style="width: 60px; height: 60px; object-fit: cover;">
+      </div>
+    </div>
+    <div class="d-flex justify-content-between align-items-center px-3 pt-4">
+      <div>
+        <h6 class="mb-1 text-dark fw-bolder">${user.username} (${user.role === 'hustler' ? 'Service Provider' : user.role})</h6>
+                <div class="profile-socials mb-2 text-muted">Vicali478@gmail.com<small></small>
+                </div>
+      </div>
+      <button class="btn  btn-sm text-primary " title="Create Post">
+    <span class="post"><i class="fas fa-images text-primary"></i></span>
+                </button>
+    </div>
+<div onclick="openParentModal()" class="d-flex align-items-center p-2 bg-white">
+  <span class="form-control border-0 bg-gray-100 rounded-pill px-3 py-2 w-100 text-muted" style="cursor: text;">
+    Share an idea...
+  </span>
+</div>
+
+  </div>
+`;
+
+                    document.getElementById('leftCard').innerHTML = `
+
+<div class="left-card d-none d-md-block overflow-auto" 
+     style="max-height: 100vh; padding: 10px;">
+
+  <!-- Sponsored -->
+  <div class="card mb-3 shadow-sm">
+    <div class="card-header fw-bold">Sponsored</div>
+    <div class="card-body text-center">
+      <img src="sponsored-ad.jpg" class="img-fluid rounded mb-2" alt="Ad">
+      <p class="small text-muted">Promote your gig here</p>
+      <button class="btn btn-sm btn-primary w-100">Learn More</button>
+    </div>
+  </div>
+<!-- Suggested Connections -->
+<div class="card mb-3 shadow-sm">
+  <div class="card-header d-flex justify-content-between align-items-center bg-light">
+    <span class="fw-bold">
+      <i class="bi bi-people-fill me-1 text-primary"></i> Suggested Connections
+    </span>
+  </div>
+
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item d-flex align-items-center">
+      <img src="https://img.freepik.com/free-photo/smiling-young-male-professional-standing-with-arms-crossed-while-making-eye-contact-against-isolated-background_662251-838.jpg" class="rounded-circle me-3" width="48" height="48" alt="User">
+<div class="flex-grow-1 d-flex flex-column align-items-start">
+  <div class="fw-semibold">Jane Doe</div>
+  <small class="text-muted">Software Engineer</small>
+</div>
+  <button class="btn btn-sm btn-outline-success mt-2">Connect</button>
+
+    </li>
+    <li class="list-group-item d-flex align-items-center">
+      <img src="https://img.freepik.com/free-photo/smiling-young-male-professional-standing-with-arms-crossed-while-making-eye-contact-against-isolated-background_662251-838.jpg" class="rounded-circle me-3" width="48" height="48" alt="User">
+      <div class="flex-grow-1 d-flex flex-column align-items-start">
+        <div class="fw-semibold">John Smith</div>
+        <small class="text-muted d-block">Digital Marketer</small>
+      </div>
+        <button class="btn btn-sm btn-outline-success mt-2">Connect</button>
+    </li>
+    <li class="list-group-item d-flex align-items-center">
+      <img src="https://img.freepik.com/free-photo/smiling-young-male-professional-standing-with-arms-crossed-while-making-eye-contact-against-isolated-background_662251-838.jpg" class="rounded-circle me-3" width="48" height="48" alt="User">
+      <div class="flex-grow-1 d-flex flex-column align-items-start">
+        <div class="fw-semibold">Sarah Lee</div>
+        <small class="text-muted d-block">UX Designer</small>
+      </div>
+        <button class="btn btn-sm btn-outline-success mt-2">Connect</button>
+    </li>
+  </ul>
+
+  <div class="card-footer text-center bg-white">
+    <button class="btn btn-link text-primary text-decoration-none small">Show more</button>
+  </div>
+</div>
+<!-- Top Freelancers -->
+<div class="card mb-3 shadow-sm">
+  <div class="card-header d-flex justify-content-between align-items-center bg-light">
+    <span class="fw-bold">
+      <i class="bi bi-stars me-1 text-warning"></i> Hire Professionals
+    </span>
+  </div>
+
+  <ul class="list-group list-group-flush">
+    <!-- Freelancer 1 -->
+    <li class="list-group-item d-flex align-items-center">
+      <img src="https://img.freepik.com/free-photo/smiling-young-male-professional-standing-with-arms-crossed-while-making-eye-contact-against-isolated-background_662251-838.jpg" class="rounded-circle me-3" width="48" height="48" alt="Freelancer">
+      <div class="flex-grow-1 d-flex flex-column align-items-start">
+        <div class="fw-semibold">Alice</div>
+        <small class="text-muted d-block">Web Developer</small>
+      </div>
+      <div class="mt-2 d-flex flex-column gap-2">
+          <button class="btn btn-sm btn-outline-primary">Follow</button>
+          <button class="btn btn-sm btn-success">Hire</button>
+        </div>
+    </li>
+
+    <!-- Freelancer 2 -->
+    <li class="list-group-item d-flex align-items-center">
+      <img src="https://img.freepik.com/free-photo/smiling-young-male-professional-standing-with-arms-crossed-while-making-eye-contact-against-isolated-background_662251-838.jpg" class="rounded-circle me-3" width="48" height="48" alt="Freelancer">
+      <div class="flex-grow-1 d-flex flex-column align-items-start">
+        <div class="fw-semibold">Mike</div>
+        <small class="text-muted d-block">Designer</small>
+      </div>
+        <div class="mt-2 d-flex flex-column gap-2">
+          <button class="btn btn-sm btn-outline-primary">Follow</button>
+          <button class="btn btn-sm btn-success">Hire</button>
+        </div>
+    </li>
+
+    <!-- Freelancer 3 -->
+    <li class="list-group-item d-flex align-items-center">
+      <img src="https://img.freepik.com/free-photo/smiling-young-male-professional-standing-with-arms-crossed-while-making-eye-contact-against-isolated-background_662251-838.jpg" class="rounded-circle me-3" width="48" height="48" alt="Freelancer">
+      <div class="flex-grow-1 d-flex flex-column align-items-start">
+        <div class="fw-semibold">Sophia</div>
+        <small class="text-muted d-block">Content Writer</small>
+      </div>
+        <div class="mt-2 d-flex flex-column gap-2">
+          <button class="btn btn-sm btn-outline-primary">Follow</button>
+          <button class="btn btn-sm btn-success">Hire</button>
+        </div>
+    </li>
+  </ul>
+
+  <div class="card-footer text-center bg-white">
+    <button class="btn btn-link text-primary text-decoration-none small">Show more</button>
+  </div>
+</div>
+
+</div>
+
+`;
+
+                }
+
+                if (data.posts && data.posts.length > 0) {
+                    posts.push(...data.posts);
+                    renderPosts(data.posts);
+                    page++;
+
+                    if (page > data.totalPages || data.posts.length < 10) {
+                        hasMore = false;
+                        console.log('No more posts to load');
+                    }
+                } else {
+                    hasMore = false;
+                    console.log('No posts returned.');
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+            } finally {
+                loading = false;
+                document.getElementById('loader').style.display = 'none';
+            }
+        }
+
+        function copyReferral() {
+            const linkText = document.getElementById('ref-link').textContent;
+            navigator.clipboard.writeText(linkText).then(() => {
+                alert('Referral link copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+
+        function controlContent(content, postId) {
+            const words = content.trim().split(/\s+/);
+            if (words.length <= 10) return content;
+
+            const shortText = words.slice(0, 10).join(" ");
+            const fullText = content;
+
+            return `
+    <span onclick="toggleSeeMore(${postId})" id="short-${postId}">${shortText}...</span>
+    <span onclick="toggleSeeMore(${postId})" id="full-${postId}" style="display: none;">${fullText}</span>
+    <span 
+      class="text-muted fw-semibold see-more" 
+      style="white-space: nowrap; cursor: pointer;" onclick="toggleSeeMore(${postId})"
+    >see more</span>
+  `;
+        }
+
+
+        function toggleSeeMore(postId) {
+            const shortEl = document.getElementById(`short-${postId}`);
+            const fullEl = document.getElementById(`full-${postId}`);
+            const toggleEl = document.querySelector(`#full-${postId} ~ .see-more`);
+
+            const isExpanded = fullEl.style.display === 'inline';
+
+            if (isExpanded) {
+                fullEl.style.display = 'none';
+                shortEl.style.display = 'inline';
+                toggleEl.textContent = 'see more';
+            } else {
+                fullEl.style.display = 'inline';
+                shortEl.style.display = 'none';
+                toggleEl.textContent = '';
+            }
+        }
+
+        function createPost(post) {
+            return `
+            <div class="article-card">
+                <div class="article-author">
+                    <img src="${post.author?.profile_pic || 'https://via.placeholder.com/50'}" class="author-avatar" alt="Author">
+                    <div>
+                        <div class="author-name">${post.author?.username || 'Unknown'} ${post.author?.verified ? `<i class="bi bi-patch-check-fill profile-verified"></i>` : ''}</div>
+                        <div class="author-role">${post.createdAt}</div>
+                    </div>
+                </div>
+                    <div class="article-content">
+                        ${controlContent(post.content, post.id)}
+                    </div>
+                    ${Array.isArray(post.images) && post.images.filter(img => img).length > 0 ? `
+                    <div class="carousel-container">
+                        <div class="carousel-track">
+                        ${post.images
+                        .filter(img => img) // remove null/undefined/empty
+                        .map(img => `<img src="${img}" class="carousel-image" alt="Post Image">`)
+                        .join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                    ${Array.isArray(post.sharedPost) && post.sharedPost.length > 0 ? `
+                    ${createSharedPost(post.sharedPost[0])}
+                    `: ``
+                }
+                          <!-- Course Card -->
+      ${post.course ? `
+        <div class="course-card my-3 border rounded-3 overflow-hidden shadow-sm">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="${post.course.cover || 'https://tse4.mm.bing.net/th/id/OIP.mLPURBF2wCqjivfOgY3H8AHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3'}" alt="${post.course.title}" class="img-fluid w-100 h-100 object-fit-cover">
+            </div>
+            <div class="col-md-8 p-3">
+      <small class="badge bg-secondary mb-2">Course</small>
+              <h5 class="mb-1">${post.course.title}</h5>
+              <p class="mb-2 text-muted small">${post.course.description}</p>
+
+              <span class="d-flex justify-content-between">
+              <span class=" text-secondary fw-bolder">${post.course.courseCode}</span>
+                <button class="btn btn-primary btn-sm" onclick="redirectTo('/course?code=${post.course.courseCode}')">Apply</button>
+              </span>
+
+            </div>
+          </div>
+        </div>
+      ` : ''}
+                
+      ${post.service ? `
+        <div class="course-card my-3 border rounded-3 overflow-hidden shadow-sm">
+          <div class="row g-0">
+            <div class="col-md-4">
+              <img src="${post.service?.cover || 'https://tse3.mm.bing.net/th/id/OIP.XEVySEbxw-4iDmSXLsd8NgHaDt?r=0&rs=1&pid=ImgDetMain&o=7&rm=3'}" alt="${post.service.name}" class="img-fluid w-100 h-100 object-fit-cover">
+            </div>
+            <div class="col-md-8 p-3">
+      <small class="badge bg-secondary mb-2">Service</small>
+              <h5 class="mb-1">${post.service.name}</h5>
+              <p class="mb-2 text-muted small">${post.service.description}</p>
+
+              <span class="d-flex justify-content-between">
+              <span class=" text-secondary fw-bolder"></span>
+                <button class="btn btn-primary btn-sm" onclick="redirectTo('/provider/service?userId=${post.author.id}&&serviceId=${post.service.id}')">Apply</button>
+              </span>
+
+            </div>
+          </div>
+        </div>
+      ` : ''}
+
+            ${post.gig ? `
+  <div class="course-card my-3 border rounded-3 overflow-hidden shadow-sm">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img src="${post.gig.cover || post.gig.service?.icon || 'https://tse3.mm.bing.net/th/id/OIP.XEVySEbxw-4iDmSXLsd8NgHaDt?r=0&rs=1&pid=ImgDetMain&o=7&rm=3'}" 
+             alt="${post.gig.title}" 
+             class="img-fluid w-100 h-100 object-fit-cover">
+      </div>
+      <div class="col-md-8 p-3">
+        <small class="badge bg-secondary mb-2">Task</small>
+        
+        <h5 class="mb-1 text-dark fw-bold">${post.gig.title}</h5>
+        <h6 class="mb-2 text-muted">${post.gig.service?.name || ''}</h6>
+        
+        ${post.gig.isRemote ? `
+                      <small class="badge bg-secondary d-block mt-2">
+  <i class="bi bi-wifi me-1"></i>Remote</small>
+        ` : ``}
+
+        <p class="mb-2 text-muted small">${post.gig.description}</p>
+
+            <small class="text-muted d-block mb-2">
+              <i class="bi bi-geo-alt me-1"></i>
+              ${post.gig.location || (post.gig.isRemote ? 'Remote' : 'Unspecified')}
+            </small>
+            <small class="text-muted d-block mb-2">
+              <i class="bi bi-clock me-1"></i>
+              Posted: ${formatFullDate(post.gig.createdAt)}
+            </small>
+                <span class="d-flex justify-content-between">
+              <span class=" text-muted fw-bold">
+                            <small class="text-muted d-block mb-1">
+              <i class="bi bi-calendar-event me-1"></i>
+              Deadline: ${formatFullDate(post.gig.deadline)}
+            </small>
+              </span>
+                <button class="btn btn-primary btn-sm" onclick="redirectTo('/task/request?id=${post.gig.id}')">Apply</button>
+              </span>
+      </div>
+    </div>
+  </div>
+` : ''}
+
+${post.tags && post.tags.length ? `
+<div class="people-tags d-flex flex-wrap gap-2 mb-2">
+    ${post.tags.map(p => `<img src="${p.profile_pic}" alt="${p.username}" class="rounded-circle tag-pic" width="24" height="24">`).join('')}
+    ${post.totalTags && post.totalTags.length > 5 ? `
+    <span class="remaining"> + ${post.totalTags - 5} more tagged</span>
+    `: ``}
+</div>
+`: ``}
+
+<!-- Actions (unique style with hover effects) -->
+<div class="article-actions d-flex flex-wrap align-items-center gap-3 border-top pt-2">
+  
+  <span class="action-item d-flex align-items-center gap-1" onclick="toggleLike(this, ${post.id})" title="Like">
+    <i class="bi bi-heart${post.isLiked ? '-fill text-danger' : ''} fs-5"></i>
+    <small class="fw-semibold">${post.likesCount}</small>
+  </span>
+
+  <span class="action-item d-flex align-items-center gap-1" onclick="window.top.location.href='/post?id=${post.id}'" title="Comments">
+    <i class="bi bi-chat fs-5"></i>
+    <small class="fw-semibold">${post.commentsCount}</small>
+  </span>
+
+  <span class="action-item d-flex align-items-center gap-1" title="Share">
+    <i class="bi bi-share fs-5"></i>
+    <small class="fw-semibold">0</small>
+  </span>
+
+  <span 
+    class="action-item d-flex align-items-center gap-1 repost-btn" 
+    data-post='${JSON.stringify(post).replace(/'/g, "&apos;")}' 
+    title="Repost this"
+    style="cursor: pointer;">
+    <i class="bi bi-repeat fs-5 text-success"></i>
+    <small class="fw-semibold">${post.repostCount || 0}</small>
+  </span>
+
+</div>
+
+            </div>
+        `;
+        }
+
+        function redirectTo(link) {
+            window.top.location.href = link;
+        }
+
+        function formatFullDate(dateString) {
+            if (!dateString) return 'N/A';
+
+            const date = new Date(dateString);
+            const day = date.getDate();
+            const monthYear = new Intl.DateTimeFormat('en-GB', {
+                month: 'long',
+                year: 'numeric'
+            }).format(date);
+
+            const getOrdinal = (n) => {
+                const s = ["th", "st", "nd", "rd"];
+                const v = n % 100;
+                return s[(v - 20) % 10] || s[v] || s[0];
+            };
+
+            return `${day}${getOrdinal(day)} ${monthYear}`;
+        }
+
+        // Usage:
+
+        document.getElementById('articles-feed').addEventListener('click', (e) => {
+            const btn = e.target.closest('.repost-btn');
+            if (btn) {
+                try {
+                    const postData = JSON.parse(btn.getAttribute('data-post').replace(/&apos;/g, "'"));
+                    openParentModal(postData); // Or alert(postData.id)
+                } catch (err) {
+                    console.error("Failed to parse post data", err);
+                }
+            }
+        });
+
+        function createSharedPost(post) {
+            return `
+    <div class="shared-post">
+      <div class="article-author">
+        <img src="${post.author?.profile_pic || 'https://via.placeholder.com/50'}" class="author-avatar-small" alt="Author">
+        <div>
+          <div class="author-name">${post.author?.username || 'Unknown'} ${post.author?.verified ? `<i class="bi bi-patch-check-fill profile-verified"></i>` : ''}</div>
+          <div class="author-role">Posted • ${new Date(post.createdAt).toLocaleDateString()}</div>
+        </div>
+      </div>
+      <div class="article-content-container">
+        <div class="article-content expanded" id="content-${post.id}">
+          ${post.content}
+        </div>
+      </div>
+
+      ${Array.isArray(post.images) && post.images.filter(img => img).length > 0 ? `
+        <div class="carousel-container">
+          <div class="carousel-track">
+            ${post.images
+                        .filter(img => img)
+                        .map(img => `<img src="${img}" class="carousel-image" alt="Post Image">`)
+                        .join('')}
+          </div>
+        </div>
+      ` : ''}
+    </div>
+  `;
+        }
+
+        function renderPosts(postsArray) {
+            const feed = document.getElementById('articles-feed');
+            postsArray.forEach(post => {
+                feed.insertAdjacentHTML('beforeend', createPost(post));
+            });
+        }
+
+        // 🔁 Correct Infinite Scroll Based on Full Page Height
+        window.addEventListener('scroll', () => {
+            if (window.innerWidth < 992) return; // Desktop only
+
+            const scrollTop = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const fullHeight = document.documentElement.scrollHeight;
+
+            if (scrollTop + windowHeight >= fullHeight - 100) {
+                getPosts();
+            }
+        });
+
+        // Initial load
+        getPosts();
+
+        async function toggleLike(element, post_id, comment_id = null) {
+
+            const result = await likePost({ post_id, comment_id, reaction_type: 'like' });
+
+            element.innerHTML = `<i class="bi bi-heart${result.liked ? '-fill text-danger' : ''}"></i> ${result.likeCount}`;
+
+        }
+        async function likePost(data) {
+            try {
+                const response = await fetch('/api/comments/like', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to post comment');
+                }
+
+                const result = await response.json();
+                return result;
+            } catch (error) {
+                console.error('Error posting comment:', error);
+                return null;
+            }
+        }
+
+    </script>
+
+
+</body>
+
+</html>

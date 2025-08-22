@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Post Modal | BrightTask</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    .post-trigger {
+      background: #f1f3f5;
+      border-radius: 50px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .preview-container img,
+    .preview-container video,
+    .preview-container audio {
+      max-width: 100%;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body class="bg-light">
+  <div class="container py-4">
+    <div class="post-trigger shadow-sm d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#postModal">
+      <img src="https://via.placeholder.com/40" class="rounded-circle me-2" alt="User">
+      <input type="text" class="form-control border-0 bg-transparent" placeholder="What's on your mind?" disabled />
+    </div>
+  </div>
+
+  <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4 shadow">
+        <div class="modal-header">
+          <h5 class="modal-title fw-semibold" id="postModalLabel">Create Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+          <form id="postForm">
+            <div class="d-flex align-items-start mb-3">
+              <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="User">
+              <textarea name="text" class="form-control border-0 bg-light rounded-3 p-3" rows="3" placeholder="Share your thoughts..."></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="postType" class="form-label">Select Type</label>
+              <select class="form-select" name="type" id="postType">
+                <option value="gig-123"><i class="fas fa-hammer"></i> Gig</option>
+                <option value="task-456"><i class="fas fa-tasks"></i> Task</option>
+                <option value="service-789"><i class="fas fa-briefcase"></i> Service</option>
+                <option value="achievement-321"><i class="fas fa-trophy"></i> Achievement</option>
+              </select>
+            </div>
+
+            <div class="row g-2 mb-3">
+              <div class="col">
+                <label class="form-label">Upload Image</label>
+                <input type="file" name="image" id="imageUpload" accept="image/*" class="form-control">
+              </div>
+              <div class="col">
+                <label class="form-label">Upload Video</label>
+                <input type="file" name="video" id="videoUpload" accept="video/*" class="form-control">
+              </div>
+              <div class="col">
+                <label class="form-label">Upload Audio</label>
+                <input type="file" name="audio" id="audioUpload" accept="audio/*" class="form-control">
+              </div>
+            </div>
+
+            <div class="preview-container" id="previewContainer"></div>
+
+            <div class="text-end mt-3">
+              <button type="submit" class="btn btn-primary rounded-pill px-4 fw-semibold">Post</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    
+    const previewContainer = document.getElementById("previewContainer");
+
+    function showPreview(file, type) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        let preview;
+        if (type === 'image') {
+          preview = `<img src="${e.target.result}" class="img-fluid rounded">`;
+        } else if (type === 'video') {
+          preview = `<video controls class="w-100 rounded"><source src="${e.target.result}" type="video/mp4"></video>`;
+        } else if (type === 'audio') {
+          preview = `<audio controls class="w-100"><source src="${e.target.result}" type="audio/mpeg"></audio>`;
+        }
+        previewContainer.innerHTML += preview;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    document.getElementById("imageUpload").addEventListener("change", function () {
+      previewContainer.innerHTML = "";
+      showPreview(this.files[0], "image");
+    });
+    document.getElementById("videoUpload").addEventListener("change", function () {
+      previewContainer.innerHTML = "";
+      showPreview(this.files[0], "video");
+    });
+    document.getElementById("audioUpload").addEventListener("change", function () {
+      previewContainer.innerHTML = "";
+      showPreview(this.files[0], "audio");
+    });
+
+    document.getElementById("postForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const selectedType = formData.get("type").split("-");
+
+      const payload = {
+        text: formData.get("text"),
+        media: formData.get("image") || formData.get("video") || formData.get("audio"),
+        media_type: formData.get("image") ? "image" : formData.get("video") ? "video" : "audio",
+        type: selectedType[0],
+        typeId: selectedType[1],
+      };
+
+      console.log("Post Data:", payload);
+      alert("Post submitted! Check console.");
+    });
+  </script>
+</body>
+
+</html>

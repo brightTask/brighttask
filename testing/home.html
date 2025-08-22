@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #00bfa6;
+            --secondary: #1f2937;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--secondary);
+        }
+
+        .hero-section {
+            background-color: var(--primary);
+            color: #fff;
+            padding: 100px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Brand</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="services.html">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section">
+        <div class="container">
+            <h1>Welcome to Our Website</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            <a class="btn btn-primary" href="#categories-section">Learn More</a>
+        </div>
+    </section>
+
+    <section id="categories-section">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-2 g-4" id="categories-list"></div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-light text-center py-4">
+        <div class="container">
+            <p>&copy; 2021 Company Name | All Rights Reserved</p>
+            <ul class="list-inline social-icons mb-0">
+                <li class="list-inline-item"><a href="#"><i class="bi bi-facebook"></i></a></li>
+                <li class="list-inline-item"><a href="#"><i class="bi bi-twitter"></i></a></li>
+                <li class="list-inline-item"><a href="#"><i class="bi bi-instagram"></i></a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // fetch data from '/api/categories' and populate the categories list
+        const fetchData = async () => {
+            try {
+                const response = await fetch('/api/categories');
+                const data = await response.json();
+                const categoriesList = document.getElementById('categories-list');
+                data.data.forEach(category => {
+                    const categoryCard = document.createElement('div');
+                    categoryCard.classList.add('col');
+                    categoryCard.innerHTML = `
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">${category.name}</h5>
+                                <p class="card-text">${category.description}</p>
+                                <ul class="list-group list-group-flush">
+                                    ${category.services.map(service => `
+                                        <li class="list-group-item">
+                                            <div>${service.icon}</div>
+                                            <h6>${service.name}</h6>
+                                            <p>${service.description}</p>
+                                            <p>${service.price} ${service.priceUnit}</p>
+                                            <span class="badge bg-${service.available ? 'success' : 'danger'}">
+                                                ${service.available ? 'Available' : 'Not Available'}
+                                            </span>
+                                            <a href="/generate/service?id=${service.id}" class="btn btn-primary">Get Service</a>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                    `;
+                    categoriesList.appendChild(categoryCard);
+                });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+
+        fetchData();
+    </script>
+
+</body>
+
+</html>

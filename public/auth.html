@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BrightTask - Learn Skills, Get Hired, Offer Services</title>
+  <meta name="description"
+    content="BrightTask connects learners, professionals, and service providers. Learn new skills, get hired, offer services, and grow your career in a trusted community.">
+  <meta name="keywords"
+    content="BrightTask, learn skills, get hired, online training, freelance services, hands-on projects, teach online, career growth, skill development, professional network">
+  <meta name="author" content="LonaTech Solutions
+    <meta name=" robots" content="index, follow">
+  <link rel="canonical" href="https://brighttask.onrender.com/" />
+  <meta name="theme-color" content="#222831">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://brighttask.onrender.com/logo.png" sizes="32x32">
+
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Open Graph Meta -->
+  <meta property="og:title" content="BrightTask - Learn Skills, Get Hired, Offer Services">
+  <meta property="og:description" content="BrightTask connects learners, professionals, and service providers. Learn new skills, get hired, offer services, and grow your career in a trusted community.">
+  <meta property="og:image" content="https://brighttask.onrender.com/logo.png">
+  <meta property="og:url" content="https://brighttask.onrender.com/">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card Meta -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BrightTask - Learn Skills, Get Hired, Offer Services">
+  <meta name="twitter:description" content="BrightTask connects learners, professionals, and service providers. Learn new skills, get hired, offer services, and grow your career in a trusted community.">
+  <meta name="twitter:image" content="https://brighttask.onrender.com/logo.png">
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00bfa6;
+      --secondary: #1f2937;
+      --gradient: linear-gradient(135deg, #00bfa6 60%, #1f2937 100%);
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--gradient);
+      color: #fff;
+      font-family: 'Segoe UI', Arial, sans-serif;
+    }
+
+    .auth-container {
+      background: #fff;
+      color: var(--secondary);
+      border-radius: 1.5rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      padding: 2.5rem 2rem;
+      max-width: 480px;
+      margin: 3rem auto;
+    }
+
+    .auth-logo {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+
+    .form-step {
+      display: none;
+    }
+
+    .form-step.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .step-indicator {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .step-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #e5e7eb;
+      border: 2px solid var(--primary);
+      transition: background 0.2s;
+    }
+
+    .step-dot.active {
+      background: var(--primary);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border: none;
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus {
+      background: #009e8e;
+    }
+
+    .form-label {
+      font-weight: 500;
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 0.2rem rgba(0, 191, 166, 0.15);
+    }
+
+    .divider {
+      text-align: center;
+      margin: 2rem 0 1.5rem 0;
+      position: relative;
+    }
+
+    .divider span {
+      background: #fff;
+      padding: 0 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .divider:before {
+      content: "";
+      display: block;
+      height: 1px;
+      background: #e5e7eb;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      z-index: 0;
+    }
+
+    .profile-pic-preview {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      border: 2px solid var(--primary);
+      display: none;
+    }
+
+    .form-text {
+      color: #6c757d !important;
+    }
+
+    .input-group-text {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+    }
+
+    .input-group .form-control {
+      border-left: none;
+    }
+
+    .input-group .form-control:focus {
+      box-shadow: none;
+    }
+
+    .alert {
+      font-size: 0.95rem;
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 2rem;
+      color: #e5e7eb;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 576px) {
+      .auth-container {
+        padding: 1.5rem 0.5rem;
+        border-radius: 0.75rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main>
+    <div class="container">
+      <div class="auth-container shadow-lg">
+        <div class="text-center mb-4">
+          <img src="/logo.png" alt="BrightTask Logo" class="auth-logo">
+          <h2 class="fw-bold mb-1" style="color:var(--primary)">BrightTask</h2>
+          <p class="mb-0">Welcome! Please login or create your account.</p>
+        </div>
+        <div class="step-indicator mb-3" id="stepIndicator" style="display:none;">
+          <div class="step-dot" id="dot1"></div>
+          <div class="step-dot" id="dot2"></div>
+          <div class="step-dot" id="dot3"></div>
+        </div>
+
+        <div id="loginAlert" class="alert d-flex align-items-center mb-3 d-none" role="alert"></div>
+
+        <!-- Login Form -->
+        <form id="loginForm" class="form-step active" method="POST" action="/auth/login" autocomplete="on">
+          <div class="mb-3">
+            <label for="loginEmail" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="loginEmail" name="email" required autocomplete="email">
+          </div>
+          <div class="mb-3">
+            <label for="loginPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="loginPassword" name="password" required
+              autocomplete="current-password">
+          </div>
+          <div class="mb-3 d-flex justify-content-between align-items-center">
+            <div>
+              <input type="checkbox" class="form-check-input" id="rememberMe" name="remember">
+              <label class="form-check-label" for="rememberMe">Remember me</label>
+            </div>
+            <a href="#" class="link-secondary" style="font-size:0.95rem;">Forgot password?</a>
+          </div>
+          <button id="submitLogin" type="submit" class="btn btn-primary w-100 mb-2">
+            <span class="d-sm-inline finish-span">
+              Login
+            </span>
+            <span id="progressIndicator" class="spinner-border spinner-border-sm d-none" role="status"
+              aria-hidden="true"></span>
+          </button>
+
+          <div class="text-center mt-2">
+            <span>Don't have an account?</span>
+            <a href="#" id="showSignup" class="link-primary fw-semibold">Sign up</a>
+          </div>
+        </form>
+        <!-- Signup Step 1 -->
+        <form id="signupStep1" class="form-step" method="POST" action="/auth/register" autocomplete="on">
+          <div class="mb-3">
+            <label for="firstName" class="form-label">First Name</label>
+            <input type="text" class="form-control" id="firstName" name="first_name" required autocomplete="given-name">
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label">Last Name</label>
+            <input type="text" class="form-control" id="lastName" name="last_name" required autocomplete="family-name">
+          </div>
+          <div class="mb-3">
+            <label for="signupUsername" class="form-label">Username</label>
+            <input type="text" class="form-control" id="signupUsername" name="username" required
+              autocomplete="username">
+          </div>
+          <div class="mb-3">
+            <label for="signupEmail" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="signupEmail" name="email" required autocomplete="email">
+            <div class="form-text">We'll send a verification link to your email.</div>
+          </div>
+          <div class="mb-3">
+            <label for="referredBy" class="form-label">Referral Code (optional)</label>
+            <input type="text" class="form-control" id="referredBy" name="referredBy" readonly>
+            <div class="form-text">If you were referred, the code is auto-filled from the link.</div>
+          </div>
+          <div class="mb-3">
+            <label for="signupPassword" class="form-label">Password</label>
+            <input type="password" class="form-control" id="signupPassword" name="password" required
+              autocomplete="new-password" minlength="6">
+          </div>
+          <div class="mb-3">
+            <label for="signupPasswordConfirm" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" id="signupPasswordConfirm" name="password_confirm" required
+              autocomplete="new-password" minlength="6">
+            <div class="invalid-feedback" id="passwordMismatch" style="display:none;">Passwords do not match.</div>
+          </div>
+          <button id="submit1" type="submit" class="btn btn-primary w-100 mb-2">
+            <span class="d-sm-inline finish-span">
+              Continue
+            </span>
+            <span id="progressIndicator" class="spinner-border spinner-border-sm d-none" role="status"
+              aria-hidden="true"></span>
+          </button>
+          <div class="text-center mt-2">
+            <span>Already have an account?</span>
+            <a href="#" id="showLogin" class="link-primary fw-semibold">Login</a>
+          </div>
+        </form>
+        <!-- Signup Step 2 -->
+        <form id="signupStep2" class="form-step" method="PUT" enctype="multipart/form-data" autocomplete="on">
+          <div class="mb-3 text-center">
+            <img src="" alt="Profile Preview" class="profile-pic-preview" id="profilePicPreview">
+          </div>
+          <div class="mb-3">
+            <label for="bio" class="form-label">Short Bio</label>
+            <textarea class="form-control" id="bio" name="bio" rows="3" maxlength="300" required
+              placeholder="Tell us about yourself..."></textarea>
+            <div class="form-text">Max 300 characters.</div>
+          </div>
+          <div class="mb-3">
+            <label for="profilePic" class="form-label">Profile Picture</label>
+            <input class="form-control" type="file" id="profilePic" name="media" accept="image/*">
+            <div class="form-text">JPG, PNG, or GIF. Max 2MB.</div>
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Phone Number</label>
+            <input type="tel" class="form-control" id="phone" name="phone" required autocomplete="tel">
+          </div>
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-outline-secondary" id="backToStep1">Back</button>
+            <button id="submit2" type="submit" class="btn btn-primary">
+              <span class="d-sm-inline finish-span">
+                Continue
+              </span>
+              <span class="d-none spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </button>
+          </div>
+        </form>
+        <!-- Signup Step 3 (skippable) -->
+        <form id="signupStep3" class="form-step" method="PUT" autocomplete="on">
+          <div class="mb-3">
+            <label class="form-label">Social Media Links <span class="form-text">(Optional)</span></label>
+          </div>
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="bi bi-facebook"></i></span>
+            <input type="url" class="form-control" name="facebook" placeholder="Facebook URL">
+          </div>
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="bi bi-twitter"></i></span>
+            <input type="url" class="form-control" name="twitter" placeholder="Twitter URL">
+          </div>
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="bi bi-instagram"></i></span>
+            <input type="url" class="form-control" name="instagram" placeholder="Instagram URL">
+          </div>
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="bi bi-linkedin"></i></span>
+            <input type="url" class="form-control" name="linkedin" placeholder="LinkedIn URL">
+          </div>
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="bi bi-tiktok"></i></span>
+            <input type="url" class="form-control" name="tiktok" placeholder="TikTok URL">
+          </div>
+          <div class="mb-3 input-group">
+            <span class="input-group-text"><i class="bi bi-youtube"></i></span>
+            <input type="url" class="form-control" name="youtube" placeholder="YouTube URL">
+          </div>
+          <div class="d-flex justify-content-between align-items-center">
+            <button type="button" class="btn btn-outline-secondary" id="backToStep2">Back</button>
+            <button id="submit3" type="submit" class="btn btn-primary">
+              <span class="d-sm-inline finish-span">
+                <i class="bi bi-check2"></i>
+                Finish Registration
+              </span>
+              <span class="d-none spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </button>
+          </div>
+        </form>
+        <!-- Success Message -->
+        <div id="signupSuccess" class="form-step text-center">
+          <div class="mb-4">
+            <svg width="64" height="64" fill="none" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="12" fill="#00bfa6" />
+              <path d="M7 13l3 3 7-7" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h4 class="fw-bold mb-2" style="color:var(--primary)">Registration Complete!</h4>
+          <p class="mb-3">Thank you for joining BrightTask.<br>Check your email to verify your account.</p>
+          <a href="#" id="continueFromSuccess" class="btn btn-primary w-100">Continue</a>
+        </div>
+      </div>
+      <div class="auth-footer">
+        &copy; 2025 BrightTask. All rights reserved.
+      </div>
+    </div>
+  </main>
+  <!-- Bootstrap JS and Icons -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <script>
+    // Utility: get URL param
+    function getUrlParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    // Stepper logic
+    const loginForm = document.getElementById('loginForm');
+    const signupStep1 = document.getElementById('signupStep1');
+    const signupStep2 = document.getElementById('signupStep2');
+    const signupStep3 = document.getElementById('signupStep3');
+    const signupSuccess = document.getElementById('signupSuccess');
+    const stepIndicator = document.getElementById('stepIndicator');
+    const dots = [document.getElementById('dot1'), document.getElementById('dot2'), document.getElementById('dot3')];
+
+    // Show/hide steps
+    function showStep(step) {
+      [loginForm, signupStep1, signupStep2, signupStep3, signupSuccess].forEach(f => f.classList.remove('active'));
+      step.classList.add('active');
+      if (step === signupStep1 || step === signupStep2 || step === signupStep3) {
+        stepIndicator.style.display = '';
+        dots.forEach((d, i) => d.classList.toggle('active', step === [signupStep1, signupStep2, signupStep3][i]));
+      } else {
+        stepIndicator.style.display = 'none';
+      }
+    }
+
+    // Switch to signup
+    document.getElementById('showSignup').onclick = function (e) {
+      e.preventDefault();
+      showStep(signupStep1);
+    };
+
+    // Switch to login
+    document.getElementById('showLogin').onclick = function (e) {
+      e.preventDefault();
+      showStep(loginForm);
+    };
+
+    // Referral code from URL
+    window.addEventListener('DOMContentLoaded', function () {
+      const ref = getUrlParam('ref');
+      if (ref){
+        document.getElementById('referredBy').value = ref;
+        showStep(signupStep1);
+      }
+    });
+
+    // Password match validation
+    document.getElementById('signupPasswordConfirm').addEventListener('input', function () {
+      const pw = document.getElementById('signupPassword').value;
+      const pwc = this.value;
+      const mismatch = document.getElementById('passwordMismatch');
+      if (pw && pwc && pw !== pwc) {
+        this.classList.add('is-invalid');
+        mismatch.style.display = '';
+      } else {
+        this.classList.remove('is-invalid');
+        mismatch.style.display = 'none';
+      }
+    });
+
+    // Signup Step 1 submit
+   loginForm.onsubmit = async function (e) {
+  e.preventDefault();
+
+  const button = document.getElementById('submitLogin');
+  const loginAlert = document.getElementById('loginAlert');
+
+  if (!button || !loginAlert) {
+    alert("Missing login button or alert container.");
+    return;
+  }
+
+  // Disable button and show loading
+  button.disabled = true;
+  loadingIndicator(button, true);
+
+  // Prepare form data
+  const formData = new FormData(loginForm);
+  const data = Object.fromEntries(formData.entries());
+
+  try {
+    const res = await fetch('/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    // Clear previous alert classes
+    loginAlert.className = 'alert mt-2'; // reset to base alert classes
+
+    if (!res.ok) {
+      const err = await res.json();
+      loginAlert.classList.add('alert-warning');
+      loginAlert.innerHTML = `
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <div>${err.message || 'Login failed.'}</div>
+      `;
+    } else {
+      const result = await res.json();
+      loginAlert.classList.add('alert-success');
+      loginAlert.innerHTML = `
+                <i class="bi bi-check-circle me-2"></i>
+                <div>
+                  ${result.message || 'Registration Success.'}
+                </div>
+      `;
+
+      // Optional: redirect after short delay
+      setTimeout(() => {
+        window.location.reload(); // Or redirect to dashboard
+      }, 800);
+    }
+
+    // Show alert
+    loginAlert.classList.remove('d-none');
+
+    // Hide after 2 seconds
+    setTimeout(() => {
+      loginAlert.classList.add('d-none');
+      loginAlert.innerHTML = '';
+    }, 2000);
+
+  } catch (err) {
+    alert('Network error. Please try again.');
+  } finally {
+    loadingIndicator(button, false);
+    button.disabled = false;
+  }
+};
+
+    signupStep1.onsubmit = async function (e) {
+      e.preventDefault();
+      // Password match check
+      const button = document.getElementById('submit1');
+      loadingIndicator(button, true);
+      const pw = document.getElementById('signupPassword').value;
+      const pwc = document.getElementById('signupPasswordConfirm').value;
+      if (pw !== pwc) {
+        document.getElementById('signupPasswordConfirm').classList.add('is-invalid');
+        document.getElementById('passwordMismatch').style.display = '';
+        return;
+      }
+      // Submit to /auth/register
+      const formData = new FormData(signupStep1);
+      const data = Object.fromEntries(formData.entries());
+      try {
+        const res = await fetch('/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          alert(err.message || 'Registration failed.');
+          return;
+        }
+        const result = await res.json();
+        loadingIndicator(button, false);
+        showStep(signupStep2);
+      } catch (err) {
+        alert('Network error. Please try again.');
+      }
+    };
+
+    // Profile pic preview
+    document.getElementById('profilePic').addEventListener('change', function () {
+      const file = this.files[0];
+      const preview = document.getElementById('profilePicPreview');
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.src = e.target.result;
+          preview.style.display = '';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        preview.src = '';
+        preview.style.display = 'none';
+      }
+    });
+
+    function loadingIndicator(button, show) {
+      const span = button.querySelector('.finish-span');
+      const spinner = button.querySelector('.spinner-border');
+      if (show) {
+        span.classList.remove('d-sm-inline');
+        span.classList.add('d-none');
+        spinner.classList.remove('d-none');
+      } else {
+        span.classList.remove('d-none');
+        span.classList.add('d-sm-inline');
+        spinner.classList.add('d-none');
+      }
+    }
+
+    // Step 2 submit
+    signupStep2.onsubmit = async function (e) {
+      e.preventDefault();
+
+      const button = document.getElementById('submit2');
+      loadingIndicator(button, true);
+      const formData = new FormData(signupStep2);
+      try {
+        const res = await fetch(`/auth/update`, {
+          method: 'PUT',
+          body: formData
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          alert(err.message || 'Profile update failed.');
+          return;
+        }
+        loadingIndicator(button, false);
+        showStep(signupStep3);
+      } catch (err) {
+        alert('Network error. Please try again.');
+      }
+    };
+
+    // Step 3 submit
+    signupStep3.onsubmit = async function (e) {
+      e.preventDefault();
+      const button = document.getElementById('submit3');
+      loadingIndicator(button, true);
+      const formData = new FormData(signupStep3);
+      const data = {};
+      formData.forEach((v, k) => { if (v) data[k] = v; });
+      try {
+        const res = await fetch(`/auth/update`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (!res.ok) {
+          const err = await res.json();
+          alert(err.message || 'Social links update failed.');
+          return;
+        }
+        loadingIndicator(button, false);
+        showStep(signupSuccess);
+      } catch (err) {
+        alert('Network error. Please try again.');
+      }
+    };
+
+
+    // Back buttons
+    document.getElementById('backToStep1').onclick = function () {
+      showStep(signupStep1);
+    };
+    document.getElementById('backToStep2').onclick = function () {
+      showStep(signupStep2);
+    };
+
+    // Go to login from success
+    document.getElementById('continueFromSuccess').onclick = async function (e) {
+      e.preventDefault();
+      try {
+        const res = await fetch(`/auth/check-verification`);
+        if (!res.ok) {
+          const err = await res.json();
+          alert(err.message || 'Verification check failed.');
+          return;
+        }
+        const data = await res.json();
+
+        if (data.success) {
+          // Redirect to dashboard or home
+          window.location.href = '/'; // Adjust as needed
+          return;
+        } else {
+          alert('Please verify your email before proceeding.');
+          return;
+        }
+      } catch (err) {
+        alert('Network error. Please try again.');
+      }
+    };
+
+    // Prevent accidental reload on step forms
+    [signupStep2, signupStep3].forEach(form => {
+      form.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') e.preventDefault();
+      });
+    });
+
+    // Autofocus on step change
+    function focusFirstInput(form) {
+      setTimeout(() => {
+        const input = form.querySelector('input,textarea');
+        if (input) input.focus();
+      }, 200);
+    }
+    [signupStep1, signupStep2, signupStep3].forEach((form, idx) => {
+      form.addEventListener('transitionend', () => {
+        //if (form.classList.contains('active')) focusFirstInput(form);
+      });
+    });
+  </script>
+</body>
+
+</html>

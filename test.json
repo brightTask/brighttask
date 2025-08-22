@@ -1,0 +1,54 @@
+[
+    {
+        "id": 8,
+        "name": "Logo Design",
+        "icon": "🎨",
+        "description": "Design professional logos for businesses and brands.",
+        "price": 1200,
+        "priceUnit": "KES",
+        "HustlerService": {
+            "id": 39,
+            "service_score": 76,
+            "available": true
+        }
+    },
+    {
+        "id": 11,
+        "name": "SEO Blog Writing",
+        "icon": "📝",
+        "description": "Write optimized blog posts for search engines.",
+        "price": 800,
+        "priceUnit": "KES",
+        "HustlerService": {
+            "id": 55,
+            "service_score": 25,
+            "available": false
+        }
+    },
+    {
+        "id": 16,
+        "name": "Bookkeeping Services",
+        "icon": "📒",
+        "description": "Record and organize financial transactions for small businesses.",
+        "price": 2000,
+        "priceUnit": "KES",
+        "HustlerService": {
+            "id": 76,
+            "service_score": 39,
+            "available": true
+        }
+    },
+    {
+        "id": 22,
+        "name": "Swedish Massage",
+        "icon": "💆",
+        "description": "Full body relaxing massage session.",
+        "price": 2000,
+        "priceUnit": "KES",
+        "HustlerService": {
+            "id": 108,
+            "service_score": 84,
+            "available": false
+        }
+    }
+]

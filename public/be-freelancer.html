@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Service Registration</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .requirement-item {
+      margin-bottom: 10px;
+    }
+
+    #coverPreview {
+      max-height: 150px;
+      margin-top: 10px;
+    }
+
+    .service-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .service-header img {
+      height: 60px;
+      width: 60px;
+      object-fit: contain;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#">Service Registration</a>
+    </div>
+  </nav>
+
+  <!-- Container -->
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="card shadow-lg">
+          
+          <!-- Header with Service Details -->
+          <div class="card-header bg-primary text-white">
+            <div class="service-header">
+              <img id="serviceImg" src="" alt="Service Icon">
+              <div>
+                <h4 class="mb-1" id="serviceName">Loading service...</h4>
+                <p class="mb-0" id="serviceDesc">Fetching details...</p>
+                <small class="fw-bold" id="servicePrice"></small>
+              </div>
+            </div>
+          </div>
+
+          <!-- Body -->
+          <div class="card-body">
+            <form id="providerForm" action="/service/provider/add" method="post" enctype="multipart/form-data">
+              <!-- Hidden Service ID -->
+              <input id="serviceId" type="hidden" name="serviceId" value="">
+              <!-- Hidden Requirements JSON -->
+              <input id="requirementsInput" type="hidden" name="requirements" value="[]">
+
+              <!-- Your Price -->
+              <div class="mb-3">
+                <label for="price" class="form-label">💰 Your Price</label>
+                <input type="number" class="form-control" id="price" name="price" placeholder="Enter your price" required>
+                <small class="form-text text-muted">Enter the price you charge for this service.</small>
+              </div>
+
+              <!-- Cover Image -->
+              <div class="mb-3">
+                <label for="coverImage" class="form-label">🖼️ Cover Image</label>
+                <input type="file" class="form-control" id="coverImage" name="coverImage" accept="image/*" required>
+                <img id="coverPreview" class="img-fluid rounded d-none" alt="Preview" />
+                <small class="form-text text-muted">Upload a cover image to represent your service.</small>
+              </div>
+
+              <!-- Requirements Section -->
+              <h5 class="mb-3">📋 Service Requirements</h5>
+              <div id="requirementsList" class="mb-3"></div>
+
+              <!-- Add New Requirement -->
+              <div class="border rounded p-3 mb-3">
+                <h6 class="mb-3">➕ Add New Requirement</h6>
+                <div class="mb-3">
+                  <label for="requirementTitle" class="form-label">Requirement Title</label>
+                  <input type="text" class="form-control" id="requirementTitle" placeholder="e.g., ID Card">
+                  <small class="form-text text-muted">Enter a short title for the requirement.</small>
+                </div>
+                <div class="mb-3">
+                  <label for="requirementDesc" class="form-label">Requirement Description</label>
+                  <textarea class="form-control" id="requirementDesc" rows="3" placeholder="Provide detailed description"></textarea>
+                  <small class="form-text text-muted">Describe this requirement in detail.</small>
+                </div>
+                <button type="button" class="btn btn-outline-success" id="addRequirementBtn">Add Requirement</button>
+              </div>
+
+              <!-- Submit Button -->
+              <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">Submit Registration</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let requirements = [];
+
+    // Helper: get query param
+    function getQueryParam(name) {
+      const url = new URL(window.location.href);
+      return url.searchParams.get(name);
+    }
+
+    // Fetch service details
+    async function fetchService() {
+      const serviceId = getQueryParam('id') || 1; // fallback id
+      document.getElementById('serviceId').value = serviceId;
+
+      try {
+        const res = await fetch(`/api/services/${serviceId}`);
+        if (!res.ok) throw new Error('Service not found');
+
+        const data = await res.json();
+        const { name, price, description, icon, priceUnit } = data.service;
+
+        document.getElementById('serviceName').textContent = name;
+        document.getElementById('serviceDesc').textContent = description || "No description available";
+        document.getElementById('servicePrice').textContent = `Approximate Price: ${price} ${priceUnit}`;
+        document.getElementById('serviceImg').src = icon || "https://via.placeholder.com/60";
+      } catch (error) {
+        document.getElementById('serviceName').textContent = "Service Not Found";
+        document.getElementById('serviceDesc').textContent = "Unable to load service details.";
+        document.getElementById('serviceImg').src = "https://via.placeholder.com/60";
+      }
+    }
+
+    // Cover preview
+    document.getElementById('coverImage').addEventListener('change', function () {
+      const file = this.files[0];
+      if (file) {
+        const preview = document.getElementById('coverPreview');
+        preview.src = URL.createObjectURL(file);
+        preview.classList.remove('d-none');
+      }
+    });
+
+    // Render requirements list
+    function renderRequirements() {
+      const list = document.getElementById('requirementsList');
+      list.innerHTML = '';
+      requirements.forEach((req, index) => {
+        const item = document.createElement('div');
+        item.className = 'requirement-item card p-2';
+        item.innerHTML = `
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <strong>${req.title}</strong>
+              <p class="mb-1">${req.desc}</p>
+            </div>
+            <div>
+              <button type="button" class="btn btn-sm btn-warning me-2 edit-btn">Edit</button>
+              <button type="button" class="btn btn-sm btn-danger remove-btn">Remove</button>
+            </div>
+          </div>
+        `;
+
+        // Edit handler
+        item.querySelector('.edit-btn').addEventListener('click', () => {
+          const newTitle = prompt("Edit Requirement Title:", req.title);
+          const newDesc = prompt("Edit Requirement Description:", req.desc);
+
+          if (newTitle && newDesc) {
+            requirements[index] = { title: newTitle, desc: newDesc };
+            updateRequirementsInput();
+            renderRequirements();
+          }
+        });
+
+        // Remove handler
+        item.querySelector('.remove-btn').addEventListener('click', () => {
+          requirements.splice(index, 1);
+          updateRequirementsInput();
+          renderRequirements();
+        });
+
+        list.appendChild(item);
+      });
+      updateRequirementsInput();
+    }
+
+    // Add Requirement
+    document.getElementById('addRequirementBtn').addEventListener('click', () => {
+      const title = document.getElementById('requirementTitle').value.trim();
+      const desc = document.getElementById('requirementDesc').value.trim();
+
+      if (title && desc) {
+        requirements.push({ title, desc });
+        renderRequirements();
+        document.getElementById('requirementTitle').value = '';
+        document.getElementById('requirementDesc').value = '';
+      } else {
+        alert("Please provide both title and description.");
+      }
+    });
+
+    // Update hidden input with requirements JSON
+    function updateRequirementsInput() {
+      document.getElementById('requirementsInput').value = JSON.stringify(requirements);
+    }
+
+    // Ensure requirements are updated before form submit
+    document.getElementById('providerForm').addEventListener('submit', function () {
+      updateRequirementsInput();
+    });
+
+    fetchService();
+  </script>
+</body>
+
+</html>

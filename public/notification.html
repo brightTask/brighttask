@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #fafafa;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-rows: 120px 1fr;
+      height: 100vh;
+    }
+
+    .top {
+      background: white;
+      color: black;
+      padding: 1rem;
+    }
+
+    .bottom {
+      overflow: auto;
+      padding: 10px;
+    }
+
+    .notification-header {
+      font-size: 2rem;
+      font-weight: 700;
+    }
+
+    .notification-toolbar {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      align-items: start;
+      margin-bottom: 1rem;
+    }
+
+    .notification-card {
+      background-color: #fff;
+      border-radius: 12px;
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.03);
+      color: white;
+      padding-top: 7px;
+      padding-bottom: 7px;
+      margin-bottom: 12px;
+      transition: background-color 0.3s;
+    }
+
+    .notification-card:hover {
+      background-color: #f6f6f6;
+    }
+
+    .notification-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 5px;
+    }
+
+    .notification-message {
+      flex-grow: 1;
+    }
+
+    .notification-type-icon {
+      font-size: 1.25rem;
+      margin-right: 2px;
+    }
+
+    .timestamp {
+      font-size: 0.85rem;
+      color: #999;
+    }
+
+    .unread-dot {
+      width: 10px;
+      height: 10px;
+      background-color: #ff3040;
+      border-radius: 50%;
+      margin-left: 10px;
+    }
+
+    .btn-link {
+      text-decoration: none;
+    }
+
+    .badge-notification {
+      background-color: #ff3040;
+      color: white;
+      font-size: 0.7rem;
+      margin-left: 6px;
+    }
+
+    .follow-back-btn {
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+      color: white;
+    }
+
+    .friend {
+      background-color: #f7f4f5;
+      color: black;
+      border: grey solid 1px;
+    }
+
+    .btn:hover {
+      border: black solid 1px;
+      color: black;
+    }
+
+    @media(max-width: 576px) {
+      .notification-header {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="grid-container">
+    <!-- Header -->
+    <div class="top notification-toolbar mb-3">
+      <h2 class="notification-header">Notifications</h2>
+      <div>
+        <a href="#" class="btn btn-sm btn-outline-secondary me-2">Mark All as Read</a>
+        <a href="#" class="btn btn-sm btn-outline-secondary">Clear All</a>
+      </div>
+    </div>
+
+    <!-- Notification List -->
+    <div class="bottom" id="notificationList">
+
+      <div class="d-flex align-items-start p-3 border-bottom bg-light rounded"></div>
+    </div>
+  </div>
+  <script>
+    window.addEventListener('pageshow', function (event) {
+      if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+        window.location.reload();
+      }
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(t => new bootstrap.Tooltip(t))
+
+    fetch('/api/notifications')
+      .then(res => res.json())
+      .then(data => {
+        const notificationList = document.getElementById('notificationList');
+        notificationList.innerHTML = '';
+        data.forEach(notification => {
+          let iconHtml = '';
+          switch (notification.type) {
+            case 'like':
+              iconHtml = '<i class="bi bi-heart-fill text-danger notification-type-icon"></i>';
+              break;
+            case 'comment':
+              iconHtml = '<i class="bi bi-chat-left-text-fill text-primary notification-type-icon"></i>';
+              break;
+            case 'follow':
+              iconHtml = '<i class="bi bi-person-plus-fill text-success notification-type-icon"></i>';
+              break;
+            case 'mention':
+              iconHtml = '<i class="bi bi-at text-warning notification-type-icon"></i>';
+              break;
+            default:
+              iconHtml = '<i class="bi bi-info-circle-fill text-secondary notification-type-icon"></i>';
+              break;
+          }
+
+          let unreadDot = notification.isRead ? '' : `
+      <div class="unread-dot"></div>`;
+
+
+          if (notification.type === 'follow') {
+
+            if (notification.isFollowing) {
+              unreadDot = `
+        <button class="btn friend" data-action="message" data-user-id="${notification.Source.id}">
+          Message
+        </button>
+      `;
+            } else {
+              unreadDot = `
+          <button class="btn btn-sm follow-back-btn" data-action="follow" data-user-id="${notification.Source.id}">
+            Follow Back
+          </button>
+        `;
+            }
+          }
+          // Construct notification HTML
+          const card = document.createElement('div');
+          card.className = 'notification-card d-flex align-items-centre p-1 bg-light ';
+          card.dataset.notification = JSON.stringify(notification);
+          card.innerHTML = `
+  <!-- Avatar -->
+  <a href="/web/profile?user=${notification.Source?.id}" class="me-2 flex-shrink-0">
+    <img src="${notification.Source?.profile_pic || 'https://cdn-icons-png.flaticon.com/512/8839/8839135.png'}"
+         class="rounded-circle border border-secondary"
+         style="width: 48px; height: 48px; object-fit: cover;"
+         alt="${notification.Source?.username || notification.title}"
+         data-bs-toggle="tooltip"
+         title="${notification.Source?.username || notification.title}">
+  </a>
+
+  <!-- Notification Content -->
+  <div class="flex-grow-1">
+    <div class="d-flex flex-wrap align-items-center mb-1">
+      <span class="text-muted small  text-truncate-two-lines" style="
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      "">${iconHtml}
+      <a href="/web/profile?user=${notification.Source?.id}" class="fw-semibold text-decoration-none text-dark me-1">
+        ${notification.Source?.username || notification.title}
+      </a> ${notification.message}</span>
+    </div>
+
+    <!-- Timestamp and optional action (e.g. Follow back or unread dot) -->
+    <div class="d-flex justify-content-between align-items-center">
+      <small class="text-muted">${formatReadableDate(notification.createdAt)}</small>
+      ${unreadDot}
+    </div>
+  </div>`;
+
+          notificationList.appendChild(card);
+        });
+      })
+      .catch(err => {
+        console.error('Failed to load notifications:', err);
+      });
+
+    function formatReadableDate(timestamp) {
+      const date = new Date(timestamp);
+      const now = new Date();
+      const diff = Math.floor((now - date) / 60000); // in minutes
+
+      if (diff < 1) return "Just now";
+      if (diff < 60) return `${diff} min ago`;
+      const hours = Math.floor(diff / 60);
+      if (hours < 24) return `${hours} hr ago`;
+      return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    document.addEventListener('click', async function (e) {
+      // Follow back button handler
+      if (e.target.classList.contains('follow-back-btn')) {
+        const userId = e.target.dataset.userId;
+
+        try {
+          const response = await fetch(`/auth/follow?id=${userId}`, {
+            method: 'POST',
+            credentials: 'include',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          });
+
+          const result = await response.json();
+          if (response.ok) {
+            e.target.classList.remove('follow-back-btn');
+            e.target.classList.add('friend');
+            e.target.textContent = 'Message';
+          }
+        } catch (err) {
+          console.error("Error:", err);
+          alert("Something went wrong.");
+        }
+
+        return; // ⛔️ Prevents card click from triggering
+      }
+
+      // Friend (message) button handler
+      if (e.target.classList.contains('friend')) {
+        const userId = e.target.dataset.userId;
+        window.location.href = `/web/chat?id=${userId}`;
+        return; // ⛔️ Prevents card click from triggering
+      }
+
+      // Ignore card click if the target is within a button
+      if (e.target.closest('button')) return;
+
+      // Handle notification card click
+      const card = e.target.closest('.notification-card');
+      if (card) {
+        const data = JSON.parse(card.dataset.notification || '{}');
+
+        switch (data.type) {
+          case 'follow':
+            window.location.href = `/web/profile?user=${data.Source.id}`;
+            break;
+
+          case 'comment':
+          case 'like':
+            if (data.itemId) {
+              if (data.comment_id) {
+                window.location.href = `/web/item?id=${parseInt(data.itemId)}&comment=${parseInt(data.comment_id)}`;
+              } else {
+                window.location.href = `/web/item?id=${parseInt(data.itemId)}`;
+              }
+            }
+            break;
+
+          case 'message':
+            window.location.href = `/web/chat?id=${data.Source.id}`;
+            break;
+
+          default:
+            alert('Unknown notification type');
+        }
+      }
+    });
+
+
+
+    function sendJson(data) {
+      window.location.href = `/web/item?id=${data.id}`;
+    }
+
+  </script>
+</body>
+
+</html>

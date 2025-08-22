@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Categories | SideHustle360</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary: #00bfa6;
+            --secondary: #1f2937;
+        }
+
+        body {
+            background: #f8fafc;
+            color: var(--secondary);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            font-size: 15px;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-card {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            margin-bottom: 2rem;
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            position: relative;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+
+        .services-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .service-card {
+            flex: 1 1 auto;
+            border-radius: 0.75rem;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.09);
+            transition: box-shadow 0.2s;
+        }
+
+        .service-card:hover {
+            background: #96f1e8;
+        }
+
+        .service-card a {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .service-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 191, 166, 0.1);
+        }
+
+        .service-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+
+        .service-desc {
+            font-size: 0.95rem;
+            color: #475569;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-price {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .service-reqs {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 0.5rem;
+        }
+
+        .service-available {
+            font-size: 0.85rem;
+            color: #22c55e;
+            font-weight: 500;
+        }
+
+        .category-link-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 2rem;
+            padding: 0.5rem 1.25rem;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+
+        .category-link-btn:hover {
+            background: #009e8e;
+            color: #fff;
+        }
+
+        .search-area {
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .search-input {
+            flex: 1;
+            border: 1px solid #e2e8f0;
+            border-radius: 2rem;
+            padding: 0.75rem 1.25rem;
+            font-size: 1.1rem;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        @media (max-width: 768px) {
+            .search-input {
+                flex: 1;
+                border: 1px solid #e2e8f0;
+                border-radius: 10px;
+                padding: 0.4rem 0.9rem;
+                font-size: 1.1rem;
+                outline: none;
+                transition: border 0.2s;
+            }
+
+            .category-card {
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+                margin-bottom: 1rem;
+                padding: 0.5rem;
+            }
+
+            .category-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 0.8rem;
+            }
+
+            .category-title {
+                font-size: 1rem;
+                font-weight: 700;
+                color: var(--secondary);
+            }
+
+            .category-desc {
+                color: #64748b;
+                font-size: 0.8rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .service-card {
+                flex: 1 1 auto !important;
+            }
+
+            .service-card a {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .service-icon {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .service-title {
+                font-size: 14px;
+                /* base size */
+                font-weight: 600;
+                color: var(--secondary);
+                white-space: nowrap;
+                /* force one line only */
+                overflow: hidden;
+                /* hide overflow text */
+                text-overflow: ellipsis;
+            }
+
+
+            .service-price {
+                font-size: 0.7rem;
+                font-weight: 500;
+                color: var(--primary);
+                margin-bottom: 0.5rem;
+            }
+
+            .service-available {
+                font-size: 0.65rem;
+                color: #22c55e;
+                font-weight: 500;
+            }
+
+            .category-link-btn {
+                color: var(--primary);
+                background: #fff;
+                border: none;
+                border-radius: 1rem;
+                /* smaller pill shape */
+                padding: 0.3rem 0.75rem;
+                /* reduced vertical/horizontal padding */
+                font-size: 0.75rem;
+                /* compact font size */
+                font-weight: 500;
+                line-height: 1;
+                transition: background 0.2s ease-in-out;
+                text-decoration: none;
+                display: inline-block;
+                /* avoid block-level button look */
+                cursor: pointer;
+            }
+
+            .category-link-btn:hover {
+                background: var(--primary);
+                color: #fff;
+                /* optional hover effect */
+            }
+
+
+        }
+
+
+
+        .search-input:focus {
+            border-color: var(--primary);
+        }
+
+        .loader {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 0;
+        }
+
+        .social-feed {
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .social-post {
+            background: #f1f5f9;
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            color: #475569;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #64748b;
+            font-size: 1.1rem;
+            margin: 2rem 0;
+        }
+
+        .sticky-search {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: #f8fafc;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            background: #e2e8f0;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container_fluid">
+        <div class="sticky-search">
+            <form id="searchForm" class="search-area mb-1" autocomplete="off">
+                <input type="text" id="searchInput" class="search-input" placeholder="Search categories..."
+                    aria-label="Search categories">
+            </form>
+        </div>
+        <section id="categoriesFeed"></section>
+        <div id="loader" class="loader d-none">
+            <div class="spinner-border text-primary" role="status" style="width:2.5rem;height:2.5rem;">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div id="noResults" class="no-results d-none">No categories found.</div>
+
+    </main>
+    <!-- Bootstrap 5 JS + Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // --- CONFIG ---
+        const API_URL = '/api/categories';
+        const PAGE_SIZE = 2; // Number of categories per "page" (for infinite scroll)
+        // --- STATE ---
+        let categories = [];
+        let searchedCategories = [];
+        let page = 1;
+        let searchPage = 1;
+        let loading = false;
+        let allLoaded = false;
+        let allSearchLoaded = false;
+        let searchTerm = '';
+        // --- DOM ---
+        const categoriesFeed = document.getElementById('categoriesFeed');
+        const loader = document.getElementById('loader');
+        const noResults = document.getElementById('noResults');
+        const searchInput = document.getElementById('searchInput');
+        const searchForm = document.getElementById('searchForm');
+        // --- FETCH ---
+        async function fetchCategories() {
+            if (loading || allLoaded) return;
+            loading = true;
+            loader.classList.remove('d-none');
+            try {
+                const res = await fetch(`${API_URL}?page=${page}&q=${encodeURIComponent(searchTerm)}`);
+                if (!res.ok) throw new Error('Failed to fetch');
+                const result = await res.json();
+                const data = result.data || [];
+                categories = categories.concat(data);
+                categories.sort((a, b) => (a.order || 0) - (b.order || 0));
+                renderCategories(categories);
+                if (result.pagination && result.pagination.page === result.pagination.totalPages) {
+                    allLoaded = true;
+                }
+            } catch (e) {
+                // Optionally handle error
+            }
+            loader.classList.add('d-none');
+            page++;
+            loading = false;
+        }
+
+        async function handleSearch(term) {
+            if (loading || allSearchLoaded) return;
+            loading = true;
+            loader.classList.remove('d-none');
+            try {
+                const res = await fetch(`${API_URL}?page=${searchPage}&q=${encodeURIComponent(term)}`);
+                if (!res.ok) throw new Error('Failed to fetch');
+                const result = await res.json();
+                const data = result.data || [];
+                searchedCategories = searchedCategories.concat(data);
+                searchedCategories.sort((a, b) => (a.order || 0) - (b.order || 0));
+                renderCategories(searchedCategories);
+                if (result.pagination && result.pagination.page === result.pagination.totalPages) {
+                    allSearchLoaded = true;
+                }
+            } catch (e) {
+                // Optionally handle error
+            }
+            loader.classList.add('d-none');
+            searchPage++;
+            loading = false;
+        }
+
+        // --- RENDER ---
+        function renderCategories(data) {
+            categoriesFeed.innerHTML = '';
+            if (!data.length) {
+                noResults.classList.remove('d-none');
+                return;
+            } else {
+                noResults.classList.add('d-none');
+            }
+            data.forEach(cat => {
+                categoriesFeed.appendChild(categoryCard(cat));
+            });
+        }
+        function categoryCard(cat) {
+            const card = document.createElement('div');
+            card.className = 'category-card';
+            // Header
+            const header = document.createElement('div');
+            header.className = 'category-header';
+            const title = document.createElement('div');
+            title.className = 'category-title';
+            title.textContent = cat.name;
+            header.appendChild(title);
+            const btn = document.createElement('a');
+            btn.className = 'category-link-btn';
+            btn.addEventListener('click', (e) => {
+                e.preventDefault(); // prevent default if it's a link
+                if (window.top !== window.self) {
+                    window.top.location = `/category?id=${cat.id}`; // escape iframe + redirect
+                } else {
+                    window.location.href = `/category?id=${cat.id}`; // normal redirect
+                }
+            });
+
+            btn.innerHTML = `All <i class="bi bi-chevron-right fw-bold"></i>`;
+            header.appendChild(btn);
+            card.appendChild(header);
+            // Description
+            const desc = document.createElement('div');
+            desc.className = 'category-desc';
+            desc.textContent = cat.description;
+            card.appendChild(desc);
+            // Services grid
+            if (cat.services && cat.services.length) {
+                const grid = document.createElement('div');
+                grid.className = 'services-grid';
+                cat.services.sort((a, b) => (a.order || 0) - (b.order || 0));
+                cat.services.forEach(svc => {
+                    grid.appendChild(serviceCard(svc));
+                });
+                card.appendChild(grid);
+            } else {
+                const noSvc = document.createElement('div');
+                noSvc.className = 'text-muted';
+                noSvc.textContent = 'No services available.';
+                card.appendChild(noSvc);
+            }
+            return card;
+        }
+        function serviceCard(svc) {
+            const card = document.createElement('div');
+            card.className = 'service-card';
+            const link = document.createElement('a');
+            link.addEventListener('click', (e) => {
+                e.preventDefault(); // prevent default if it's a link
+                if (window.top !== window.self) {
+                    window.top.location = `/service?id=${svc.id}`; // escape iframe + redirect
+                } else {
+                    window.location.href = `/service?id=${svc.id}`; // normal redirect
+                }
+            });
+            link.target = '_blank';
+            link.className = 'text-decoration-none text-dark w-100 h-100';
+            // Icon
+            const icon = document.createElement('div');
+            icon.className = 'service-icon';
+            icon.textContent = svc.icon || '🛠️';
+
+            link.appendChild(icon);
+            // Title
+            const title = document.createElement('div');
+            title.className = 'service-title';
+            title.textContent = svc.name;
+            link.appendChild(title);
+            // Price
+            const price = document.createElement('div');
+            price.className = 'service-price';
+            price.textContent = (svc.price ? svc.price.toLocaleString() : '0') + (svc.priceUnit ? ' ' + svc.priceUnit : '');
+            // link.appendChild(price);
+            // Availability
+            const avail = document.createElement('div');
+            avail.className = 'service-available';
+            avail.innerHTML = svc.available
+                ? `<span class="bi bi-check-circle-fill"></span> Available`
+                : `<span class="bi bi-x-circle-fill text-danger"></span> Unavailable`;
+            //  link.appendChild(avail);
+
+            card.appendChild(link);
+            return card;
+        }
+
+        function onScroll() {
+            if (loading) return;
+            if (searchInput.value.trim()) {
+                if (!allSearchLoaded) {
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    const winH = window.innerHeight;
+                    const docH = document.body.offsetHeight;
+                    if (scrollY + winH + 100 >= docH) {
+                        handleSearch(searchInput.value.trim());
+                    }
+                }
+            } else {
+                if (!allLoaded) {
+                    const scrollY = window.scrollY || window.pageYOffset;
+                    const winH = window.innerHeight;
+                    const docH = document.body.offsetHeight;
+                    if (scrollY + winH + 100 >= docH) {
+                        fetchCategories();
+                    }
+                }
+            }
+        }
+        // --- INIT ---
+        async function init() {
+            await fetchCategories();
+        }
+        // --- EVENTS ---
+        window.addEventListener('scroll', onScroll);
+        searchForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            searchTerm = searchInput.value.trim();
+            page = 1;
+            allLoaded = false;
+            categories = [];
+            searchedCategories = [];
+            searchPage = 1;
+            allSearchLoaded = false;
+            if (searchTerm) {
+                await handleSearch(searchTerm);
+            } else {
+                await fetchCategories();
+            }
+        });
+        
+        searchInput.addEventListener('input', async (e) => {
+            searchTerm = e.target.value.trim();
+            page = 1;
+            allLoaded = false;
+            categories = [];
+            searchedCategories = [];
+            searchPage = 1;
+            allSearchLoaded = false;
+            if (searchTerm) {
+                await handleSearch(searchTerm);
+            } else {
+                await fetchCategories();
+            }
+        });
+        // --- START ---
+        init();
+    </script>
+</body>
+
+</html>

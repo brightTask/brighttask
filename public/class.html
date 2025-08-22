@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Class Page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root { --primary: #00bfa6; --secondary: #1f2937; }
+    body { background-color: #f8f9fa; color: var(--secondary); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    .header { background-color: var(--primary); color: white; padding: 30px 0; text-align: center; }
+    .instructor-img { width: 100px; height: 100px; object-fit: cover; border-radius: 50%; border: 3px solid var(--primary); }
+    .material-list li, .resources li { margin-bottom: 10px; }
+    .section-title { color: var(--primary); margin-bottom: 20px; border-bottom: 2px solid var(--primary); padding-bottom: 5px; }
+    .btn-back { margin-top: 20px; }
+    .card { box-shadow: 0 2px 6px rgba(0,0,0,0.1); border: none; margin-bottom: 30px; }
+    footer { background-color: #e9ecef; }
+    .discussion-section textarea { min-height: 150px; }
+    .student-flex-container { display: flex; flex-wrap: wrap; gap: 15px; }
+    .student-card { flex: 1 1 auto; display: flex; align-items: center; gap: 10px; padding: 10px 15px; background-color: #fff; border-radius: 8px; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+    .student-card img { width: 45px; height: 45px; border-radius: 50%; }
+    ul { list-style: none; padding-left: 0; }
+    .text_primary { color: #00bfa6; }
+    #onlineStudents .student-card {
+      position: relative;
+    }
+    #onlineStudents .student-card::after {
+      content: '';
+      position: absolute;
+      right: 10px;
+      top: 15px;
+      width: 10px;
+      height: 10px;
+      background-color: green;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <header class="bg-light py-4 border-bottom mb-4">
+    <div class="container">
+      <h1 id="courseTitle" class="display-5 fw-bold text_primary mb-1"></h1>
+      <p id="classTitle" class="lead text-secondary"></p>
+    </div>
+  </header>
+
+  <div class="container mb-5">
+    <a href="index.html" class="btn btn-outline-secondary btn-back">&larr; Back to Course</a>
+
+    <!-- Instructor -->
+    <section class="my-5">
+      <h3 class="section-title">Instructor</h3>
+      <div class="card p-4" id="instructorSection"></div>
+    </section>
+
+    <!-- Class Details -->
+    <section class="my-5">
+      <h3 class="section-title">Class Details</h3>
+      <div class="card p-4" id="classDetails"></div>
+    </section>
+
+    <!-- Materials -->
+    <section class="my-5">
+      <h3 class="section-title">Class Materials</h3>
+      <div class="card p-4"><ul class="material-list" id="materialList"></ul></div>
+    </section>
+
+    <!-- Supplementary Resources -->
+    <section class="my-5">
+      <h3 class="section-title">Supplementary Resources</h3>
+      <div class="card p-4"><ul class="resources" id="resourcesList"></ul></div>
+    </section>
+
+    <!-- Expectations -->
+    <section class="my-5">
+      <h3 class="section-title">Class Expectations</h3>
+      <div class="card p-4"><ul id="expectationsList"></ul></div>
+    </section>
+
+    <!-- Join Class -->
+    <section class="my-5" id="joinClassSection">
+      <h3 class="section-title">Join Live Class</h3>
+      <div class="card p-4 text-center">
+        <button class="btn btn-success btn-lg" onclick="joinLiveClass()" id="joinClassBtn">Join Class Now</button>
+      </div>
+    </section>
+
+    <!-- Live Class Area -->
+    <section class="my-5 d-none" id="liveClassArea">
+      <h3 class="section-title">Live Class Ongoing</h3>
+      <div class="card p-4">
+        <div class="ratio ratio-16x9 mb-4">
+          <iframe id="zoomIframe" src="" allow="camera; microphone; fullscreen" allowfullscreen></iframe>
+        </div>
+
+        <!-- Chat -->
+        <div class="card p-3 mb-4">
+          <h5>Class Chat</h5>
+          <div id="chatBox" style="max-height: 200px; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; background-color: #fefefe;"></div>
+          <form onsubmit="event.preventDefault(); sendChat();">
+            <input type="text" class="form-control mb-2" id="chatInput" placeholder="Type a message...">
+            <button class="btn btn-primary" type="submit">Send</button>
+          </form>
+        </div>
+
+        <!-- Shared Notes -->
+        <div class="card p-3 mb-4">
+          <h5>Shared Notes</h5>
+          <ul id="sharedNotesList"></ul>
+        </div>
+
+        <!-- Online Students -->
+        <div class="card p-3">
+          <h5>Online Students</h5>
+          <div class="student-flex-container" id="onlineStudents"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Students -->
+    <section class="my-5">
+      <h3 class="section-title">Students Enrolled (<span id="totalCount"></span>)</h3>
+      <div class="student-flex-container" id="studentFlexList"></div>
+    </section>
+
+    <!-- Discussion -->
+    <section class="my-5">
+      <h3 class="section-title">Class Discussion</h3>
+      <div class="card p-4 discussion-section">
+        <form onsubmit="event.preventDefault(); addComment();">
+          <div class="mb-3">
+            <label for="commentInput" class="form-label">Post a comment or question:</label>
+            <textarea class="form-control" id="commentInput" placeholder="Write your thoughts here..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <hr>
+        <div id="commentSection"><p class="text-muted">No comments yet. Be the first to post!</p></div>
+      </div>
+    </section>
+
+    <a href="index.html" class="btn btn-outline-secondary btn-back">&larr; Back to Course</a>
+  </div>
+
+  <footer class="text-center py-4">
+    <p class="mb-0">&copy; 2025 WEB101 | Designed professionally using Bootstrap 5</p>
+  </footer>
+
+  <!-- JS Logic -->
+  <script>
+    const classId = new URLSearchParams(location.search).get("id");
+    fetch(`/api/course/class/${classId}`)
+      .then(res => res.json())
+      .then(data => {
+        document.title = `${data.courseCode} - Class ${data.classNumber}`;
+        document.getElementById("courseTitle").textContent = `${data.courseCode} - ${data.courseName}`;
+        document.getElementById("classTitle").textContent = `Class ${data.classNumber}: ${data.classTitle}`;
+
+        document.getElementById("instructorSection").innerHTML = `
+          <div class="d-flex align-items-center">
+            <img src="${data.instructor.avatar}" class="instructor-img me-3" alt="${data.instructor.name}">
+            <div>
+              <h5>${data.instructor.name}</h5>
+              <p>Email: ${data.instructor.email}<br>
+              Experience: ${data.instructor.experience}<br>
+              LinkedIn: <a href="${data.instructor.linkedin}" target="_blank">${data.instructor.linkedin}</a></p>
+            </div>
+          </div>
+        `;
+
+        document.getElementById("classDetails").innerHTML = `
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>Class Number:</strong> ${data.classNumber}</li>
+            <li class="list-group-item"><strong>Duration:</strong> ${data.duration}</li>
+            <li class="list-group-item"><strong>Date:</strong> ${data.date}</li>
+            <li class="list-group-item"><strong>Topics Covered:</strong> ${data.topics.join(", ")}</li>
+            <li class="list-group-item"><strong>Description:</strong> ${data.description}</li>
+          </ul>
+        `;
+
+        document.getElementById("materialList").innerHTML = data.materials.map(m =>
+          `<li><a href="${m.link}" class="btn btn-outline-primary w-100" target="_blank">${m.name}</a></li>`
+        ).join("");
+
+        document.getElementById("resourcesList").innerHTML = data.resources.map(r =>
+          `<li><a href="${r.link}" target="_blank">${r.name}</a></li>`
+        ).join("");
+
+        document.getElementById("expectationsList").innerHTML = data.expectations.map(e =>
+          `<li>${e}</li>`
+        ).join("");
+
+        const studentFlexList = document.getElementById("studentFlexList");
+        const totalCount = document.getElementById("totalCount");
+        totalCount.textContent = data.students.length;
+
+        data.students.forEach(s => {
+          const div = document.createElement("div");
+          div.className = "student-card";
+          div.innerHTML = `<img src="${s.avatar}" alt="${s.name}"><span>${s.name}</span>`;
+          studentFlexList.appendChild(div);
+        });
+      })
+      .catch(err => console.error("Error loading class data:", err));
+
+    function addComment() {
+      const input = document.getElementById("commentInput");
+      const commentSection = document.getElementById("commentSection");
+      const comment = input.value.trim();
+      if (comment) {
+        const p = document.createElement("p");
+        p.classList.add("mb-2");
+        p.textContent = comment;
+        commentSection.appendChild(p);
+        input.value = "";
+        commentSection.querySelector(".text-muted")?.remove();
+      }
+    }
+
+    let chatMessages = [];
+    const zoomLink = "https://your.zoom.link/embed"; // Replace with your real video conference link
+
+    function joinLiveClass() {
+      document.getElementById("joinClassBtn").disabled = true;
+      document.getElementById("joinClassSection").classList.add("d-none");
+      document.getElementById("liveClassArea").classList.remove("d-none");
+      document.getElementById("zoomIframe").src = zoomLink;
+      activateLiveFeatures();
+    }
+
+    function activateLiveFeatures() {
+      const sharedNotes = [
+        "Note 1: HTML basics.",
+        "Note 2: CSS selectors and layout.",
+        "Note 3: JavaScript DOM manipulation."
+      ];
+      const notesList = document.getElementById("sharedNotesList");
+      notesList.innerHTML = sharedNotes.map(n => `<li>${n}</li>`).join("");
+
+      const studentCards = document.querySelectorAll("#studentFlexList .student-card");
+      const onlineSection = document.getElementById("onlineStudents");
+      studentCards.forEach(card => {
+        const clone = card.cloneNode(true);
+        onlineSection.appendChild(clone);
+      });
+    }
+
+    function sendChat() {
+      const input = document.getElementById("chatInput");
+      const msg = input.value.trim();
+      if (msg) {
+        chatMessages.push(msg);
+        renderChat();
+        input.value = "";
+      }
+    }
+
+    function renderChat() {
+      const chatBox = document.getElementById("chatBox");
+      chatBox.innerHTML = chatMessages.map(m => `<p class='mb-1'>👤 ${m}</p>`).join("");
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

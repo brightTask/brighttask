@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>SideHustle360 - Connect, Learn, Grow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00bfa6;
+            --secondary: #1f2937;
+            --gradient: linear-gradient(135deg, #00bfa6 60%, #1f2937 100%);
+            --bg: #f4f7fa;
+            --card-bg: #fff;
+            --border: #e5e7eb;
+            --text: #222;
+            --muted: #6b7280;
+            --radius: 12px;
+            --shadow: 0 2px 8px rgba(31,41,55,0.08);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .navbar {
+            background: var(--gradient);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            height: 64px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .navbar .logo {
+            font-size: 1.7rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .navbar .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+        .navbar .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+        .navbar .nav-link:hover, .navbar .nav-link.active {
+            background: rgba(255,255,255,0.12);
+        }
+        .navbar .search-bar {
+            background: #fff;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            padding: 0.2rem 0.8rem;
+            margin-left: 1rem;
+        }
+        .navbar .search-bar input {
+            border: none;
+            outline: none;
+            background: transparent;
+            padding: 0.4rem 0.6rem;
+            font-size: 1rem;
+            width: 160px;
+            color: var(--secondary);
+        }
+        .navbar .profile-pic {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #fff;
+            margin-left: 1rem;
+        }
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 2rem auto;
+            gap: 2rem;
+            min-height: 80vh;
+        }
+        .sidebar, .rightbar {
+            flex: 0 0 270px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .sidebar {
+            position: sticky;
+            top: 80px;
+            align-self: flex-start;
+        }
+        .rightbar {
+            position: sticky;
+            top: 80px;
+            align-self: flex-start;
+        }
+        .main {
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            letter-spacing: 0.5px;
+        }
+        /* Sidebar: Suggestions */
+        .suggestions-list, .gigs-list, .courses-list, .services-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .suggestion, .gig, .course, .service {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem 0.2rem;
+            border-radius: 8px;
+            transition: background 0.2s;
+        }
+        .suggestion:hover, .gig:hover, .course:hover, .service:hover {
+            background: #f0fdfa;
+        }
+        .suggestion .avatar, .gig .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+        .suggestion .info, .gig .info {
+            flex: 1;
+        }
+        .suggestion .name, .gig .title {
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        .suggestion .role, .gig .type {
+            font-size: 0.92rem;
+            color: var(--muted);
+        }
+        .suggestion .follow-btn, .gig .apply-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 0.3rem 1rem;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .suggestion .follow-btn:hover, .gig .apply-btn:hover {
+            background: #009e8e;
+        }
+        /* Main: Articles Feed */
+        .feed {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+        .article {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+            margin-bottom: 1rem;
+        }
+        .article-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .article-header .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+        }
+        .article-header .author-info {
+            flex: 1;
+        }
+        .article-header .author-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .article-header .author-role {
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+        .article-header .time {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-left: 1rem;
+        }
+        .article-content {
+            font-size: 1.08rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+        .article-image {
+            width: 100%;
+            max-height: 320px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border);
+        }
+        .article-actions {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .article-actions button {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .article-actions button.liked, .comment-actions button.liked {
+            color: var(--primary);
+        }
+        .article-actions button:hover, .comment-actions button:hover {
+            color: var(--primary);
+        }
+        .comments-section {
+            margin-top: 1rem;
+            padding-left: 0.5rem;
+        }
+        .comment {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+        .comment .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1.5px solid var(--primary);
+        }
+        .comment-body {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 0.7rem 1rem;
+            flex: 1;
+            border: 1px solid var(--border);
+        }
+        .comment-author {
+            font-weight: 500;
+            font-size: 0.98rem;
+            margin-bottom: 0.2rem;
+        }
+        .comment-time {
+            font-size: 0.85rem;
+            color: var(--muted);
+            margin-left: 0.5rem;
+        }
+        .comment-text {
+            font-size: 0.97rem;
+            margin-bottom: 0.3rem;
+        }
+        .comment-actions {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            font-size: 0.95rem;
+            margin-top: 0.2rem;
+        }
+        .reply-section {
+            margin-left: 2.5rem;
+            margin-top: 0.5rem;
+        }
+        .add-comment {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            margin-top: 1rem;
+        }
+        .add-comment input {
+            flex: 1;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            font-size: 1rem;
+            outline: none;
+            background: #f8fafc;
+        }
+        .add-comment button {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            padding: 0.4rem 1.2rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .add-comment button:hover {
+            background: #009e8e;
+        }
+        /* Rightbar: Courses, Services */
+        .courses-list .course, .services-list .service {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.3rem;
+            padding: 0.7rem 0.5rem;
+        }
+        .course-title, .service-title {
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--secondary);
+        }
+        .course-desc, .service-desc {
+            font-size: 0.95rem;
+            color: var(--muted);
+        }
+        .course-link, .service-link {
+            color: var(--primary);
+            font-size: 0.95rem;
+            margin-top: 0.2rem;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        /* Responsive */
+        @media (max-width: 1100px) {
+            .container {
+                flex-direction: column;
+                gap: 0;
+            }
+            .sidebar, .rightbar {
+                flex: 1 1 100%;
+                position: static;
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 800px) {
+            .container {
+                flex-direction: column;
+                gap: 0;
+                padding: 0 0.5rem;
+            }
+            .sidebar, .rightbar {
+                display: none;
+            }
+            .main {
+                width: 100%;
+            }
+            .navbar {
+                flex-direction: column;
+                height: auto;
+                padding: 0.5rem 1rem;
+                gap: 0.5rem;
+            }
+            .navbar .nav-links {
+                gap: 1rem;
+            }
+            .navbar .search-bar input {
+                width: 100px;
+            }
+        }
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            background: #e5e7eb;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #b2f5ea;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-fire-flame-curved"></i>
+            SideHustle360
+        </div>
+        <div class="nav-links">
+            <a class="nav-link active" href="#"><i class="fa-solid fa-house"></i> Home</a>
+            <a class="nav-link" href="#"><i class="fa-solid fa-briefcase"></i> Gigs</a>
+            <a class="nav-link" href="#"><i class="fa-solid fa-hand-holding-heart"></i> Services</a>
+            <a class="nav-link" href="#"><i class="fa-solid fa-envelope"></i> Messages</a>
+            <a class="nav-link" href="#"><i class="fa-solid fa-bell"></i> Notifications</a>
+            <div class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search...">
+            </div>
+            <a class="nav-link" href="#"><img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile" class="profile-pic"></a>
+        </div>
+    </nav>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar">
+            <!-- Suggestions to Follow -->
+            <div class="card">
+                <div class="section-title">Clients to Follow</div>
+                <ul class="suggestions-list">
+                    <li class="suggestion">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" class="avatar" alt="Client">
+                        <div class="info">
+                            <div class="name">Samuel O.</div>
+                            <div class="role">Startup Founder</div>
+                        </div>
+                        <button class="follow-btn">Follow</button>
+                    </li>
+                    <li class="suggestion">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" class="avatar" alt="Client">
+                        <div class="info">
+                            <div class="name">Linda K.</div>
+                            <div class="role">Business Owner</div>
+                        </div>
+                        <button class="follow-btn">Follow</button>
+                    </li>
+                    <li class="suggestion">
+                        <img src="https://randomuser.me/api/portraits/men/23.jpg" class="avatar" alt="Client">
+                        <div class="info">
+                            <div class="name">James T.</div>
+                            <div class="role">Entrepreneur</div>
+                        </div>
+                        <button class="follow-btn">Follow</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="section-title">Freelancers to Follow</div>
+                <ul class="suggestions-list">
+                    <li class="suggestion">
+                        <img src="https://randomuser.me/api/portraits/men/12.jpg" class="avatar" alt="Freelancer">
+                        <div class="info">
+                            <div class="name">Michael B.</div>
+                            <div class="role">Web Developer</div>
+                        </div>
+                        <button class="follow-btn">Follow</button>
+                    </li>
+                    <li class="suggestion">
+                        <img src="https://randomuser.me/api/portraits/women/34.jpg" class="avatar" alt="Freelancer">
+                        <div class="info">
+                            <div class="name">Grace A.</div>
+                            <div class="role">Graphic Designer</div>
+                        </div>
+                        <button class="follow-btn">Follow</button>
+                    </li>
+                    <li class="suggestion">
+                        <img src="https://randomuser.me/api/portraits/men/56.jpg" class="avatar" alt="Freelancer">
+                        <div class="info">
+                            <div class="name">David C.</div>
+                            <div class="role">Content Writer</div>
+                        </div>
+                        <button class="follow-btn">Follow</button>
+                    </li>
+                </ul>
+            </div>
+            <!-- Gigs Suggestions -->
+            <div class="card">
+                <div class="section-title">Suggested Gigs</div>
+                <ul class="gigs-list">
+                    <li class="gig">
+                        <img src="https://randomuser.me/api/portraits/men/77.jpg" class="avatar" alt="Client">
+                        <div class="info">
+                            <div class="title">Logo Design for Startup</div>
+                            <div class="type">Design · $120</div>
+                        </div>
+                        <button class="apply-btn">Apply</button>
+                    </li>
+                    <li class="gig">
+                        <img src="https://randomuser.me/api/portraits/women/88.jpg" class="avatar" alt="Client">
+                        <div class="info">
+                            <div class="title">React Website Revamp</div>
+                            <div class="type">Development · $500</div>
+                        </div>
+                        <button class="apply-btn">Apply</button>
+                    </li>
+                    <li class="gig">
+                        <img src="https://randomuser.me/api/portraits/men/99.jpg" class="avatar" alt="Client">
+                        <div class="info">
+                            <div class="title">SEO Blog Articles</div>
+                            <div class="type">Writing · $80</div>
+                        </div>
+                        <button class="apply-btn">Apply</button>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <!-- Main Feed -->
+        <main class="main">
+            <div class="feed">
+                <!-- Article 1 -->
+                <article class="article">
+                    <div class="article-header">
+                        <img src="https://randomuser.me/api/portraits/men/12.jpg" class="avatar" alt="Author">
+                        <div class="author-info">
+                            <div class="author-name">Michael B.</div>
+                            <div class="author-role">Web Developer</div>
+                        </div>
+                        <span class="time">2h ago</span>
+                    </div>
+                    <div class="article-content">
+                        🚀 Just completed a landing page for a fintech client! Used React, TailwindCSS, and integrated Stripe for payments. <br>
+                        <span style="color:var(--primary);font-weight:500;">#webdevelopment #fintech #sidehustle</span>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=800&q=80" class="article-image" alt="Landing Page">
+                    <div class="article-actions">
+                        <button class="like-btn"><i class="fa-regular fa-heart"></i> <span>24</span> Like</button>
+                        <button class="comment-btn"><i class="fa-regular fa-comment"></i> <span>7</span> Comment</button>
+                        <button class="share-btn"><i class="fa-solid fa-share"></i> Share</button>
+                    </div>
+                    <section class="comments-section">
+                        <!-- Comment 1 -->
+                        <div class="comment">
+                            <img src="https://randomuser.me/api/portraits/women/34.jpg" class="avatar" alt="Commenter">
+                            <div class="comment-body">
+                                <div>
+                                    <span class="comment-author">Grace A.</span>
+                                    <span class="comment-time">1h ago</span>
+                                </div>
+                                <div class="comment-text">Looks amazing! Did you use any animation libraries?</div>
+                                <div class="comment-actions">
+                                    <button><i class="fa-regular fa-heart"></i> 3</button>
+                                    <button><i class="fa-solid fa-reply"></i> Reply</button>
+                                </div>
+                                <!-- Nested Reply -->
+                                <div class="reply-section">
+                                    <div class="comment">
+                                        <img src="https://randomuser.me/api/portraits/men/12.jpg" class="avatar" alt="Author">
+                                        <div class="comment-body">
+                                            <div>
+                                                <span class="comment-author">Michael B.</span>
+                                                <span class="comment-time">45m ago</span>
+                                            </div>
+                                            <div class="comment-text">Thanks Grace! Yes, I used Framer Motion for smooth transitions.</div>
+                                            <div class="comment-actions">
+                                                <button><i class="fa-regular fa-heart"></i> 1</button>
+                                                <button><i class="fa-solid fa-reply"></i> Reply</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Comment 2 -->
+                        <div class="comment">
+                            <img src="https://randomuser.me/api/portraits/men/56.jpg" class="avatar" alt="Commenter">
+                            <div class="comment-body">
+                                <div>
+                                    <span class="comment-author">David C.</span>
+                                    <span class="comment-time">50m ago</span>
+                                </div>
+                                <div class="comment-text">Great work! How long did it take?</div>
+                                <div class="comment-actions">
+                                    <button><i class="fa-regular fa-heart"></i> 2</button>
+                                    <button><i class="fa-solid fa-reply"></i> Reply</button>
+                                </div>
+                                <!-- Nested Reply -->
+                                <div class="reply-section">
+                                    <div class="comment">
+                                        <img src="https://randomuser.me/api/portraits/men/12.jpg" class="avatar" alt="Author">
+                                        <div class="comment-body">
+                                            <div>
+                                                <span class="comment-author">Michael B.</span>
+                                                <span class="comment-time">30m ago</span>
+                                            </div>
+                                            <div class="comment-text">About 3 days including client feedback rounds.</div>
+                                            <div class="comment-actions">
+                                                <button><i class="fa-regular fa-heart"></i> 1</button>
+                                                <button><i class="fa-solid fa-reply"></i> Reply</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Add Comment -->
+                        <form class="add-comment">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="avatar" alt="You">
+                            <input type="text" placeholder="Add a comment...">
+                            <button type="submit">Post</button>
+                        </form>
+                    </section>
+                </article>
+                <!-- Article 2 -->
+                <article class="article">
+                    <div class="article-header">
+                        <img src="https://randomuser.me/api/portraits/women/65.jpg" class="avatar" alt="Author">
+                        <div class="author-info">
+                            <div class="author-name">Linda K.</div>
+                            <div class="author-role">Business Owner</div>
+                        </div>
+                        <span class="time">4h ago</span>
+                    </div>
+                    <div class="article-content">
+                        💡 Looking for a freelance copywriter to help with our new product launch. DM if interested! <br>
+                        <span style="color:var(--primary);font-weight:500;">#copywriting #gigs #hiring</span>
+                    </div>
+                    <div class="article-actions">
+                        <button class="like-btn"><i class="fa-regular fa-heart"></i> <span>12</span> Like</button>
+                        <button class="comment-btn"><i class="fa-regular fa-comment"></i> <span>3</span> Comment</button>
+                        <button class="share-btn"><i class="fa-solid fa-share"></i> Share</button>
+                    </div>
+                    <section class="comments-section">
+                        <!-- Comment 1 -->
+                        <div class="comment">
+                            <img src="https://randomuser.me/api/portraits/men/56.jpg" class="avatar" alt="Commenter">
+                            <div class="comment-body">
+                                <div>
+                                    <span class="comment-author">David C.</span>
+                                    <span class="comment-time">3h ago</span>
+                                </div>
+                                <div class="comment-text">Sent you a DM!</div>
+                                <div class="comment-actions">
+                                    <button><i class="fa-regular fa-heart"></i> 1</button>
+                                    <button><i class="fa-solid fa-reply"></i> Reply</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Add Comment -->
+                        <form class="add-comment">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="avatar" alt="You">
+                            <input type="text" placeholder="Add a comment...">
+                            <button type="submit">Post</button>
+                        </form>
+                    </section>
+                </article>
+                <!-- Article 3 -->
+                <article class="article">
+                    <div class="article-header">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" class="avatar" alt="Author">
+                        <div class="author-info">
+                            <div class="author-name">Samuel O.</div>
+                            <div class="author-role">Startup Founder</div>
+                        </div>
+                        <span class="time">6h ago</span>
+                    </div>
+                    <div class="article-content">
+                        🎉 Our MVP is live! Thanks to all the amazing freelancers who contributed. If you want to join our next project, drop your portfolio below! <br>
+                        <span style="color:var(--primary);font-weight:500;">#startup #launch #freelancers</span>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" class="article-image" alt="MVP Launch">
+                    <div class="article-actions">
+                        <button class="like-btn"><i class="fa-regular fa-heart"></i> <span>31</span> Like</button>
+                        <button class="comment-btn"><i class="fa-regular fa-comment"></i> <span>9</span> Comment</button>
+                        <button class="share-btn"><i class="fa-solid fa-share"></i> Share</button>
+                    </div>
+                    <section class="comments-section">
+                        <!-- Comment 1 -->
+                        <div class="comment">
+                            <img src="https://randomuser.me/api/portraits/women/34.jpg" class="avatar" alt="Commenter">
+                            <div class="comment-body">
+                                <div>
+                                    <span class="comment-author">Grace A.</span>
+                                    <span class="comment-time">5h ago</span>
+                                </div>
+                                <div class="comment-text">Congrats Samuel! Would love to join your next project.</div>
+                                <div class="comment-actions">
+                                    <button><i class="fa-regular fa-heart"></i> 2</button>
+                                    <button><i class="fa-solid fa-reply"></i> Reply</button>
+                                </div>
+                                <!-- Nested Reply -->
+                                <div class="reply-section">
+                                    <div class="comment">
+                                        <img src="https://randomuser.me/api/portraits/men/45.jpg" class="avatar" alt="Author">
+                                        <div class="comment-body">
+                                            <div>
+                                                <span class="comment-author">Samuel O.</span>
+                                                <span class="comment-time">4h ago</span>
+                                            </div>
+                                            <div class="comment-text">Thanks Grace! Please share your portfolio link.</div>
+                                            <div class="comment-actions">
+                                                <button><i class="fa-regular fa-heart"></i> 1</button>
+                                                <button><i class="fa-solid fa-reply"></i> Reply</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Add Comment -->
+                        <form class="add-comment">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="avatar" alt="You">
+                            <input type="text" placeholder="Add a comment...">
+                            <button type="submit">Post</button>
+                        </form>
+                    </section>
+                </article>
+                <!-- Article 4 -->
+                <article class="article">
+                    <div class="article-header">
+                        <img src="https://randomuser.me/api/portraits/men/23.jpg" class="avatar" alt="Author">
+                        <div class="author-info">
+                            <div class="author-name">James T.</div>
+                            <div class="author-role">Entrepreneur</div>
+                        </div>
+                        <span class="time">8h ago</span>
+                    </div>
+                    <div class="article-content">
+                        📢 Hosting a free webinar on "How to Land Your First Gig as a Freelancer" this Friday. Register now! <br>
+                        <span style="color:var(--primary);font-weight:500;">#webinar #freelancing #learning</span>
+                    </div>
+                    <div class="article-actions">
+                        <button class="like-btn"><i class="fa-regular fa-heart"></i> <span>17</span> Like</button>
+                        <button class="comment-btn"><i class="fa-regular fa-comment"></i> <span>2</span> Comment</button>
+                        <button class="share-btn"><i class="fa-solid fa-share"></i> Share</button>
+                    </div>
+                    <section class="comments-section">
+                        <!-- Comment 1 -->
+                        <div class="comment">
+                            <img src="https://randomuser.me/api/portraits/men/56.jpg" class="avatar" alt="Commenter">
+                            <div class="comment-body">
+                                <div>
+                                    <span class="comment-author">David C.</span>
+                                    <span class="comment-time">7h ago</span>
+                                </div>
+                                <div class="comment-text">Looking forward to it!</div>
+                                <div class="comment-actions">
+                                    <button><i class="fa-regular fa-heart"></i> 1</button>
+                                    <button><i class="fa-solid fa-reply"></i> Reply</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Add Comment -->
+                        <form class="add-comment">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="avatar" alt="You">
+                            <input type="text" placeholder="Add a comment...">
+                            <button type="submit">Post</button>
+                        </form>
+                    </section>
+                </article>
+                <!-- Article 5 -->
+                <article class="article">
+                    <div class="article-header">
+                        <img src="https://randomuser.me/api/portraits/women/34.jpg" class="avatar" alt="Author">
+                        <div class="author-info">
+                            <div class="author-name">Grace A.</div>
+                            <div class="author-role">Graphic Designer</div>
+                        </div>
+                        <span class="time">10h ago</span>
+                    </div>
+                    <div class="article-content">
+                        🖌️ Just finished a logo for a local bakery. Feedback appreciated! <br>
+                        <span style="color:var(--primary);font-weight:500;">#design #logo #feedback</span>
+                    </div>
+                    <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=800&q=80" class="article-image" alt="Logo Design">
+                    <div class="article-actions">
+                        <button class="like-btn"><i class="fa-regular fa-heart"></i> <span>19</span> Like</button>
+                        <button class="comment-btn"><i class="fa-regular fa-comment"></i> <span>5</span> Comment</button>
+                        <button class="share-btn"><i class="fa-solid fa-share"></i> Share</button>
+                    </div>
+                    <section class="comments-section">
+                        <!-- Comment 1 -->
+                        <div class="comment">
+                            <img src="https://randomuser.me/api/portraits/men/12.jpg" class="avatar" alt="Commenter">
+                            <div class="comment-body">
+                                <div>
+                                    <span class="comment-author">Michael B.</span>
+                                    <span class="comment-time">9h ago</span>
+                                </div>
+                                <div class="comment-text">Love the color palette!</div>
+                                <div class="comment-actions">
+                                    <button><i class="fa-regular fa-heart"></i> 2</button>
+                                    <button><i class="fa-solid fa-reply"></i> Reply</button>
+                                </div>
+                                <!-- Nested Reply -->
+                                <div class="reply-section">
+                                    <div class="comment">
+                                        <img src="https://randomuser.me/api/portraits/women/34.jpg" class="avatar" alt="Author">
+                                        <div class="comment-body">
+                                            <div>
+                                                <span class="comment-author">Grace A.</span>
+                                                <span class="comment-time">8h ago</span>
+                                            </div>
+                                            <div class="comment-text">Thank you Michael! Glad you like it.</div>
+                                            <div class="comment-actions">
+                                                <button><i class="fa-regular fa-heart"></i> 1</button>
+                                                <button><i class="fa-solid fa-reply"></i> Reply</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Add Comment -->
+                        <form class="add-comment">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="avatar" alt="You">
+                            <input type="text" placeholder="Add a comment...">
+                            <button type="submit">Post</button>
+                        </form>
+                    </section>
+                </article>
+            </div>
+        </main>
+        <!-- Right Sidebar -->
+        <aside class="rightbar">
+            <!-- Free Self Services -->
+            <div class="card">
+                <div class="section-title">Free Self Services</div>
+                <ul class="services-list">
+                    <li class="service">
+                        <div class="service-title">Invoice Generator</div>
+                        <div class="service-desc">Create and download invoices for your clients.</div>
+                        <a class="service-link" href="#">Try Now</a>
+                    </li>
+                    <li class="service">
+                        <div class="service-title">Portfolio Builder</div>
+                        <div class="service-desc">Build a professional portfolio in minutes.</div>
+                        <a class="service-link" href="#">Create Portfolio</a>
+                    </li>
+                    <li class="service">
+                        <div class="service-title">Contract Templates</div>
+                        <div class="service-desc">Download ready-to-use freelance contracts.</div>
+                        <a class="service-link" href="#">Download</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Courses -->
+            <div class="card">
+                <div class="section-title">Top Courses</div>
+                <ul class="courses-list">
+                    <li class="course">
+                        <div class="course-title">Freelancing 101</div>
+                        <div class="course-desc">Kickstart your freelance career with proven strategies.</div>
+                        <a class="course-link" href="#">Enroll Free</a>
+                    </li>
+                    <li class="course">
+                        <div class="course-title">Mastering Remote Work</div>
+                        <div class="course-desc">Boost productivity and work from anywhere.</div>
+                        <a class="course-link" href="#">Start Learning</a>
+                    </li>
+                    <li class="course">
+                        <div class="course-title">Digital Marketing Basics</div>
+                        <div class="course-desc">Grow your side hustle with digital marketing skills.</div>
+                        <a class="course-link" href="#">Join Now</a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+    <!-- Footer -->
+    <footer style="background:var(--secondary);color:#fff;text-align:center;padding:1.5rem 0;margin-top:2rem;">
+        <div>© 2024 SideHustle360. Connect, Learn, Grow.</div>
+        <div style="font-size:0.95rem;color:#b2f5ea;margin-top:0.3rem;">
+            <a href="#" style="color:#b2f5ea;margin:0 0.7rem;">Terms</a> |
+            <a href="#" style="color:#b2f5ea;margin:0 0.7rem;">Privacy</a> |
+            <a href="#" style="color:#b2f5ea;margin:0 0.7rem;">Contact</a>
+        </div>
+    </footer>
+    <script>
+        // Like button toggle
+        document.querySelectorAll('.like-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.classList.toggle('liked');
+                let count = this.querySelector('span');
+                let n = parseInt(count.textContent, 10);
+                if (this.classList.contains('liked')) {
+                    count.textContent = n + 1;
+                } else {
+                    count.textContent = n - 1;
+                }
+            });
+        });
+        // Like on comments
+        document.querySelectorAll('.comment-actions button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.querySelector('.fa-heart')) {
+                    this.classList.toggle('liked');
+                    let txt = this.textContent.trim();
+                    let n = parseInt(txt) || 0;
+                    if (this.classList.contains('liked')) {
+                        this.innerHTML = '<i class="fa-regular fa-heart"></i> ' + (n + 1);
+                    } else {
+                        this.innerHTML = '<i class="fa-regular fa-heart"></i> ' + (n - 1);
+                    }
+                }
+            });
+        });
+        // Prevent form submit (demo)
+        document.querySelectorAll('.add-comment').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let input = this.querySelector('input');
+                if (input.value.trim()) {
+                    alert('Comment posted: ' + input.value);
+                    input.value = '';
+                }
+            });
+        });
+        // Follow button toggle
+        document.querySelectorAll('.follow-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                if (this.textContent === 'Follow') {
+                    this.textContent = 'Following';
+                    this.style.background = '#009e8e';
+                } else {
+                    this.textContent = 'Follow';
+                    this.style.background = '';
+                }
+            });
+        });
+        // Apply button
+        document.querySelectorAll('.apply-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                alert('Applied to gig!');
+            });
+        });
+    </script>
+</body>
+</html>

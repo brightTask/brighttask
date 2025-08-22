@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Service Provider Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00bfa6;
+            --secondary: #1f2937;
+            --gradient: linear-gradient(135deg, #00bfa6 60%, #1f2937 100%);
+        }
+
+        body {
+            background: #f8fafc;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        .sidebar {
+            background: #fff;
+            min-height: 100vh;
+            color: #bbf8f0;
+            position: fixed;
+            top: 0px;
+            opacity: 1;
+            right: 0;
+            width: 260px;
+            padding-top: 50px;
+            z-index: 100;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(31, 41, 55, 0.07);
+        }
+
+        .sidebar .nav-link {
+            color: #5b817c;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            margin-bottom: 0.5rem;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .sidebar .nav-link.active,
+        .sidebar .nav-link:hover {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .sidebar .sidebar-header {
+            padding: 2rem 1.5rem 1rem 1.5rem;
+            background: var(--gradient);
+            border-bottom: 1px solid #334155;
+            text-align: center;
+        }
+
+        .sidebar .sidebar-header img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+            border: 3px solid #fff;
+        }
+
+        .sidebar .sidebar-header h5 {
+            margin-bottom: 0;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .sidebar .sidebar-header small {
+            color: #e0e7ef;
+        }
+
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem 2rem 2rem 2rem;
+            min-height: 100vh;
+            background: #f8fafc;
+            transition: margin-left 0.3s;
+        }
+
+        .navbar {
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            transition: margin-left 0.3s;
+            z-index: 101;
+        }
+
+        .navbar .navbar-brand {
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .navbar .nav-link {
+            color: #1f2937;
+        }
+
+        .card {
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(31, 41, 55, 0.07);
+        }
+
+        .card-header {
+            background: none;
+            border-bottom: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .row1 {
+            padding: 0 !important;
+            margin: 0 !important;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .stat-card {
+            flex: 1 1 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: var(--gradient);
+            color: #fff;
+            border: none;
+            border-radius: 1rem;
+            box-shadow: 0 2px 8px rgba(31, 41, 55, 0.07);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .stat-card .icon {
+            font-size: 2.5rem;
+            position: absolute;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-bottom-right-radius: 1rem;
+            border-top-left-radius: 1rem;
+            top: 0;
+            left: 0;
+        }
+
+        .stat-card .icon i {
+            color: #00bfa6;
+            font-size: 20px;
+        }
+
+        .stat-card .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .stat-card .stat-label {
+            font-size: 1rem;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .table thead th {
+            background: #f1f5f9;
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .table tbody tr {
+            vertical-align: middle;
+        }
+
+        .progress {
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        .badge-status {
+            font-size: 0.9rem;
+            padding: 0.4em 0.8em;
+            border-radius: 0.5em;
+        }
+
+        .badge-pending {
+            background: #fbbf24;
+            color: #fff;
+        }
+
+        .badge-completed {
+            background: #22c55e;
+            color: #fff;
+        }
+
+        .badge-cancelled {
+            background: #ef4444;
+            color: #fff;
+        }
+
+        .card img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 1rem;
+            border: 4px solid var(--primary);
+        }
+
+        .card .top {
+            display: flex !important;
+            align-items: center;
+            gap: 10px !important;
+        }
+
+        .card .top .right {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: start;
+            justify-content: space-evenly !important;
+        }
+
+        .card small {
+            color: #64748b;
+        }
+
+        .activity-timeline {
+            list-style: none;
+            padding-left: 0;
+            margin-left: 0;
+            position: relative;
+        }
+
+        .activity-timeline::before {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: #e5e7eb;
+            z-index: 0;
+        }
+
+        .activity-timeline li {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2.5rem;
+        }
+
+        .activity-timeline li:last-child {
+            margin-bottom: 0;
+        }
+
+        .activity-timeline .timeline-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            z-index: 1;
+        }
+
+        .activity-timeline .timeline-content {
+            background: #f1f5f9;
+            border-radius: 0.5rem;
+            padding: 0.8rem 1rem;
+            font-size: 1rem;
+            color: #1f2937;
+            box-shadow: 0 1px 4px rgba(31, 41, 55, 0.04);
+        }
+
+        .activity-timeline .timeline-time {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 0.2rem;
+        }
+
+        .settings-form label {
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        .settings-form .form-control {
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+        }
+
+        .settings-form .form-check-label {
+            color: #64748b;
+        }
+
+        .settings-form .btn-primary {
+            background: var(--primary);
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+        }
+
+        .settings-form .btn-primary:hover {
+            background: #009e8e;
+        }
+
+        .profile {
+            display: flex !important;
+            gap: 20px !important;
+        }
+
+
+        @media (max-width: 991.98px) {
+            body {
+                position: relative;
+            }
+
+            .sidebar {
+                position: fixed;
+                right: -260px;
+            }
+
+            .sidebar.active {
+                right: 0;
+            }
+
+            .main-content,
+            .navbar {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .navbar {
+                padding: 0.5rem 1rem;
+            }
+        }
+
+        @media (min-width: 991.98px) {
+            .sidebar {
+                position: fixed;
+                left: 0;
+            }
+        }
+        .primary {
+            color: #00bfa6;
+            font-weight: bold;
+        }
+
+        .primary-bg {
+            background: #00bfa6;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Sidebar -->
+    <nav class="sidebar d-flex flex-column">
+        <ul class="nav flex-column px-3 mt-4">
+            <li class="nav-item">
+                <a class="nav-link active" href="#dashboard" data-bs-toggle="tab">
+                    <i class="bi bi-speedometer2 me-2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#orders" data-bs-toggle="tab">
+                    <i class="bi bi-clipboard-check me-2"></i> Orders
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#services" data-bs-toggle="tab">
+                    <i class="bi bi-briefcase me-2"></i> Services
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#earnings" data-bs-toggle="tab">
+                    <i class="bi bi-currency-dollar me-2"></i> Earnings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#reviews" data-bs-toggle="tab">
+                    <i class="bi bi-star me-2"></i> Reviews
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#profile" data-bs-toggle="tab">
+                    <i class="bi bi-person me-2"></i> Profile
+                </a>
+            </li>
+            <li class="nav-item mt-auto">
+                <a class="nav-link" href="#settings" data-bs-toggle="tab">
+                    <i class="bi bi-gear me-2"></i> Settings
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-danger" href="#">
+                    <i class="bi bi-box-arrow-right me-2"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg shadow-sm sticky-top">
+        <div class="container-fluid">
+            <span>
+                <a class="text-decoration-none ms-2" href="#"><i class="bi bi-chevron-left primary"></i></a>
+                <span class="navbar-brand ms-2">Account</span>
+            </span>
+            <button class="btn btn-link d-lg-none" id="sidebarToggle">
+                <i class="bi bi-list primary" style="font-size: 1.5rem;"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="tab-content" id="dashboardTabsContent">
+            <!-- Dashboard Tab -->
+            <div class="tab-pane fade show active" id="dashboard">
+
+                <div class="row g-4">
+                    <div class="card mb-4">
+                        <span class="top">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile">
+
+                            <span class="right">
+                                <span class="name">
+                                    <strong>John Doe</strong>
+                                    <span class="mt-3">
+                                        <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>
+                                            Verified</span>
+                                    </span>
+                                </span>
+
+                                <small>UI/UX Designer</small>
+                            </span>
+
+                        </span>
+                        <div class="my-2">
+                            <button class="btn btn-outline-secondary btn-sm" type="button" id="toggleProfileInfo">
+                                Profile Info <i class="bi bi-chevron-down"></i>
+                            </button>
+                        </div>
+                        <div class="card-body profile-info" style="display: none;" id="profileInfoSection">
+                            <strong class="mb-3 d-block border-bottom py-2">
+                                PROFILE INFORMATION
+                            </strong>
+                            <dl class="row mb-0">
+                                <dt class="col-sm-4">Full Name</dt>
+                                <dd class="col-sm-8">John Doe</dd>
+                                <dt class="col-sm-4">Email</dt>
+                                <dd class="col-sm-8">john.doe@email.com</dd>
+                                <dt class="col-sm-4">Phone</dt>
+                                <dd class="col-sm-8">+1 234 567 8901</dd>
+                                <dt class="col-sm-4">Location</dt>
+                                <dd class="col-sm-8">San Francisco, CA</dd>
+                                <dt class="col-sm-4">Bio</dt>
+                                <dd class="col-sm-8">Experienced UI/UX designer with a passion for creating
+                                    intuitive digital experiences.</dd>
+                                <dt class="col-sm-4">Skills</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge primary-bg">UI/UX</span>
+                                    <span class="badge bg-secondary">Figma</span>
+                                    <span class="badge bg-success">Photoshop</span>
+                                    <span class="badge bg-info">Branding</span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+                <div class="row1 g-4 mb-4">
+                    <div class="stat-card">
+                        <div class="icon"><i class="bi bi-clipboard-check"></i></div>
+                        <div class="stat-value">128</div>
+                        <div class="stat-label">Total Orders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon"><i class="bi bi-currency-dollar"></i></div>
+                        <div class="stat-value">$4,320</div>
+                        <div class="stat-label">Earnings</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon"><i class="bi bi-star"></i></div>
+                        <div class="stat-value">4.8</div>
+                        <div class="stat-label">Av. Rating</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon"><i class="bi bi-people"></i></div>
+                        <div class="stat-value">89</div>
+                        <div class="stat-label">Clients</div>
+                    </div>
+                </div>
+                <div class="row g-4">
+                    <div class="col-lg-8">
+                        <!-- Recent Tasks Card -->
+                        <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-white border-bottom-0 d-flex align-items-center">
+                        <i class="bi bi-list-task me-2 primary"></i>
+                        <span class="fw-semibold">Recent Tasks</span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item px-3 py-3 d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-success rounded-circle me-3"
+                                        style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                                        <i class="bi bi-check-lg fs-5"></i>
+                                    </span>
+                                    <div>
+                                        <div class="fw-semibold">Logo Design</div>
+                                        <small class="text-muted">Jane Smith</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-muted small mb-1">#8097</div>
+                                    <span class="badge bg-light text-dark fw-normal">2024-06-01</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item px-3 py-3 d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-warning rounded-circle me-3"
+                                        style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                                        <i class="bi bi-hourglass-split fs-5"></i>
+                                    </span>
+                                    <div>
+                                        <div class="fw-semibold">Website Audit</div>
+                                        <small class="text-muted">Mike Brown</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-muted small mb-1">#8098</div>
+                                    <span class="badge bg-light text-dark fw-normal">2024-06-02</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item px-3 py-3 d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-danger rounded-circle me-3"
+                                        style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                                        <i class="bi bi-x-lg fs-5"></i>
+                                    </span>
+                                    <div>
+                                        <div class="fw-semibold">App UI Design</div>
+                                        <small class="text-muted">Chris Lee</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-muted small mb-1">#8099</div>
+                                    <span class="badge bg-light text-dark fw-normal">2024-06-03</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item px-3 py-3 d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-info rounded-circle me-3"
+                                        style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                                        <i class="bi bi-star fs-5"></i>
+                                    </span>
+                                    <div>
+                                        <div class="fw-semibold">SEO Optimization</div>
+                                        <small class="text-muted">Lisa Ray</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-muted small mb-1">#8100</div>
+                                    <span class="badge bg-light text-dark fw-normal">2024-06-04</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white border-top-0 text-end">
+                        <a href="#orders" data-bs-toggle="tab" class="btn btn-link primary fw-semibold">
+                            View All Tasks <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+                <!-- Earnings Overview Card -->
+                <div class="card shadow-sm">
+                    <div class="card-header bg-white border-bottom-0 d-flex align-items-center">
+                        <i class="bi bi-graph-up-arrow me-2 primary"></i>
+                        <span class="fw-semibold">Earnings Overview</span>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="earningsChart" height="120"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        <!-- Orders Tab -->
+        <div class="tab-pane fade" id="orders">
+                                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header bg-white border-bottom-0 ">
+                        <span class="fw-semibold"><i class="bi bi-list-task me-2 primary"></i> Recent Tasks</span>
+                        
+                    <button class="btn btn-sm btn-outline-primary float-end" data-bs-toggle="modal"
+                        data-bs-target="#filterOrdersModal">
+                        <i class="bi bi-funnel"></i> Filter
+                    </button>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="list-group list-group-flush">
+                            <div class="list-group-item px-3 py-3 d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-success rounded-circle me-3"
+                                        style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                                        <i class="bi bi-check-lg fs-5"></i>
+                                    </span>
+                                    <div>
+                                        <div class="fw-semibold">Logo Design</div>
+                                        <small class="text-muted">Jane Smith</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-muted small mb-1">#8097</div>
+                                    <span class="badge bg-light text-dark fw-normal">2024-06-01</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item px-3 py-3 d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-warning rounded-circle me-3"
+                                        style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                                        <i class="bi bi-hourglass-split fs-5"></i>
+                                    </span>
+                                    <div>
+                                        <div class="fw-semibold">Website Audit</div>
+                                        <small class="text-muted">Mike Brown</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-muted small mb-1">#8098</div>
+                                    <span class="badge bg-light text-dark fw-normal">2024-06-02</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item px-3 py-3 d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-danger rounded-circle me-3"
+                                        style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                                        <i class="bi bi-x-lg fs-5"></i>
+                                    </span>
+                                    <div>
+                                        <div class="fw-semibold">App UI Design</div>
+                                        <small class="text-muted">Chris Lee</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-muted small mb-1">#8099</div>
+                                    <span class="badge bg-light text-dark fw-normal">2024-06-03</span>
+                                </div>
+                            </div>
+                            <div class="list-group-item px-3 py-3 d-flex align-items-center justify-content-between">
+                                <div class="d-flex align-items-center">
+                                    <span class="badge bg-info rounded-circle me-3"
+                                        style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
+                                        <i class="bi bi-star fs-5"></i>
+                                    </span>
+                                    <div>
+                                        <div class="fw-semibold">SEO Optimization</div>
+                                        <small class="text-muted">Lisa Ray</small>
+                                    </div>
+                                </div>
+                                <div class="text-end">
+                                    <div class="text-muted small mb-1">#8100</div>
+                                    <span class="badge bg-light text-dark fw-normal">2024-06-04</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <span>Showing 1 to 5 of 25 entries</span>
+                    <nav>
+                        <ul class="pagination pagination-sm mb-0">
+                            <li class="page-item disabled"><a class="page-link" href="#">Prev</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                </div>
+        </div>
+        <!-- Services Tab -->
+        <div class="tab-pane fade" id="services">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="mb-0">My Services</h5>
+                <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addServiceModal">
+                    <i class="bi bi-plus-lg"></i> Add Service
+                </button>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+                            class="card-img-top" alt="Logo Design">
+                        <div class="card-body">
+                            <h6 class="card-title mb-1">Logo Design</h6>
+                            <p class="card-text text-muted mb-2">Professional logo design for your brand.</p>
+                            <span class="badge primary-bg">$120</span>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#editServiceModal"><i class="bi bi-pencil"></i> Edit</button>
+                            <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i>
+                                Delete</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80"
+                            class="card-img-top" alt="Website Audit">
+                        <div class="card-body">
+                            <h6 class="card-title mb-1">Website Audit</h6>
+                            <p class="card-text text-muted mb-2">Comprehensive audit of your website for SEO and
+                                performance.</p>
+                            <span class="badge primary-bg">$80</span>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#editServiceModal"><i class="bi bi-pencil"></i> Edit</button>
+                            <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i>
+                                Delete</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100">
+                        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
+                            class="card-img-top" alt="SEO Optimization">
+                        <div class="card-body">
+                            <h6 class="card-title mb-1">SEO Optimization</h6>
+                            <p class="card-text text-muted mb-2">Boost your website's ranking with expert SEO.</p>
+                            <span class="badge primary-bg">$200</span>
+                        </div>
+                        <div class="card-footer d-flex justify-content-between">
+                            <button class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#editServiceModal"><i class="bi bi-pencil"></i> Edit</button>
+                            <button class="btn btn-outline-danger btn-sm"><i class="bi bi-trash"></i>
+                                Delete</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add more service cards as needed -->
+            </div>
+        </div>
+        <!-- Earnings Tab -->
+        <div class="tab-pane fade" id="earnings">
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            Earnings Summary
+                        </div>
+                        <div class="card-body">
+                            <div class="row text-center">
+                                <div class="col-6 col-md-3 mb-3">
+                                    <div class="stat-value">$4,320</div>
+                                    <div class="stat-label">Total Earnings</div>
+                                </div>
+                                <div class="col-6 col-md-3 mb-3">
+                                    <div class="stat-value">$1,200</div>
+                                    <div class="stat-label">This Month</div>
+                                </div>
+                                <div class="col-6 col-md-3 mb-3">
+                                    <div class="stat-value">$320</div>
+                                    <div class="stat-label">This Week</div>
+                                </div>
+                                <div class="col-6 col-md-3 mb-3">
+                                    <div class="stat-value">$80</div>
+                                    <div class="stat-label">Today</div>
+                                </div>
+                            </div>
+                            <canvas id="earningsSummaryChart" height="120"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            Payouts
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="table-responsive">
+                                <table class="table align-middle mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Amount</th>
+                                            <th>Status</th>
+                                            <th>Method</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>2024-06-01</td>
+                                            <td>$500</td>
+                                            <td><span class="badge bg-success">Paid</span></td>
+                                            <td>Bank Transfer</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2024-05-20</td>
+                                            <td>$700</td>
+                                            <td><span class="badge bg-success">Paid</span></td>
+                                            <td>PayPal</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2024-05-10</td>
+                                            <td>$400</td>
+                                            <td><span class="badge bg-warning text-dark">Pending</span></td>
+                                            <td>Bank Transfer</td>
+                                        </tr>
+                                        <tr>
+                                            <td>2024-04-28</td>
+                                            <td>$600</td>
+                                            <td><span class="badge bg-success">Paid</span></td>
+                                            <td>PayPal</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="card-footer text-end">
+                            <button class="btn btn-primary btn-sm">Request Payout</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            Earnings Breakdown
+                        </div>
+                        <div class="card-body">
+                            <canvas id="earningsPieChart" height="180"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            Payment Methods
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="bi bi-bank2 me-2 primary"></i> Bank Account
+                                    <span class="ms-auto badge bg-success">Primary</span>
+                                </li>
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="bi bi-paypal me-2 text-info"></i> PayPal
+                                </li>
+                                <li class="list-group-item d-flex align-items-center">
+                                    <i class="bi bi-credit-card me-2 text-warning"></i> Credit Card
+                                </li>
+                            </ul>
+                            <button class="btn btn-outline-primary btn-sm mt-3">Manage Methods</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Reviews Tab -->
+        <div class="tab-pane fade" id="reviews">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Client Reviews
+                </div>
+                <div class="card-body">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                                            class="rounded-circle me-3" width="48" height="48" alt="Jane Smith">
+                                        <div>
+                                            <h6 class="mb-0">Jane Smith</h6>
+                                            <small class="text-muted">Logo Design • 2 days ago</small>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <span class="text-warning">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-half"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0">Great work! The logo was exactly what I wanted. Fast delivery
+                                        and very professional.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <img src="https://randomuser.me/api/portraits/men/45.jpg"
+                                            class="rounded-circle me-3" width="48" height="48" alt="Mike Brown">
+                                        <div>
+                                            <h6 class="mb-0">Mike Brown</h6>
+                                            <small class="text-muted">Website Audit • 5 days ago</small>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <span class="text-warning">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0">Very detailed audit and helpful suggestions. Will hire again!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <img src="https://randomuser.me/api/portraits/women/46.jpg"
+                                            class="rounded-circle me-3" width="48" height="48" alt="Lisa Ray">
+                                        <div>
+                                            <h6 class="mb-0">Lisa Ray</h6>
+                                            <small class="text-muted">SEO Optimization • 1 week ago</small>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <span class="text-warning">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0">Amazing results! My website traffic increased significantly.
+                                        Highly recommended.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm mb-3">
+                                <div class="card-body">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <img src="https://randomuser.me/api/portraits/men/47.jpg"
+                                            class="rounded-circle me-3" width="48" height="48" alt="Chris Lee">
+                                        <div>
+                                            <h6 class="mb-0">Chris Lee</h6>
+                                            <small class="text-muted">App UI Design • 2 weeks ago</small>
+                                        </div>
+                                        <div class="ms-auto">
+                                            <span class="text-warning">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star"></i>
+                                                <i class="bi bi-star"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p class="mb-0">Good design, but communication could be improved.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Add more reviews as needed -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Profile Tab -->
+        <div class="tab-pane fade" id="profile">
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="card">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile">
+                        <h5>John Doe</h5>
+                        <small>UI/UX Designer</small>
+                        <div class="mt-3">
+                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i> Verified</span>
+                        </div>
+                        <div class="mt-4">
+                            <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#editProfileModal">Edit Profile</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            Profile Information
+                        </div>
+                        <div class="card-body">
+                            <dl class="row mb-0">
+                                <dt class="col-sm-4">Full Name</dt>
+                                <dd class="col-sm-8">John Doe</dd>
+                                <dt class="col-sm-4">Email</dt>
+                                <dd class="col-sm-8">john.doe@email.com</dd>
+                                <dt class="col-sm-4">Phone</dt>
+                                <dd class="col-sm-8">+1 234 567 8901</dd>
+                                <dt class="col-sm-4">Location</dt>
+                                <dd class="col-sm-8">San Francisco, CA</dd>
+                                <dt class="col-sm-4">Bio</dt>
+                                <dd class="col-sm-8">Experienced UI/UX designer with a passion for creating
+                                    intuitive digital experiences.</dd>
+                                <dt class="col-sm-4">Skills</dt>
+                                <dd class="col-sm-8">
+                                    <span class="badge primary-bg">UI/UX</span>
+                                    <span class="badge bg-secondary">Figma</span>
+                                    <span class="badge bg-success">Photoshop</span>
+                                    <span class="badge bg-info">Branding</span>
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            Portfolio
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80"
+                                        class="img-fluid rounded" alt="Portfolio 1">
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80"
+                                        class="img-fluid rounded" alt="Portfolio 2">
+                                </div>
+                                <div class="col-md-4">
+                                    <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
+                                        class="img-fluid rounded" alt="Portfolio 3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Settings Tab -->
+        <div class="tab-pane fade" id="settings">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Account Settings
+                </div>
+                <div class="card-body">
+                    <form class="settings-form">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="settingsName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="settingsName" value="John Doe">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="settingsEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="settingsEmail" value="john.doe@email.com">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="settingsPhone" class="form-label">Phone</label>
+                                <input type="text" class="form-control" id="settingsPhone" value="+1 234 567 8901">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="settingsLocation" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="settingsLocation" value="San Francisco, CA">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="settingsBio" class="form-label">Bio</label>
+                            <textarea class="form-control" id="settingsBio"
+                                rows="3">Experienced UI/UX designer with a passion for creating intuitive digital experiences.</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Notifications</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="notifyOrders" checked>
+                                <label class="form-check-label" for="notifyOrders">
+                                    Email me about new orders
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="notifyReviews" checked>
+                                <label class="form-check-label" for="notifyReviews">
+                                    Email me about new reviews
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="notifyPromos">
+                                <label class="form-check-label" for="notifyPromos">
+                                    Send me promotional offers
+                                </label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    Security
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="currentPassword" class="form-label">Current Password</label>
+                                <input type="password" class="form-control" id="currentPassword">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" class="form-control" id="newPassword">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                            <input type="password" class="form-control" id="confirmPassword">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Update Password</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- Modals -->
+    <!-- Order Details Modal -->
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <dl class="row">
+                        <dt class="col-sm-3">Order ID</dt>
+                        <dd class="col-sm-9">#1023</dd>
+                        <dt class="col-sm-3">Service</dt>
+                        <dd class="col-sm-9">Logo Design</dd>
+                        <dt class="col-sm-3">Client</dt>
+                        <dd class="col-sm-9">Jane Smith</dd>
+                        <dt class="col-sm-3">Date</dt>
+                        <dd class="col-sm-9">2024-06-01</dd>
+                        <dt class="col-sm-3">Status</dt>
+                        <dd class="col-sm-9"><span class="badge badge-status badge-completed">Completed</span></dd>
+                        <dt class="col-sm-3">Earnings</dt>
+                        <dd class="col-sm-9">$120</dd>
+                        <dt class="col-sm-3">Details</dt>
+                        <dd class="col-sm-9">Design a modern logo for a tech startup. Delivered in 3 days.</dd>
+                    </dl>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Filter Orders Modal -->
+    <div class="modal fade" id="filterOrdersModal" tabindex="-1" aria-labelledby="filterOrdersModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="filterOrdersModalLabel">Filter Orders</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="filterStatus" class="form-label">Status</label>
+                            <select class="form-select" id="filterStatus">
+                                <option value="">All</option>
+                                <option value="completed">Completed</option>
+                                <option value="pending">Pending</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="filterDate" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="filterDate">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Apply Filter</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add Service Modal -->
+    <div class="modal fade" id="addServiceModal" tabindex="-1" aria-labelledby="addServiceModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addServiceModalLabel">Add New Service</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="serviceTitle" class="form-label">Service Title</label>
+                            <input type="text" class="form-control" id="serviceTitle" placeholder="Enter service title">
+                        </div>
+                        <div class="mb-3">
+                            <label for="serviceDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="serviceDescription" rows="3"
+                                placeholder="Describe your service"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="servicePrice" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="servicePrice" placeholder="Enter price">
+                        </div>
+                        <div class="mb-3">
+                            <label for="serviceImage" class="form-label">Image</label>
+                            <input type="file" class="form-control" id="serviceImage">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Service</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Service Modal -->
+    <div class="modal fade" id="editServiceModal" tabindex="-1" aria-labelledby="editServiceModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editServiceModalLabel">Edit Service</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="editServiceTitle" class="form-label">Service Title</label>
+                            <input type="text" class="form-control" id="editServiceTitle" value="Logo Design">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editServiceDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="editServiceDescription"
+                                rows="3">Professional logo design for your brand.</textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editServicePrice" class="form-label">Price</label>
+                            <input type="number" class="form-control" id="editServicePrice" value="120">
+                        </div>
+                        <div class="mb-3">
+                            <label for="editServiceImage" class="form-label">Image</label>
+                            <input type="file" class="form-control" id="editServiceImage">
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Edit Profile Modal -->
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProfileModalLabel">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editProfileName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="editProfileName" value="John Doe">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editProfileEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="editProfileEmail"
+                                    value="john.doe@email.com">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="editProfilePhone" class="form-label">Phone</label>
+                                <input type="text" class="form-control" id="editProfilePhone" value="+1 234 567 8901">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="editProfileLocation" class="form-label">Location</label>
+                                <input type="text" class="form-control" id="editProfileLocation"
+                                    value="San Francisco, CA">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editProfileBio" class="form-label">Bio</label>
+                            <textarea class="form-control" id="editProfileBio"
+                                rows="3">Experienced UI/UX designer with a passion for creating intuitive digital experiences.</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+    <script>
+        // Sidebar toggle for mobile
+        document.getElementById('sidebarToggle').addEventListener('click', function (e) {
+            e.stopPropagation();
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+
+        // Close sidebar on click outside or scroll (mobile only)
+        function closeSidebarIfActive() {
+            const sidebar = document.querySelector('.sidebar');
+            if (window.innerWidth <= 991.98 && sidebar.classList.contains('active')) {
+            sidebar.classList.remove('active');
+            }
+        }
+
+        document.addEventListener('click', function (e) {
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if (
+            window.innerWidth <= 991.98 &&
+            sidebar.classList.contains('active') &&
+            !sidebar.contains(e.target) &&
+            e.target !== sidebarToggle
+            ) {
+            sidebar.classList.remove('active');
+            }
+        });
+
+        window.addEventListener('scroll', function () {
+            closeSidebarIfActive();
+        });
+
+        // Tab navigation
+        document.querySelectorAll('.sidebar .nav-link').forEach(function (link) {
+            link.addEventListener('click', function () {
+                document.querySelectorAll('.sidebar .nav-link').forEach(function (l) {
+                    l.classList.remove('active');
+                });
+                this.classList.add('active');                
+            document.querySelector('.sidebar').classList.remove('active');
+            });
+        });
+
+        document.getElementById('toggleProfileInfo').addEventListener('click', function () {
+            const section = document.getElementById('profileInfoSection');
+            const icon = this.querySelector('i');
+            if (section.style.display === 'none' || section.style.display === '') {
+                section.style.display = 'block';
+                icon.classList.remove('bi-chevron-down');
+                icon.classList.add('bi-chevron-up');
+            } else {
+                section.style.display = 'none';
+                icon.classList.remove('bi-chevron-up');
+                icon.classList.add('bi-chevron-down');
+            }
+        });
+
+        // Earnings Chart (Dashboard)
+        const earningsChart = new Chart(document.getElementById('earningsChart').getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Earnings',
+                    data: [600, 900, 1200, 800, 1100, 700],
+                    borderColor: '#00bfa6',
+                    backgroundColor: 'rgba(0,191,166,0.1)',
+                    tension: 0.4,
+                    fill: true,
+                    pointRadius: 4,
+                    pointBackgroundColor: '#00bfa6'
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { color: '#e5e7eb' }, beginAtZero: true }
+                }
+            }
+        });
+
+        // Earnings Summary Chart (Earnings Tab)
+        const earningsSummaryChart = new Chart(document.getElementById('earningsSummaryChart').getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    label: 'Earnings',
+                    data: [80, 60, 90, 70, 100, 120, 80],
+                    backgroundColor: '#00bfa6',
+                    borderRadius: 8
+                }]
+            },
+            options: {
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false } },
+                    y: { grid: { color: '#e5e7eb' }, beginAtZero: true }
+                }
+            }
+        });
+
+        // Earnings Pie Chart (Earnings Tab)
+        const earningsPieChart = new Chart(document.getElementById('earningsPieChart').getContext('2d'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Logo Design', 'Website Audit', 'SEO Optimization', 'Other'],
+                datasets: [{
+                    data: [1200, 800, 1500, 820],
+                    backgroundColor: ['#00bfa6', '#1f2937', '#fbbf24', '#64748b'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'bottom'
+                    }
+                },
+                cutout: '70%'
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>BrightTask - Learn Skills, Get Hired, Offer Services</title>
+  <meta name="description"
+    content="BrightTask connects learners, professionals, and service providers. Learn new skills, get hired, offer services, and grow your career in a trusted community.">
+  <meta name="keywords"
+    content="BrightTask, learn skills, get hired, online training, freelance services, hands-on projects, teach online, career growth, skill development, professional network">
+  <meta name="author" content="LonaTech Solutions
+    <meta name=" robots" content="index, follow">
+  <link rel="canonical" href="https://brighttask.onrender.com/" />
+  <meta name="theme-color" content="#222831">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://brighttask.onrender.com/logo.png" sizes="32x32">
+
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Open Graph Meta -->
+  <meta property="og:title" content="BrightTask - Learn Skills, Get Hired, Offer Services">
+  <meta property="og:description"
+    content="BrightTask connects learners, professionals, and service providers. Learn new skills, get hired, offer services, and grow your career in a trusted community.">
+  <meta property="og:image" content="https://brighttask.onrender.com/logo.png">
+  <meta property="og:url" content="https://brighttask.onrender.com/">
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card Meta -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BrightTask - Learn Skills, Get Hired, Offer Services">
+  <meta name="twitter:description"
+    content="BrightTask connects learners, professionals, and service providers. Learn new skills, get hired, offer services, and grow your career in a trusted community.">
+  <meta name="twitter:image" content="https://brighttask.onrender.com/logo.png">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    integrity="sha512-Rfw7e78E8vbqYo3G1PxXK3gH/9ka1r8i6FbW4UjL7SYmuH2ArFLcpl5K4H5lqG6PqMyM1jhKL+Y5ReZT24ctEw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #00bfa6;
+      --secondary: #1f2937;
+    }
+
+    .bg-primary {
+      background: var(--primary) !important;
+    }
+
+    .btn-primary {
+      background: var(--primary) !important;
+      border-color: var(--primary) !important;
+    }
+
+    .bg-primary {
+      background: var(--primary) !important;
+    }
+
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: #f4f6fa;
+      color: #222;
+      margin: 0 !important;
+    }
+
+    body::-webkit-scrollbar {
+      display: none;
+    }
+
+    .navbars {
+      position: sticky;
+      background: #fff;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 8px rgba(10, 10, 10, 0.103);
+      display: flex !important;
+      align-items: center !important;
+    }
+
+    .navbar-brand {
+      color: var(--primary) !important;
+      font-size: 1.5rem !important;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .nav-link,
+    .navbar-toggler {
+      color: #7b9793 !important;
+      font-weight: 500;
+    }
+
+    .tabs {
+      display: flex;
+      align-items: center;
+      padding: 0;
+      margin: 0;
+    }
+
+    .tabs li {
+      list-style: none;
+      flex: 1;
+      text-align: center;
+    }
+
+    .tabs li.active * {
+      color: var(--primary) !important;
+    }
+
+    .tabs li:hover * {
+      color: var(--primary);
+    }
+
+    .profile {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    .main-content {
+      background: #f8fafc;
+      transition: margin-left 0.3s;
+    }
+
+    @media (max-width: 991.98px) {
+      .profile span {
+        display: none;
+      }
+
+      .profile i {
+        font-size: 25px;
+      }
+
+      .tabs li.active,
+      .tabs li:hover::after {
+        border-bottom: 2px solid var(--primary);
+      }
+
+      .navbars {
+        flex-direction: column;
+        gap: 0.6rem;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .tabs .nav-link span {
+        display: none;
+      }
+
+      .tabs .nav-link .bi {
+        font-size: 1.4rem;
+      }
+    }
+
+    @media (max-width: 575.98px) {
+      .navbar-brand {
+        font-size: 1.1rem;
+      }
+    }
+
+    .iframe {
+      display: none;
+      width: 100%;
+      height: calc(100vh - 56px);
+      border: none;
+    }
+
+    .iframe.active {
+      display: block;
+    }
+  </style>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <style>
+    .post-trigger {
+      background: #f1f3f5;
+      border-radius: 50px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    .post-trigger:hover {
+      background: #e9ecef;
+    }
+
+    .modal-header {
+      border-bottom: none;
+    }
+
+    .option-icon {
+      font-size: 1.3rem;
+      color: #6c757d;
+    }
+
+    .option-label {
+      font-size: 0.95rem;
+    }
+
+    .form-control:focus {
+      box-shadow: none;
+    }
+
+    .option {
+      transition: 0.2s;
+      border-radius: 0.5rem;
+    }
+
+    .option:hover {
+      background-color: #f8f9fa;
+    }
+
+    .preview-container {
+      width: 100%;
+      display: flex;
+      flex-wrap: nowrap;
+      flex-direction: row-reverse;
+      overflow-x: scroll;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .preview-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    .preview-container .selected {
+      flex: 1 1 30%;
+      background: #b8ece5;
+      border-radius: 10px;
+      padding: 10px;
+      position: relative;
+    }
+
+    .remove {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 15px;
+      color: red;
+      cursor: pointer;
+    }
+
+    .preview-container .preview-item {
+      width: 30%;
+      height: auto;
+      margin-top: 10px;
+    }
+
+    .preview-container img,
+    .preview-container video,
+    .preview-container audio {
+      width: 100%;
+      height: auto;
+    }
+
+    .typeModal {
+      top: 0;
+      left: 0;
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      background: #fff;
+      z-index: 1000;
+    }
+
+    .innercard {
+      padding: 10px;
+      max-height: 90%;
+      overflow-y: scroll;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .inner-card-item {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(10, 10, 10, 0.103);
+      padding: 10px;
+      cursor: pointer;
+    }
+
+    .inner-card-item:hover {
+      background: #ececec;
+    }
+
+    #messageBox {
+      transition: opacity 0.5s ease-in-out;
+      box-shadow: 0 0.75rem 1.25rem rgba(0, 0, 0, 0.1);
+    }
+
+    .repost-content {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      /* Limit to 3 lines */
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    .repost-preview {
+      width: 100%;
+      box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.05);
+      transition: background 0.3s ease;
+    }
+
+    .repost-preview img {
+      width: 20%;
+      height: auto;
+      margin-right: 10px;
+      border-radius: 5px;
+    }
+
+    .repost-preview:hover {
+      background-color: #f9f9f9;
+    }
+
+    #userModal {
+      display: none;
+      z-index: 1080;
+      /* higher than postModal */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbars navbar-dark">
+    <div class="container-fluid d-flex justify-content-between align-items-center mt-1">
+      <a class="navbar-brand" href="#">BrightTask</a>
+      <span class="align-items-center gap-2 text-light">
+        <li class="nav-item profile">
+          <a class="nav-link" href="/profile">
+            <i class="bi bi-person-circle"></i> <span>Profile</span>
+          </a>
+        </li>
+      </span>
+    </div>
+    <div class="container-fluid">
+      <div class="w-100" id="navbarNav">
+        <ul class="tabs d-flex mb-0 align-items-center w-100">
+          <li id="home" class="nav-item active">
+            <a class="nav-link" href="#" onclick="loadPage('home')">
+              <i class="bi bi-house-door"></i> <span>Home</span>
+            </a>
+          </li>
+          <li id="groups" class="nav-item">
+            <a class="nav-link" href="#" onclick="loadPage('groups')">
+              <i class="bi bi-briefcase"></i> <span>Services</span>
+            </a>
+          </li>
+          <li id="messages" class="nav-item">
+            <a class="nav-link" href="#" onclick="loadPage('messages')">
+              <i class="bi bi-chat-dots"></i> <span>Chats</span>
+            </a>
+          </li>
+          <li id="notifications" class="nav-item">
+            <a class="nav-link" href="#" onclick="loadPage('notifications')">
+              <i class="bi bi-bell"></i> <span>Notifications</span>
+            </a>
+          </li>
+          <li id="courses" class="nav-item">
+            <a class="nav-link" href="#" onclick="loadPage('courses')">
+              <i class="bi bi-receipt"></i> <span>Courses</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- Post Modal -->
+  <div class="modal fade" id="postModal" tabindex="-1" aria-labelledby="postModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4 shadow">
+        <div class="modal-header">
+          <h5 class="modal-title fw-semibold" id="postModalLabel">Create Post</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+
+        <div class="modal-body">
+
+          <form id="postForm" method="POST" enctype="multipart/form-data" autocomplete="on">
+            <div class="d-flex align-items-start mb-3">
+              <textarea name="content" class="form-control border-0 bg-light rounded-3 p-3" rows="3"
+                placeholder="Share your thoughts..."></textarea>
+            </div>
+            <input hidden class="form-control" type="file" id="media" name="media" accept="image/*,video/*,audio/*"
+              multiple>
+            <input hidden class="form-control" type="text" id="relatedType" name="relatedType">
+            <input hidden class="form-control" type="number" id="relatedId" name="relatedId">
+            <input hidden class="form-control" type="text" id="tags" name="tags">
+          </form>
+
+          <div class="preview-container" id="previewContainer">
+
+          </div>
+          <div class="tags-container d-flex flex-wrap gap-2 my-2" id="tagsContainer"></div>
+
+          <!-- TypeId Selection Modal -->
+          <div class="typeModal" id="typeIdContainer" style="display: none;">
+
+            <h3 id="typeIdSelect" class="p-3">Choose Specific</h3>
+
+            <div class="innercard"></div>
+          </div>
+          <!-- Upload Options -->
+          <div id="uploadOptions" class="row g-2 mb-3">
+            <div class="col-6 col-md-4">
+              <label class="w-100 option d-flex align-items-center p-2 border" for="imageUpload">
+                <i class="fas fa-image option-icon me-2 text-primary"></i>
+                <span class="option-label">Image</span>
+              </label>
+              <input type="file" class="d-none" id="imageUpload" accept="image/*" multiple>
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="w-100 option d-flex align-items-center p-2 border" for="videoUpload">
+                <i class="fas fa-video option-icon me-2 text-danger"></i>
+                <span class="option-label">Video</span>
+              </label>
+              <input type="file" class="d-none" id="videoUpload" accept="video/*">
+            </div>
+            <div class="col-6 col-md-4">
+              <label class="w-100 option d-flex align-items-center p-2 border" for="audioUpload">
+                <i class="fas fa-microphone option-icon me-2 text-warning"></i>
+                <span class="option-label">Audio</span>
+              </label>
+              <input type="file" class="d-none" id="audioUpload" accept="audio/*">
+            </div>
+            <div id="service" class="col-6 col-md-4">
+              <div class="option type-option d-flex align-items-center p-2 border" data-type="service">
+                <i class="fas fa-briefcase option-icon me-2 text-success"></i>
+                <span class="option-label">Service</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4">
+              <div class="option type-option d-flex align-items-center p-2 border" data-type="gig">
+                <i class="fas fa-hammer option-icon me-2 text-secondary"></i>
+                <span class="option-label">Gig</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4">
+              <div class="option type-option d-flex align-items-center p-2 border" data-type="achievement">
+                <i class="fas fa-trophy option-icon me-2 text-info"></i>
+                <span class="option-label">Achievement</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4">
+              <div class="option type-option d-flex align-items-center p-2 border" data-type="task">
+                <i class="fas fa-tasks option-icon me-2 text-dark"></i>
+                <span class="option-label">Task</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4">
+              <div class="option type-option d-flex align-items-center p-2 border" data-type="course">
+                <i class="fas fa-school option-icon me-2 text-danger"></i>
+                <span class="option-label">Course</span>
+              </div>
+            </div>
+            <div class="col-6 col-md-4">
+              <div onclick="filterUserList()" class="option type-option d-flex align-items-center p-2 border"
+                data-type="tag">
+                <i class="fas fa-user option-icon me-2 text-mute"></i>
+                <span class="option-label">Tag</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Post Button -->
+          <div class="text-end">
+            <button id="postButton" class="btn btn-primary" data-bs-dismiss="modal">
+              <span class="d-sm-inline finish-span">
+                POST
+              </span>
+              <span class="d-none spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="tab-content" id="dashboardTabsContent">
+      <iframe class="iframe home active" src=""></iframe>
+      <iframe class="iframe groups" src=""></iframe>
+      <iframe class="iframe messages" src=""></iframe>
+      <iframe class="iframe notifications" src=""></iframe>
+      <iframe class="iframe courses" src=""></iframe>
+    </div>
+  </main>
+  <div class="modal" id="userModal" tabindex="1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tag Friends</h5>
+          <button onclick="document.getElementById('userModal').style.display = 'none';" type="button" class="btn-close"
+            aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="text" id="userSearchInput" class="form-control mb-2" placeholder="Search users..."
+            oninput="filterUserList()" />
+          <ul class="list-group" id="userList"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Place this near the end of <body> -->
+  <div id="messageBox" class="alert alert-dismissible fade" role="alert"
+    style="position: fixed; top: 20px; left: 20px; min-width: 250px; z-index: 1055; display: none;">
+    <i id="messageIcon" class="bi me-2"></i>
+    <span id="messageContent"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <script>
+    function showMessage(message = "Action completed successfully!", type = "success") {
+      const box = document.getElementById('messageBox');
+      const content = document.getElementById('messageContent');
+      const icon = document.getElementById('messageIcon');
+
+      // Icons per type
+      const icons = {
+        success: 'bi-check-circle-fill',
+        danger: 'bi-x-circle-fill',
+        warning: 'bi-exclamation-triangle-fill',
+        info: 'bi-info-circle-fill',
+      };
+
+      // Reset and apply styles
+      box.className = `alert alert-${type} alert-dismissible fade show`;
+      icon.className = `bi ${icons[type] || icons.info} me-2 text-${type}`;
+      content.textContent = message;
+      box.style.display = 'block';
+
+      // Bootstrap alert instance
+      const bsAlert = bootstrap.Alert.getOrCreateInstance(box);
+
+      // Auto-dismiss after 2 seconds
+      setTimeout(() => {
+        bsAlert.close();
+      }, 2000);
+    }
+
+    const typeIdContainer = document.getElementById("typeIdContainer");
+    const typeIdSelect = document.getElementById("typeIdSelect");
+    const typeInnerCard = document.querySelector(".innercard");
+
+    let taggedUsers = [];
+
+    document.querySelectorAll('.type-option').forEach(option => {
+      option.addEventListener('click', async function () {
+        selectedType = this.getAttribute('data-type');
+
+        if (selectedType === 'tag') {
+          document.getElementById('userModal').style.display = 'block';
+          return;
+        }
+
+        const res = await fetch(`/api/posts/related?type=${selectedType}`)
+        const json = await res.json();
+        // Load matching options
+        const options = json || [];
+        typeIdSelect.textContent = `Choose ${selectedType}`;
+        typeInnerCard.innerHTML = "";
+        options.forEach(item => {
+          const itemCard = document.createElement('span');
+          itemCard.className = 'inner-card-item';
+          itemCard.innerHTML = `
+              ${item.title ? `<span>${item.title}</span>` : ``}
+              <span>${item.code ? `${item.code}-` : ``}${item.name}</span>
+          `;
+
+          const valueId = item.id;
+          itemCard.addEventListener("click", (e) => {
+
+            document.getElementById('relatedType').value = selectedType;
+            document.getElementById('relatedId').value = valueId;
+            previewContainer.innerHTML = `
+                <div class="selected">
+
+              <i class="fas fa-trash remove"></i>
+              <i class="fas fa-tools"></i>
+              <span class="name">${selectedType}-${item.name}</span>
+            </div>
+    `;
+            typeIdContainer.style.display = 'none';
+            previewContainer.querySelector(".remove").addEventListener("click", () => {
+              previewContainer.querySelector(".selected").remove();
+              document.getElementById('relatedType').value = "";
+              document.getElementById('relatedId').value = "";
+            });
+          })
+
+          typeInnerCard.appendChild(itemCard);
+        });
+
+        // Show dropdown
+        typeIdContainer.style.display = options.length ? 'block' : 'none';
+      });
+    });
+
+    const previewContainer = document.getElementById("previewContainer");
+
+    function showPreview(file, index, type) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "preview-item position-relative";
+
+        let mediaHTML = "";
+
+        if (type === 'image') {
+          mediaHTML = `<img src="${e.target.result}" class="img-fluid rounded">`;
+        } else if (type === 'video') {
+          mediaHTML = `<video controls class="w-100 rounded"><source src="${e.target.result}" type="video/mp4"></video>`;
+        } else if (type === 'audio') {
+          mediaHTML = `<audio controls class="w-100"><source src="${e.target.result}" type="audio/mpeg"></audio>`;
+        }
+
+        wrapper.innerHTML = `
+      <i class="fas fa-times text-danger position-absolute top-0 end-0 p-2 cursor-pointer remove-preview" style="z-index:10; cursor:pointer;"></i>
+      ${mediaHTML}
+     `;
+
+        // Append preview
+        previewContainer.appendChild(wrapper);
+
+        // Attach remove logic
+        wrapper.querySelector(".remove-preview").addEventListener("click", () => {
+          const input = document.getElementById('media');
+          const allFiles = Array.from(input.files);
+          const fileToKeep = allFiles.filter((_, i) => i !== index); // remove the one at `index`
+
+          const dt = new DataTransfer();
+
+          fileToKeep.forEach(file => dt.items.add(file)); // ✅ add each File individually
+
+          input.files = dt.files;
+
+          wrapper.remove();
+        });
+      };
+
+      reader.readAsDataURL(file);
+    }
+
+
+
+    document.getElementById("imageUpload").addEventListener("change", function () {
+      document.getElementById('media').files = this.files;
+      previewContainer.innerHTML = "";
+      Array.from(this.files).forEach((file, i) => showPreview(file, i, "image"));
+    });
+
+    document.getElementById("videoUpload").addEventListener("change", function () {
+      document.getElementById('media').files = this.files;
+      previewContainer.innerHTML = "";
+      showPreview(this.files[0], 0, "video");
+    });
+    document.getElementById("audioUpload").addEventListener("change", function () {
+      document.getElementById('media').files = this.files;
+      previewContainer.innerHTML = "";
+      showPreview(this.files[0], 0, "audio");
+    });
+
+    function loadingIndicator(button, show) {
+      const span = button.querySelector('.finish-span');
+      const spinner = button.querySelector('.spinner-border');
+
+      // Toggle all inputs and textareas
+      document.querySelectorAll('input, textarea').forEach(el => {
+        el.disabled = show;
+      });
+
+      if (show) {
+        span.classList.add('d-none');
+        spinner.classList.remove('d-none');
+      } else {
+        span.classList.remove('d-none');
+        spinner.classList.add('d-none');
+      }
+    }
+
+    const postForm = document.getElementById('postForm');
+    const postButton = document.getElementById('postButton');
+
+    postButton.onclick = async function (e) {
+      e.preventDefault();
+
+      showMessage('We will notify you once your post is complete');
+      const formData = new FormData(postForm); // creates formData from actual current inputs
+
+      try {
+        loadingIndicator(postButton, true);
+
+        const res = await fetch(`/api/posts`, {
+          method: 'POST',
+          body: formData
+        });
+
+        if (res.ok) {
+          showMessage('Post submitted successfully');
+          postForm.reset();
+          previewContainer.innerHTML = "";
+        } else {
+          const err = await res.json();
+          showMessage(err.message || 'Post failed.', 'danger');
+        }
+
+        loadingIndicator(postButton, false);
+      } catch (err) {
+        loadingIndicator(postButton, false);
+        showMessage('Network error. Please try again.', 'danger');
+      }
+    };
+
+    function loadPage(page) {
+      // Remove 'active' from all iframes
+      document.querySelectorAll('.iframe').forEach(function (i) {
+        i.classList.remove('active');
+      });
+
+      // Select iframe by class
+      const iframe = document.querySelector(`iframe.${page}`);
+
+      // Only set src if not already set
+      if (iframe && (!iframe.getAttribute('src') || iframe.getAttribute('src') === "")) {
+        iframe.setAttribute('src', `/${page}`);
+      }
+
+      iframe.classList.add('active');
+      sessionStorage.setItem('page', page);
+      // Update nav tabs
+      document.querySelectorAll('.tabs .nav-item').forEach(function (l) {
+        l.classList.remove('active');
+      });
+      document.getElementById(`${page}`).classList.add("active");
+    }
+
+    async function filterUserList() {
+      const query = document.getElementById('userSearchInput').value.toLowerCase();
+      try {
+        const res = await fetch(`/auth/users?search=${query}`);
+        const data = await res.json();
+        if (Array.isArray(data.users)) {
+          loadUsersInModal(data.users);
+        }
+      } catch (err) {
+        console.error("Error fetching users:", err);
+      }
+    }
+
+    const tagsInput = document.getElementById("tags");
+
+
+    function loadUsersInModal(filteredUsers) {
+      const userList = document.getElementById('userList');
+      userList.innerHTML = '';
+      filteredUsers.forEach(user => {
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex align-items-center justify-content-between';
+
+        // create checkbox
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'form-check-input';
+        checkbox.value = user.id;
+
+        // check if already tagged
+        checkbox.checked = taggedUsers.some(u => u.id === user.id);
+
+        li.innerHTML = `
+    <div class="d-flex align-items-center">
+      <img src="${user.profile_picture}" class="rounded-circle me-2" width="40" height="40" />
+      <span>${user.username}</span>
+    </div>
+  `;
+
+        // append checkbox to right side
+        li.appendChild(checkbox);
+
+        // toggle on li click (except clicking directly checkbox)
+        li.addEventListener('click', (e) => {
+          if (e.target.tagName !== 'INPUT') {
+            checkbox.checked = !checkbox.checked;
+          }
+
+          if (checkbox.checked) {
+            if (!taggedUsers.some(u => u.id === user.id)) {
+              taggedUsers.push(user);
+            }
+          } else {
+            taggedUsers = taggedUsers.filter(u => u.id !== user.id);
+          }
+
+          // update hidden input
+          renderTagsPreview();
+          updateHiddenInput();
+        });
+
+        // also handle direct checkbox toggle
+        checkbox.addEventListener('change', () => {
+          if (checkbox.checked) {
+            if (!taggedUsers.includes(user.id)) {
+              taggedUsers.push(user.id);
+            }
+          } else {
+            const index = taggedUsers.indexOf(user.id);
+            if (index > -1) taggedUsers.splice(index, 1);
+          }
+          renderTagsPreview();
+          updateHiddenInput();
+        });
+
+        userList.appendChild(li);
+      });
+
+    }
+
+    function updateHiddenInput() {
+      tagsInput.value = JSON.stringify(taggedUsers.map(u => u.id));
+    }
+
+
+    window.addEventListener("message", (event) => {
+      // Optional security check
+      // if (event.origin !== 'https://yourdomain.com') return;
+
+      const { action, post } = event.data || {};
+
+      if (action === "openPostModal") {
+        const modal = new bootstrap.Modal(document.getElementById("postModal"));
+        modal.show();
+
+        // Example: load post data into modal
+        if (post !== null) {
+          document.getElementById('uploadOptions').remove();
+
+          document.getElementById('relatedType').value = 'post';
+          document.getElementById('relatedId').value = post.id;
+
+          previewContainer.innerHTML = `
+  <div class="repost-preview border rounded p-3 bg-light mb-2">
+    <div class="d-flex align-items-start mb-2">
+     ${post.images && post.images.length ? `<img src="${post.images[0]}" >` : ``}      
+      <p class="repost-content mb-0 flex-grow-1">
+        ${post.content}
+      </p>
+    </div>
+    <div class="text-muted small text-end"><i class="fas fa-retweet text-secondary me-2 mt-1"></i> <strong>${post.author.username}</strong></div>
+  </div>
+`;
+        }
+      }
+    });
+
+    function renderTagsPreview() {
+      const tagsContainer = document.getElementById("tagsContainer");
+      tagsContainer.innerHTML = ""; // clear first
+
+      const maxVisible = 3;
+      const visibleUsers = taggedUsers.slice(0, maxVisible);
+
+      visibleUsers.forEach(user => {
+        const tag = document.createElement("div");
+        tag.className = "badge bg-primary d-flex align-items-center me-1 p-1";
+        tag.innerHTML = `
+      <img src="${user.profile_picture}" 
+           class="rounded-circle me-1"
+            style="width:20px; height:20px;"/>
+      <span style="font-size: 0.75rem">${user.username}</span>
+      <button type="button" class="btn-close btn-close-white ms-1" style="font-size: 0.5rem"></button>
+    `;
+
+        // Remove on close
+        tag.querySelector("button").onclick = () => {
+          taggedUsers = taggedUsers.filter(u => u.id !== user.id);
+          renderTagsPreview();
+          updateHiddenInput();
+        };
+
+        tagsContainer.appendChild(tag);
+      });
+
+      // If there are more users, show "+N others"
+      if (taggedUsers.length > maxVisible) {
+        const extraCount = taggedUsers.length - maxVisible;
+        const moreTag = document.createElement("div");
+        moreTag.className = "badge bg-secondary ms-1 p-2";
+        moreTag.textContent = `+${extraCount} others`;
+        tagsContainer.appendChild(moreTag);
+      }
+    }
+
+    loadPage(sessionStorage.getItem('page') || 'home');
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

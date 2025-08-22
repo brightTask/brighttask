@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hustler Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #00bfa6;
+      --dark: #1f2937;
+    }
+
+    body {
+      background-color: #f4f6f9;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .back-button {
+      position: sticky;
+      padding: 20px;
+      top: 0;
+      z-index: 1000;
+      margin-bottom: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.04);
+    }
+
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid var(--primary);
+    }
+
+    .card-header {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .section-title {
+      color: var(--dark);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 4px;
+      margin-bottom: 1rem;
+    }
+
+    .cover-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .badge-check {
+      background-color: #28a745;
+      font-size: 0.8rem;
+    }
+
+    .info-label {
+      font-weight: 500;
+      color: var(--dark);
+    }
+    
+
+        body {
+            background: #f8f9fa;
+        }
+
+        .text_accent {
+            color: #1f2937;
+        }
+
+        .bg-primary {
+            background: #00bfa6 !important;
+        }
+
+        .btn-primary {
+            background: #00bfa6 !important;
+            border: 1px solid #00bfa6 !important;
+        }
+
+        .btn-outline-primary {
+            border: 1px solid #00bfa6 !important;
+        }
+
+        .text-primary {
+            color: #00bfa6 !important;
+        }
+
+        .modal-content {
+            border-radius: 0.5rem;
+        }
+
+
+        @media (max-width: 768px) {
+            .actions button {
+                flex: 1 1 100%;
+                font-size: small;
+            }
+
+            .actions .btn-outline-secondary {
+                display: block;
+            }
+
+            .container {
+                padding: 0 5px !important;
+            }
+
+
+            .body {
+                gap: 20px !important;
+            }
+
+        }
+
+        .banner-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-left: 5px solid #00bfa6;
+            border-radius: 0.75rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.04);
+            transition: 0.3s ease;
+        }
+
+        .banner-card:hover {
+            box-shadow: 0 4px 20px rgba(0, 191, 166, 0.12);
+        }
+
+        .star {
+            width: 20px;
+            height: 20px;
+            fill: #ffc107;
+            /* Bootstrap's warning (yellow) color */
+        }
+
+        .star-empty {
+            fill: #e4e5e9;
+        }
+
+
+        .location-loader {
+            display: inline-block;
+            width: 1.5rem;
+            height: 1.5rem;
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .requirement-item {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .requirement-item input {
+            flex: 1 1 45%;
+        }
+
+        .requirement-item .remove-btn {
+            background: none;
+            border: none;
+            color: #dc3545;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <div class="back-button bg-white">
+      <a href="javascript:history.back()" class="btn btn-outline-dark">
+        &larr; Back
+      </a>
+    </div>
+
+    <div id="hustler-profile"></div>
+  </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Terms and Conditions</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="max-height: 60vh; overflow: auto;">
+                    <ol>
+                        <li>All orders are subject to review and acceptance.</li>
+                        <li>Payment must be made in full before service delivery unless otherwise agreed.</li>
+                        <li>Delivery timelines are estimates and may vary based on requirements.</li>
+                        <li>Client must provide all required information and materials for the service.</li>
+                        <li>No refunds after service has commenced unless due to provider error.</li>
+                        <li>When a client posts a task, service providers will submit requests to handle the task.</li>
+                        <li>Clients are advised to carefully review each provider’s score and rating before assigning
+                            the task.</li>
+                        <li>If no provider requests the task within two days, the client may repost the task for better
+                            visibility.</li>
+                        <li>Bright Task may recommend the most suitable service providers based on ratings and
+                            performance.</li>
+                        <li>By placing an order, you agree to our privacy policy and service terms.</li>
+                    </ol>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-check me-auto">
+                        <input class="form-check-input" type="checkbox" id="acceptTerms">
+                        <label class="form-check-label" for="acceptTerms">I accept the terms and conditions</label>
+                    </div>
+                    <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                        data-bs-target="#placeOrderModal" id="proceedOrderBtn" disabled>Proceed to
+                        Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Place Order Modal -->
+    <div class="modal fade" id="placeOrderModal" tabindex="-1" aria-labelledby="placeOrderModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <form id="placeOrderForm" method="POST" action="/api/gig/add">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="placeOrderModalLabel">Post a Task</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <input id="hustlerId" type="hidden" name="hustlerId" value="">
+                            <input id="serviceId" type="hidden" name="serviceId" value="">
+
+                            <div class="col-md-12">
+                                <label class="form-label">Task Title <span class="text-danger">*</span></label>
+                                <input type="text" name="title" class="form-control" required>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label">Description <span class="text-danger">*</span></label>
+                                <textarea name="description" class="form-control" rows="4" required></textarea>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Location</label>
+                                <input id="gig-location" type="text" name="location" class="form-control" required
+                                    placeholder="Detecting your location..." readonly>
+                                <span id="location-loader" class="location-loader" style="display:none;"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Note to Service Provider</label>
+                                <input type="text" name="note" class="form-control">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Deadline</label>
+                                <input type="date" name="deadline" class="form-control">
+                            </div>
+                            <div class="col-md-12">
+                                <label class="form-label">Additional Requirements (optional)</label>
+
+                                <!-- Hidden input to store JSON -->
+                                <input type="hidden" name="requirements" id="requirementsData">
+
+                                <!-- Container for added requirements -->
+                                <div id="requirementsContainer" class="mb-2"></div>
+
+                                <!-- Add button -->
+                                <button type="button" class="btn btn-sm btn-outline-primary" id="addRequirementBtn">
+                                    Add Requirement
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Submit Task</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = urlParams.get('userId');
+    const serviceId = urlParams.get('serviceId');
+
+    async function fetchService() {
+      const res = await fetch(`/api/services?userId=${userId}&&serviceId=${serviceId}`);
+      const data = await res.json();
+
+      const container = document.getElementById('hustler-profile');
+      const service = data.services[0];
+      const hs = service.HustlerService;
+
+            document.getElementById('serviceId').value = service.id;
+            document.getElementById('hustlerId').value = data.id;
+      container.innerHTML = `
+        <div class="card shadow mb-5">
+          <div class="card-body">
+            <div class="d-flex gap-4 align-items-center flex-wrap">
+              <img src="${data.user.profile_pic}" class="profile-pic" alt="Profile Picture" />
+              <div>
+                <h3 class="mb-1">${data.user.username}
+                  ${data.isVerified ? '<span class="badge badge-check ms-2">✔ Verified</span>' : ''}
+                </h3>
+                <p class="mb-0 text-muted">${data.user.email}</p>
+                <p class="mb-0"><span class="info-label">Location:</span> ${data.location}</p>
+    <div class="text-muted mb-3 ratings">   
+            <span class="fw-bold">Rating:</span>     
+            <span class="text-warning">${renderStars(data.rating)}</span>
+    </div>
+    <div class="d-flex gap-2 mt-3">
+      <button data-bs-toggle="modal" data-bs-target="#termsModal" class="btn btn-primary w-100">Hire</button>
+        <a href="${data.portfolioUrl}" class="btn btn-sm btn-primary mt-2" target="_blank">View Portfolio</a>
+      <a class="btn btn-outline-primary text-primary w-100" href="/hustler/${data.user.id}">View Profile</a>
+    </div>
+              </div>
+            </div>
+
+            <hr class="my-4" />
+            <h5 class="section-title">Bio</h5>
+            <p>${data.bio}</p>
+
+            <hr class="my-4" />
+            <h5 class="section-title">Service Overview</h5>
+
+            <img src="${service.coverImage}" class="cover-img mb-3" alt="Service Cover" />
+
+            <h4>${service.icon} ${service.name}</h4>
+            <p class="text-muted">${service.category.name}</p>
+            <p>${service.description}</p>
+            <p><strong>Price:</strong> ${service.price} ${service.priceUnit}</p>
+            <p><strong>Orders Completed:</strong> ${service.order}</p>
+            <p><strong>Service Score:</strong> ${hs.service_score}</p>
+
+            <div class="row mt-4">
+              <div class="col-md-6">
+                <h6 class="section-title">Tools</h6>
+                <ul class="list-group">
+                  ${hs.requirements.tools.map(tool => `<li class="list-group-item">${tool}</li>`).join('')}
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <h6 class="section-title">Materials</h6>
+                <ul class="list-group">
+                  ${hs.requirements.materials.map(mat => `<li class="list-group-item">${mat}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+
+            ${service.tasks && service.tasks.length > 0 ? `
+              <hr class="my-4" />
+              <h5 class="section-title">Tasks</h5>
+              <div class="row">
+                ${service.tasks.map(task => `
+                  <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                      <img src="${task.coverImage}" class="cover-img" alt="Task Cover">
+                      <div class="card-body">
+                        <h6 class="card-title">${task.title}</h6>
+                        <p class="card-text">${task.description}</p>
+                      </div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            ` : ''}
+
+            ${service.gig ? `
+              <hr class="my-4" />
+              <h5 class="section-title">Gig</h5>
+              <div class="card mb-3">
+                <img src="${service.gig.coverImage}" class="cover-img" alt="Gig Cover">
+                <div class="card-body">
+                  <h5 class="card-title">${service.gig.title}</h5>
+                  <p class="card-text">${service.gig.description}</p>
+                  <p class="text-muted">Posted in: ${service.gig.category.name}</p>
+                </div>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+
+      
+                document.getElementById('acceptTerms')?.addEventListener('change', function () {
+                    document.getElementById('proceedOrderBtn').disabled = !this.checked;
+                });
+
+                document.getElementById('proceedOrderBtn')?.addEventListener('click', () => {
+                    detectLocation();
+                });
+    }
+
+        function detectLocation() {
+            const locationInput = document.getElementById('gig-location');
+            const loader = document.getElementById('location-loader');
+            loader.style.display = '';
+            locationInput.value = 'Detecting...';
+            navigator.geolocation.getCurrentPosition(
+                async pos => {
+                    const { latitude, longitude } = pos.coords;
+                    // Use a free reverse geocoding API (OpenStreetMap Nominatim)
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}`);
+                        const data = await res.json();
+                        locationInput.value = data.display_name || `${latitude}, ${longitude}`;
+                    } catch {
+                        locationInput.value = `${latitude}, ${longitude}`;
+                    }
+                    loader.style.display = 'none';
+                },
+                err => {
+                    locationInput.value = '';
+                    loader.style.display = 'none';
+                }
+            );
+        }
+
+
+        function renderStars(rating) {
+            const fullStar = `
+      <svg class="star" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.564-.955L10 0l2.948 5.955 6.564.955-4.756 4.635 1.122 6.545z"/></svg>`;
+            const halfStar = `
+      <svg class="star" viewBox="0 0 20 20"><defs><linearGradient id="half"><stop offset="50%" stop-color="#ffc107"/><stop offset="50%" stop-color="#e4e5e9"/></linearGradient></defs><path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.564-.955L10 0l2.948 5.955 6.564.955-4.756 4.635 1.122 6.545z" fill="url(#half)"/></svg>`;
+            const emptyStar = `
+      <svg class="star star-empty" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.564-.955L10 0l2.948 5.955 6.564.955-4.756 4.635 1.122 6.545z"/></svg>`;
+
+            let stars = '';
+            const fullCount = Math.floor(rating);
+            const hasHalf = rating % 1 >= 0.25 && rating % 1 < 0.75;
+            const emptyCount = 5 - fullCount - (hasHalf ? 1 : 0);
+
+            for (let i = 0; i < fullCount; i++) stars += fullStar;
+            if (hasHalf) stars += halfStar;
+            for (let i = 0; i < emptyCount; i++) stars += emptyStar;
+
+            return stars;
+        }
+
+        const container = document.getElementById('requirementsContainer');
+        const addBtn = document.getElementById('addRequirementBtn');
+        const hiddenInput = document.getElementById('requirementsData');
+
+        let requirements = [];
+
+        function updateHiddenInput() {
+            hiddenInput.value = JSON.stringify(requirements);
+        }
+
+        function createRequirementItem(name = '', description = '') {
+            const item = document.createElement('div');
+            item.className = 'requirement-item';
+
+            const nameInput = document.createElement('input');
+            nameInput.type = 'text';
+            nameInput.placeholder = 'Name';
+            nameInput.className = 'form-control form-control-sm';
+            nameInput.value = name;
+
+            const descInput = document.createElement('input');
+            descInput.type = 'text';
+            descInput.placeholder = 'Description';
+            descInput.className = 'form-control form-control-sm';
+            descInput.value = description;
+
+            const removeBtn = document.createElement('button');
+            removeBtn.innerHTML = '&times;';
+            removeBtn.className = 'remove-btn';
+            removeBtn.onclick = () => {
+                container.removeChild(item);
+                requirements = requirements.filter(r => r._id !== item._id);
+                updateHiddenInput();
+            };
+
+            // Assign unique id to track
+            item._id = Date.now() + Math.random();
+            item.append(nameInput, descInput, removeBtn);
+            container.appendChild(item);
+
+            // Track this item in array
+            requirements.push({
+                name: name,
+                description: description
+            });
+
+            // Save on change
+            nameInput.addEventListener('input', () => {
+                const r = requirements.find(r => r._id === item._id);
+                r.name = nameInput.value;
+                updateHiddenInput();
+            });
+            descInput.addEventListener('input', () => {
+                const r = requirements.find(r => r._id === item._id);
+                r.description = descInput.value;
+                updateHiddenInput();
+            });
+
+            updateHiddenInput();
+        }
+
+        addBtn.addEventListener('click', () => {
+            createRequirementItem();
+        });
+    fetchService();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

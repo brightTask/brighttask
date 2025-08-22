@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Messages - Celebrity Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4436674424567426"
+        crossorigin="anonymous"></script>
+
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00bfa6;
+            --secondary: #1f2937;
+        }
+
+        html,
+        body {
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .rows {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .msg-list {
+            overflow-y: auto;
+            height: 100vh;
+            background: #fff;
+            border-right: 1px solid #dee2e6;
+        }
+
+        .message-list {
+            height: calc(100vh - 130px);
+            overflow-y: auto;
+        }
+
+        .message-list::-webkit-scrollbar {
+            display: none;
+        }
+
+        .message-item {
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .message-item:hover,
+        .message-item.active {
+            background: #e9ecef;
+        }
+
+        .chat-window {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: #fff;
+            box-shadow: none;
+            position: relative;
+            border-left: 1px solid #dee2e6;
+        }
+
+        .search-bar {
+            margin-bottom: 1rem;
+        }
+
+        .close-chats {
+            display: none;
+            font-size: 1.2rem;
+            margin-right: 20px;
+            cursor: pointer;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .modal-body img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        @media (max-width: 991.98px) {
+            .fab {
+                bottom: 100px;
+                right: 30px !important;
+            }
+
+            .rows {
+                flex-direction: column;
+            }
+
+            .msg-list {
+                width: 100%;
+                padding: 0;
+                margin: 0;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid #dee2e6;
+            }
+
+            .chats {
+                display: none;
+                width: 100%;
+                flex: 1;
+            }
+
+            .hide {
+                display: none !important;
+            }
+
+            .close-chats {
+                display: inline-block;
+            }
+
+            .chat-window {
+                height: calc(100vh - 60px);
+            }
+        }
+
+        .online-indicator {
+            position: absolute;
+            bottom: 0;
+            right: 4px;
+            width: 15px;
+            height: 15px;
+            background-color: #28a745;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        .bg-pink {
+            background: var(--primary);
+        }
+
+        #mainFrame {
+            width: 100%;
+            height: 100%;
+        }
+
+        .text-ellipsis {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+
+
+        .text-truncate {
+            display: flex;
+        }
+
+        .flex-grow-1.min-w-0 {
+            min-width: 0;
+            /* Needed for truncation to work in flex */
+        }
+
+        .message-preview {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="rows">
+        <!-- Message List -->
+        <div class="msg-list col-md-4 col-lg-4 mb-4 border-0">
+            <div class="card out border-0 bg-white">
+                <div class="card-header border-0 d-flex bg-white justify-content-between align-items-center">
+                    <h5 class="mb-0 d-flex align-items-center">
+                        Messages
+                    </h5>
+
+                    <div class="d-flex align-items-center">
+                        <button class="btn btn-sm me-2" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#searchBarContainer" aria-expanded="false"
+                            aria-controls="searchBarContainer">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <!-- More options button -->
+                        <button class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#moreOptionsModal">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+
+                    </div>
+                </div>
+                <div class="card-body p-0 border-0">
+                    <div class="collapse px-1 py-0" id="searchBarContainer">
+                        <input type="text" class="form-control search-bar" placeholder="Search messages...">
+                    </div>
+                    <div class="list-group message-list" id="messageList">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <button onclick="filterUserList()" class="fab" data-bs-toggle="modal" data-bs-target="#userModal">+</button>
+        <div class="modal fade" id="moreOptionsModal" tabindex="-1" aria-labelledby="moreOptionsModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="moreOptionsModalLabel">More Options</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body d-grid gap-2">
+                        <button class="btn btn-outline-danger w-100">Delete Chat</button>
+                        <button class="btn btn-outline-warning w-100">Block User</button>
+                        <button class="btn btn-outline-secondary w-100">Archive Chat</button>
+                        <button class="btn btn-outline-primary w-100">Mark All as Read</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Start Chat</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="text" id="userSearchInput" class="form-control mb-2" placeholder="Search users..."
+                            oninput="filterUserList()" />
+                        <ul class="list-group" id="userList"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Chat Window -->
+        <div class="chats col-md-8 col-lg-8">
+
+        </div>
+    </div>
+    <!-- Bootstrap 5 JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        let allUsers = [];
+        let filteredUsers = [];
+        let contacts = [];
+        let user = {};
+        let recipient = {};
+
+        async function fetchUsers() {
+            try {
+                const res = await fetch("/auth/users");
+                const data = await res.json();
+                if (Array.isArray(data.users)) {
+                    allUsers = data.users;
+                    filteredUsers = allUsers;
+                    loadUsersInModal();
+                }
+            } catch (err) {
+                console.error("Error fetching users:", err);
+            }
+        }
+
+        async function filterUserList() {
+            const query = document.getElementById('userSearchInput').value.toLowerCase();
+            try {
+                const res = await fetch(`/auth/users?search=${query}`);
+                const data = await res.json();
+                if (Array.isArray(data.users)) {
+                    filteredUsers = data.users;
+                    loadUsersInModal();
+                }
+            } catch (err) {
+                console.error("Error fetching users:", err);
+            }
+        }
+
+        function loadUsersInModal() {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+            filteredUsers.forEach(user => {
+                const li = document.createElement('li');
+                li.className = 'list-group-item d-flex align-items-center';
+                li.innerHTML = `
+            <img src="${user.profile_picture}" class="rounded-circle me-2" width="40" height="40" />
+            <span>${user.username}</span>
+        `;
+                li.onclick = () => {
+                    recipient = {
+                        id: user.id,
+                        name: user.username,
+                        email: user.email,
+                        picture: user.profile_picture,
+                    }
+
+                    document.querySelector('.msg-list').classList.add('hide');
+                    document.querySelector('.fab').classList.add('hide');
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('userModal'));
+                    if (modal) modal.hide();
+                };
+                userList.appendChild(li);
+            });
+        }
+
+        function formatReadableDate(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = Math.floor((now - date) / 60000);
+            if (diff < 1) return "Just now";
+            if (diff < 60) return `${diff} min ago`;
+            const hours = Math.floor(diff / 60);
+            if (hours < 24) return `${hours} hr ago`;
+            return date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        function renderChatList() {
+            messageList.innerHTML = '';
+            contacts.forEach(c => {
+                const lastMsg = c.message;
+                const statusIcon = c.isme ? (c.status === 'read'
+                    ? '<i class="bi bi-check2-all text-primary"></i>'
+                    : '<i class="bi bi-check2"></i>') : '';
+                messageList.innerHTML += `
+  <a href="#" class="list-group-item list-group-item-action border-0 message-item" data-user="${c.user_id}">
+    <div class="d-flex align-items-center">
+      <div class="position-relative d-inline-block">
+        <img src="${c.profile_pic}" class="rounded-circle me-2" width="40" height="40">
+        <span id="showOnline${c.user_id}" class="show-online ${c.isOnline ? 'online-indicator' : ''}"></span>
+      </div>
+
+      <div class="flex-grow-1 min-w-0">
+        <div class="d-flex justify-content-between">
+          <span class="fw-bold text-truncate">${c.username}</span>
+          <small class="text-muted flex-shrink-0 ms-2">${c.time || ''}</small>
+        </div>
+
+        <div class="text-truncate message-preview ${c.status === 'read' || c.isme ? 'text-muted' : 'fw-bold text-dark'}">
+          ${c.isme ? 'You: ' : ''}
+          ${lastMsg ? `<span>${lastMsg}</span>` : ''}
+          ${statusIcon}
+        </div>
+      </div>
+    </div>
+  </a>`;
+
+            });
+        }
+
+        async function fetchChats() {
+            try {
+                const response = await fetch('/chats/all');
+                const data = await response.json();
+                user.id = data.user_id;
+                user.picture = data.picture;
+                contacts = data.chats.map(chat => ({
+                    username: chat.otherUser.username,
+                    profile_pic: chat.otherUser.profile_pic,
+                    user_id: chat.otherUser.id,
+                    status: chat.status,
+                    message: chat.message,
+                    isOnline: chat.otherUser.isOnline,
+                    isme: chat.isme,
+                    time: formatReadableDate(chat.createdAt),
+                }));
+                renderChatList();
+                registerSocket(data.user_id);
+            } catch (error) {
+                console.error('Error fetching chats:', error);
+            }
+        }
+
+        function registerSocket(id) {
+            if (id) socket.emit('register', id);
+        }
+
+        socket.on('connect', () => {
+            if (user.id) registerSocket(user.id);
+        });
+
+        socket.on('userStatusUpdate', ({ userId, status, }) => {
+            const toastEl = document.querySelector(`.toast-${userId}`);
+            if (toastEl) {
+                toastEl.textContent = status;
+                toastEl.style.color = 'green';
+            }
+            if (status === 'Online') {
+                document.getElementById(`showOnline${userId}`).classList.remove('online-indicator');
+                document.getElementById(`showOnline${userId}`).classList.add('online-indicator');
+            } else {
+                document.getElementById(`showOnline${userId}`).classList.remove('online-indicator');
+            }
+            const contact = contacts.find(c => parseInt(c.user_id) === parseInt(userId));
+            if (contact) {
+                contact.isOnline = status === 'Online'; // or contact.name = 'New Name';
+            }
+
+
+        });
+
+        socket.on('receiveMessage', (data) => {
+            const userId = parseInt(data.otherUser.id);
+
+            fetchChats();
+
+            renderChatList();
+            if (parseInt(userId) === parseInt(recipient.id)) {
+                renderChat(userId);
+            }
+        });
+
+        socket.on('messagesRead', ({ sender_id, reader_id }) => {
+            if (sender_id === user.id) {
+                renderChatList();
+                if (recipient.id) {
+                    renderChat(reader_id);
+                }
+            }
+        });
+
+        messageList.addEventListener('click', async function (e) {
+
+            const item = e.target.closest('.message-item');
+            if (item) {
+                const userId = item.getAttribute('data-user');
+
+                if (window.innerWidth <= 991.98) {
+
+                    window.top.location.href = `/message?id=${userId}`;
+                    return;
+                }
+
+                document.querySelector('.chats').innerHTML = `<iframe id="mainFrame" src="/message?id=${userId}"></iframe>`;
+            }
+        });
+
+        document.querySelector('.search-bar').addEventListener('input', function (e) {
+            const val = e.target.value.toLowerCase();
+            document.querySelectorAll('.message-item').forEach(item => {
+                const name = item.querySelector('.fw-bold').textContent.toLowerCase();
+                item.style.display = name.includes(val) ? '' : 'none';
+            });
+        });
+
+        // Initial data load
+        fetchUsers();
+        fetchChats();
+    </script>
+
+
+</body>
+
+</html>

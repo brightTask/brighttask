@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Article Editor</title>
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    .section { background: white; padding: 15px; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
+    textarea, input { width: 100%; margin-top: 6px; margin-bottom: 12px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+    button { background: #00bfa6; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-right: 10px; }
+    .section-title { font-weight: bold; font-size: 1.2em; }
+    .section-actions { margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <h1>📝 AI Article Editor</h1>
+  <div>
+    <label><strong>Title</strong></label>
+    <input id="article-title" placeholder="Enter article title">
+
+    <label><strong>Excerpt</strong></label>
+    <textarea id="article-excerpt" rows="2" placeholder="Short description..."></textarea>
+  </div>
+
+  <hr>
+
+  <div id="sections"></div>
+
+  <button onclick="addSection()">➕ Add New Section</button>
+  <button onclick="saveArticle()">💾 Save Article</button>
+
+  <script>
+    let article = {
+      title: '',
+      excerpt: '',
+      hashtags: ['#example'],
+      sections: []
+    };
+
+    function renderSections() {
+      const container = document.getElementById('sections');
+      container.innerHTML = '';
+
+      article.sections.forEach((section, index) => {
+        const div = document.createElement('div');
+        div.className = 'section';
+        div.dataset.index = index;
+
+        div.innerHTML = `
+          <div class="section-title">Section ${index + 1}</div>
+          <label>Title</label>
+          <input value="${section.title}" onchange="updateSection(${index}, 'title', this.value)">
+
+          <label>Subtitle</label>
+          <input value="${section.subtitle || ''}" onchange="updateSection(${index}, 'subtitle', this.value)">
+
+          <label>Paragraph</label>
+          <textarea rows="4" onchange="updateSection(${index}, 'paragraph', this.value)">${section.paragraph || ''}</textarea>
+
+          <div class="section-actions">
+            <button onclick="paraphrase(${index})">🔁 Paraphrase</button>
+            <button onclick="removeSection(${index})">❌ Remove</button>
+          </div>
+        `;
+
+        container.appendChild(div);
+      });
+    }
+
+    function updateSection(index, field, value) {
+      article.sections[index][field] = value;
+    }
+
+    function addSection() {
+      article.sections.push({ title: '', subtitle: '', paragraph: '' });
+      renderSections();
+    }
+
+    function removeSection(index) {
+      article.sections.splice(index, 1);
+      renderSections();
+    }
+
+    async function paraphrase(index) {
+      const section = article.sections[index];
+      const response = await fetch('/ai/paraphrase', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title: section.title, paragraph: section.paragraph })
+      });
+
+      const data = await response.json();
+      if (data.paraphrased) {
+        article.sections[index].paragraph = data.paraphrased;
+        renderSections();
+      }
+    }
+
+    function saveArticle() {
+      article.title = document.getElementById('article-title').value;
+      article.excerpt = document.getElementById('article-excerpt').value;
+      console.log('Final Article:', article);
+      alert('✅ Article saved to console (you can implement download or post functionality).');
+    }
+
+    // Example starter
+    article = {
+      title: 'Sample Title',
+      excerpt: 'Short description of the article.',
+      hashtags: ['#sample'],
+      sections: [
+        { title: 'Intro', subtitle: 'Start here', paragraph: 'This is the first section.' }
+      ]
+    };
+
+    renderSections();
+  </script>
+</body>
+</html>
